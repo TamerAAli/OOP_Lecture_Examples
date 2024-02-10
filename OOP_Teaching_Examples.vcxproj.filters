@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="G:\My Drive\Teaching\21 - SP24\C++\Lectures\Code\OOP_Teaching_Examples.cpp">
+    <ClCompile Include="G:\My Drive\Teaching\21 - SP24\C++\Lectures\Code\OOP_Teaching_Examples_Old.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
