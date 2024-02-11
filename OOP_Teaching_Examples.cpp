@@ -5,95 +5,6 @@ using namespace std;
 
 namespace past
 {
-	namespace Lec1
-	{
-		namespace Ex1
-		{
-			int main()
-			{
-				cout << "Size of short: " << sizeof(short) << endl;
-				cout << "Size of int: " << sizeof(int) << endl;
-				cout << "Size of long: " << sizeof(long) << endl;
-				cout << "Size of long long: " << sizeof(long long) << endl;
-				cout << "Size of double: " << sizeof(double) << endl;
-				cout << "Size of long double: " << sizeof(long double) << endl;
-				cout << "Size of float: " << sizeof(float) << endl;
-				return 0;
-			}
-		} // namespace Ex1
-		namespace Ex2
-		{
-			int main()
-			{
-				int sec = 0;
-				cout << "Enter seconds: ";
-				cin >> sec;
-				cout << "Minuets: " << sec / 60;
-				cout << ", Seconds: " << sec % 60;
-				return 0;
-			}
-		} // namespace Ex2
-	} // namespace Lec1
-
-	namespace Lec2
-	{
-		namespace Ex1
-		{
-			const int MAX_TV_CHANNEL = 100;
-			bool getTvStatus(const char* tvName)
-			{
-				return true;
-			}
-			int getTvCurrentChannel(const char* tvName)
-			{
-				return 0;
-			}
-			int main()
-			{
-				auto tv1 = "tv1";
-				bool isTvOpen = getTvStatus(tv1);
-				int currentChannel = getTvCurrentChannel(tv1);
-				if (isTvOpen)
-					if (currentChannel <= MAX_TV_CHANNEL)
-						currentChannel++;
-				if (isTvOpen && currentChannel <= MAX_TV_CHANNEL)
-					currentChannel++;
-				return 0;
-			}
-		} // namescpace Ex1
-		namespace Ex2
-		{
-			int main()
-			{
-				cout << boolalpha << (1 < 4 > 3) << endl;
-				cout << boolalpha << (1 == 2 == 0) << endl;
-				return 0;
-			}
-		} // namespace Ex2
-		namespace Ex3
-		{
-			int main()
-			{
-				int x = 10;
-				float y = 5.5;
-
-				x += 10;
-				y += 10;
-				cout << x << " " << y;
-
-				//x += 10;
-				//y += 10.0;
-				//cin >> x >> " " >> y;
-				//
-				//x += 10;
-				//y += 10;
-				//print << x << " " << y;
-
-				return 0;
-			}
-		} // namespace Ex3
-	} // namespace Lec2
-
 	namespace Lec3
 	{
 		namespace Ex1
@@ -1517,7 +1428,178 @@ namespace past
 
 }; // namespace past
 
+
+namespace Lec1
+{
+	namespace Ex1
+	{
+		int main()
+		{
+			cout << "Size of short: " << sizeof(short) << endl;
+			cout << "Size of int: " << sizeof(int) << endl;
+			cout << "Size of long: " << sizeof(long) << endl;
+			cout << "Size of long long: " << sizeof(long long) << endl;
+			cout << "Size of double: " << sizeof(double) << endl;
+			cout << "Size of long double: " << sizeof(long double) << endl;
+			cout << "Size of float: " << sizeof(float) << endl;
+			return 0;
+		}
+	} // namespace Ex1
+	namespace Ex2
+	{
+		int main()
+		{
+			int sec = 0;
+			cout << "Enter seconds: ";
+			cin >> sec;
+			cout << "Minuets: " << sec / 60;
+			cout << ", Seconds: " << sec % 60;
+			return 0;
+		}
+	} // namespace Ex2
+
+	namespace Ex3
+	{
+		int main()
+		{
+			int a = 2;
+			cout << a << "\n";
+			a++;
+			cout << a << "\n";
+			return 0;
+		}
+	} // namespace Ex3
+
+	namespace Ex4
+	{
+		int main()
+		{
+			double score = 85;
+			if (score >= 95.0) cout << "Grade is A";
+			else
+			{
+				cout << "Grade is not A";
+				if (score >= 80.0) cout << "Grade is B";
+				else
+				{
+					cout << "Grade is not B";
+					if (score >= 65.0) cout << "Grade is C";
+					else
+					{
+						cout << "Grade is not C";
+						cout << "Grade is F";
+					}
+				}
+			}
+
+			return 0;
+		}
+	} // namespace Ex4
+
+	namespace Ex5
+	{
+		int main()
+		{
+			bool isEnrolled = true;
+			bool isGraduated = false;
+
+			cout << boolalpha; // Print bools as true/false instead of 1/0
+			cout << "Enrolled: " << isEnrolled << endl;
+			cout << "Graduated: " << isGraduated << endl;
+
+			return 0;
+		}
+	} // namespace Ex5
+
+	namespace Ex6
+	{
+		int main()
+		{
+			double TOEFLScore = 0;
+			cout << "Enter TOEFL score: ";
+			cin >> TOEFLScore;
+			bool hasGoodTOEFLScore = (TOEFLScore >= 79);
+
+			bool passedEnglishPlacementTest;
+			cout << "Did you pass the English Placement Test?: ";
+			cin >> passedEnglishPlacementTest;
+
+			bool isEligibleForAdmission = hasGoodTOEFLScore || passedEnglishPlacementTest;
+
+			bool needsRemedialEnglish = !isEligibleForAdmission;
+
+			if (isEligibleForAdmission)
+				cout << "Admit student";
+			else
+				cout << "Enroll in a remedial English course";
+
+			return 0;
+		}
+	} // namespace Ex6
+
+} // namespace Lec1
+
+namespace Lec2
+{
+	namespace Ex1
+	{
+		const int MAX_TV_CHANNEL = 100;
+		bool getTvStatus(const char* tvName)
+		{
+			return true;
+		}
+		int getTvCurrentChannel(const char* tvName)
+		{
+			return 0;
+		}
+		int main()
+		{
+			auto tv1 = "tv1";
+			bool isTvOpen = getTvStatus(tv1);
+			int currentChannel = getTvCurrentChannel(tv1);
+			if (isTvOpen)
+				if (currentChannel <= MAX_TV_CHANNEL)
+					currentChannel++;
+			if (isTvOpen && currentChannel <= MAX_TV_CHANNEL)
+				currentChannel++;
+			return 0;
+		}
+	} // namescpace Ex1
+	namespace Ex2
+	{
+		int main()
+		{
+			cout << boolalpha << (1 < 4 > 3) << endl;
+			cout << boolalpha << (1 == 2 == 0) << endl;
+			return 0;
+		}
+	} // namespace Ex2
+	namespace Ex3
+	{
+		int main()
+		{
+			int x = 10;
+			float y = 5.5;
+
+			x += 10;
+			y += 10;
+			cout << x << " " << y;
+
+			//x += 10;
+			//y += 10.0;
+			//cin >> x >> " " >> y;
+			//
+			//x += 10;
+			//y += 10;
+			//print << x << " " << y;
+
+			return 0;
+		}
+	} // namespace Ex3
+} // namespace Lec2
+
 int main()
 {
+	Lec1::Ex6::main();
 	return 0;
 }
