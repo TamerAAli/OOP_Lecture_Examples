@@ -3,34 +3,152 @@
 #include <list>
 using namespace std;
 
-namespace past
+namespace others
 {
-	namespace Lec3
+	namespace Lec1
 	{
 		namespace Ex1
 		{
-			void modifyValues(int a, int b)
-			{
-				a = 0;
-				b = 0;
-			}
-
-			void updateNumbers(const int& m, int& n)
-			{
-				modifyValues(m, n);
-			}
-
 			int main()
 			{
-				int x = 5, y = 5;
-				updateNumbers(x, y);
-				cout << x << " " << y;
+				cout << "Size of short: " << sizeof(short) << endl;
+				cout << "Size of int: " << sizeof(int) << endl;
+				cout << "Size of long: " << sizeof(long) << endl;
+				cout << "Size of long long: " << sizeof(long long) << endl;
+				cout << "Size of double: " << sizeof(double) << endl;
+				cout << "Size of long double: " << sizeof(long double) << endl;
+				cout << "Size of float: " << sizeof(float) << endl;
 				return 0;
 			}
 		} // namespace Ex1
 		namespace Ex2
 		{
-		}
+			int main()
+			{
+				int sec = 0;
+				cout << "Enter seconds: ";
+				cin >> sec;
+				cout << "Minuets: " << sec / 60;
+				cout << ", Seconds: " << sec % 60;
+				return 0;
+			}
+		} // namespace Ex2
+
+		namespace Ex3
+		{
+			int main()
+			{
+				int a = 2;
+				cout << a << "\n";
+				a++;
+				cout << a << "\n";
+				return 0;
+			}
+		} // namespace Ex3
+
+		namespace Ex4
+		{
+			int main()
+			{
+				double score = 85;
+				if (score >= 95.0) cout << "Grade is A";
+				else
+				{
+					cout << "Grade is not A";
+					if (score >= 80.0) cout << "Grade is B";
+					else
+					{
+						cout << "Grade is not B";
+						if (score >= 65.0) cout << "Grade is C";
+						else
+						{
+							cout << "Grade is not C";
+							cout << "Grade is F";
+						}
+					}
+				}
+
+				return 0;
+			}
+		} // namespace Ex4
+
+		namespace Ex5
+		{
+			int main()
+			{
+				bool isEnrolled = true;
+				bool isGraduated = false;
+
+				cout << boolalpha; // Print bools as true/false instead of 1/0
+				cout << "Enrolled: " << isEnrolled << endl;
+				cout << "Graduated: " << isGraduated << endl;
+
+				return 0;
+			}
+		} // namespace Ex5
+
+		namespace Ex6
+		{
+			int main()
+			{
+				double TOEFLScore = 0;
+				cout << "Enter TOEFL score: ";
+				cin >> TOEFLScore;
+				bool hasGoodTOEFLScore = (TOEFLScore >= 79);
+
+				bool passedEnglishPlacementTest;
+				cout << "Did you pass the English Placement Test?: ";
+				cin >> passedEnglishPlacementTest;
+
+				bool isEligibleForAdmission = hasGoodTOEFLScore || passedEnglishPlacementTest;
+
+				bool needsRemedialEnglish = !isEligibleForAdmission;
+
+				if (isEligibleForAdmission)
+					cout << "Admit student";
+				else
+					cout << "Enroll in a remedial English course";
+
+				return 0;
+			}
+		} // namespace Ex6
+
+		namespace Ex7
+		{
+			int main()
+			{
+				cout << boolalpha << (1 < 4 > 3) << endl;
+				cout << boolalpha << (1 == 2 == 0) << endl;
+				return 0;
+			}
+		} // namespace Ex7
+		namespace Ex8
+		{
+			int main()
+			{
+				int x = 10;
+				float y = 5.5;
+
+				x += 10;
+				y += 10;
+				cout << x << " " << y;
+
+				//x += 10;
+				//y += 10.0;
+				//cin >> x >> " " >> y;
+				//
+				//x += 10;
+				//y += 10;
+				//print << x << " " << y;
+
+				return 0;
+			}
+		} // namespace Ex8
+
+	} // namespace Lec1
+
+	namespace Lec3
+	{
 	} // namespace Lec3
 
 	namespace Lec4
@@ -1429,116 +1547,6 @@ namespace past
 }; // namespace past
 
 
-namespace Lec1
-{
-	namespace Ex1
-	{
-		int main()
-		{
-			cout << "Size of short: " << sizeof(short) << endl;
-			cout << "Size of int: " << sizeof(int) << endl;
-			cout << "Size of long: " << sizeof(long) << endl;
-			cout << "Size of long long: " << sizeof(long long) << endl;
-			cout << "Size of double: " << sizeof(double) << endl;
-			cout << "Size of long double: " << sizeof(long double) << endl;
-			cout << "Size of float: " << sizeof(float) << endl;
-			return 0;
-		}
-	} // namespace Ex1
-	namespace Ex2
-	{
-		int main()
-		{
-			int sec = 0;
-			cout << "Enter seconds: ";
-			cin >> sec;
-			cout << "Minuets: " << sec / 60;
-			cout << ", Seconds: " << sec % 60;
-			return 0;
-		}
-	} // namespace Ex2
-
-	namespace Ex3
-	{
-		int main()
-		{
-			int a = 2;
-			cout << a << "\n";
-			a++;
-			cout << a << "\n";
-			return 0;
-		}
-	} // namespace Ex3
-
-	namespace Ex4
-	{
-		int main()
-		{
-			double score = 85;
-			if (score >= 95.0) cout << "Grade is A";
-			else
-			{
-				cout << "Grade is not A";
-				if (score >= 80.0) cout << "Grade is B";
-				else
-				{
-					cout << "Grade is not B";
-					if (score >= 65.0) cout << "Grade is C";
-					else
-					{
-						cout << "Grade is not C";
-						cout << "Grade is F";
-					}
-				}
-			}
-
-			return 0;
-		}
-	} // namespace Ex4
-
-	namespace Ex5
-	{
-		int main()
-		{
-			bool isEnrolled = true;
-			bool isGraduated = false;
-
-			cout << boolalpha; // Print bools as true/false instead of 1/0
-			cout << "Enrolled: " << isEnrolled << endl;
-			cout << "Graduated: " << isGraduated << endl;
-
-			return 0;
-		}
-	} // namespace Ex5
-
-	namespace Ex6
-	{
-		int main()
-		{
-			double TOEFLScore = 0;
-			cout << "Enter TOEFL score: ";
-			cin >> TOEFLScore;
-			bool hasGoodTOEFLScore = (TOEFLScore >= 79);
-
-			bool passedEnglishPlacementTest;
-			cout << "Did you pass the English Placement Test?: ";
-			cin >> passedEnglishPlacementTest;
-
-			bool isEligibleForAdmission = hasGoodTOEFLScore || passedEnglishPlacementTest;
-
-			bool needsRemedialEnglish = !isEligibleForAdmission;
-
-			if (isEligibleForAdmission)
-				cout << "Admit student";
-			else
-				cout << "Enroll in a remedial English course";
-
-			return 0;
-		}
-	} // namespace Ex6
-
-} // namespace Lec1
-
 namespace Lec2
 {
 	namespace Ex1
@@ -1565,41 +1573,150 @@ namespace Lec2
 			return 0;
 		}
 	} // namescpace Ex1
+
 	namespace Ex2
 	{
+		// Return max of two int values
+		//int max(int num1, int num2)
+		//{
+		//	if (num1 > num2) return num1;
+		//	else return num2;
+		//}
+
+		// Return max of two double values
+		double max(double num1, double num2)
+		{
+			if (num1 > num2) return num1;
+			else return num2;
+		}
+
+		// Return max of three double values
+		double max(double num1, double num2, double num3)
+		{
+			return max(max(num1, num2), num3);
+		}
+
 		int main()
 		{
-			cout << boolalpha << (1 < 4 > 3) << endl;
-			cout << boolalpha << (1 == 2 == 0) << endl;
+			// Invoke the max function with int parameters
+			cout << "The maximum of 3 and 4 is "
+				<< max(3, 4) << endl;
+
+			// Invoke the max function with the double parameters
+			cout << "The maximum of 3.0 and 5.4 is "
+				<< max(3.0, 5.4) << endl;
+
+			// Invoke the max function with three double parameters
+			cout << "The maximum of 3.0, 5.4, and 10.14 is "
+				<< max(3.0, 5.4, 10.14) << endl;
+
+			// Invoke the max function with an int and a double parameters
+			cout << "The maximum of 3.5 and 4 is "
+				<< max(3.5, 4) << endl;
+
 			return 0;
 		}
 	} // namespace Ex2
+
 	namespace Ex3
 	{
+
+		// Function to calculate the square of an integer
+		int square(int number)
+		{
+			return number * number;
+		}
+
+		// Function to double the value of an integer
+		int doubleValue(int number)
+		{
+			return 2 * number;
+		}
+
 		int main()
 		{
-			int x = 10;
-			float y = 5.5;
+			int value = 5;
 
-			x += 10;
-			y += 10;
-			cout << x << " " << y;
+			// Call the square function
+			cout << "The square of " << value
+				<< " is " << square(value) << endl;
 
-			//x += 10;
-			//y += 10.0;
-			//cin >> x >> " " >> y;
-			//
-			//x += 10;
-			//y += 10;
-			//print << x << " " << y;
+			// Call the doubleValue function
+			cout << "Double the value of " << value
+				<< " is " << doubleValue(value) << endl;
 
 			return 0;
 		}
 	} // namespace Ex3
+
+	namespace Ex4
+	{
+		void modifyValues(int a, int b)
+		{
+			a = 0;
+			b = 0;
+		}
+
+		void updateNumbers(const int& m, int& n)
+		{
+			modifyValues(m, n);
+		}
+
+		int main()
+		{
+			int x = 5, y = 5;
+			updateNumbers(x, y);
+			cout << x << " " << y;
+			return 0;
+		}
+	} // namespace Ex4
+
+	namespace Ex5
+	{
+		void displaySequence(int& from, int& to)
+		{
+			while (from <= to) cout << from++ << endl;
+		}
+
+		int main()
+		{
+			cout << "Enter two numbers: ";
+			int num1, num2;
+			cin >> num1 >> num2;
+			cout << "The sequence:" << endl;
+			displaySequence(num1, num2);
+			cout << "That was the sequence from "
+				<< num1 << " to " << num2 << endl;
+			return 0;
+		}
+	} // namespace Ex5
+
+	namespace Ex6
+	{
+		int max(int& num1, int& num2)
+		{
+			int result;
+			if (num1 > num2)
+				result = num1;
+			else
+				result = num2;
+			return result;
+		}
+
+		int main()
+		{
+			int i = 5;
+			int j = 2;
+			int k = max(i, j);
+			return 0;
+		}
+	} // namespace Ex6
+
 } // namespace Lec2
+
 
 int main()
 {
-	Lec1::Ex6::main();
+	Lec2::Ex6::main();
 	return 0;
 }
