@@ -147,9 +147,109 @@ namespace others
 
 	} // namespace Lec1
 
-	namespace Lec3
+	namespace Lec2
 	{
-	} // namespace Lec3
+		namespace Ex1
+		{
+			const int MAX_TV_CHANNEL = 100;
+			bool getTvStatus(const char* tvName)
+			{
+				return true;
+			}
+			int getTvCurrentChannel(const char* tvName)
+			{
+				return 0;
+			}
+			int main()
+			{
+				auto tv1 = "tv1";
+				bool isTvOpen = getTvStatus(tv1);
+				int currentChannel = getTvCurrentChannel(tv1);
+				if (isTvOpen)
+					if (currentChannel <= MAX_TV_CHANNEL)
+						currentChannel++;
+				if (isTvOpen && currentChannel <= MAX_TV_CHANNEL)
+					currentChannel++;
+				return 0;
+			}
+		} // namescpace Ex1
+
+		namespace Ex2
+		{
+			// Return max of two int values
+			//int max(int num1, int num2)
+			//{
+			//	if (num1 > num2) return num1;
+			//	else return num2;
+			//}
+
+			// Return max of two double values
+			double max(double num1, double num2)
+			{
+				if (num1 > num2) return num1;
+				else return num2;
+			}
+
+			// Return max of three double values
+			double max(double num1, double num2, double num3)
+			{
+				return max(max(num1, num2), num3);
+			}
+
+			int main()
+			{
+				// Invoke the max function with int parameters
+				cout << "The maximum of 3 and 4 is "
+					<< max(3, 4) << endl;
+
+				// Invoke the max function with the double parameters
+				cout << "The maximum of 3.0 and 5.4 is "
+					<< max(3.0, 5.4) << endl;
+
+				// Invoke the max function with three double parameters
+				cout << "The maximum of 3.0, 5.4, and 10.14 is "
+					<< max(3.0, 5.4, 10.14) << endl;
+
+				// Invoke the max function with an int and a double parameters
+				cout << "The maximum of 3.5 and 4 is "
+					<< max(3.5, 4) << endl;
+
+				return 0;
+			}
+		} // namespace Ex2
+
+		namespace Ex3
+		{
+
+			// Function to calculate the square of an integer
+			int square(int number)
+			{
+				return number * number;
+			}
+
+			// Function to double the value of an integer
+			int doubleValue(int number)
+			{
+				return 2 * number;
+			}
+
+			int main()
+			{
+				int value = 5;
+
+				// Call the square function
+				cout << "The square of " << value
+					<< " is " << square(value) << endl;
+
+				// Call the doubleValue function
+				cout << "Double the value of " << value
+					<< " is " << doubleValue(value) << endl;
+
+				return 0;
+			}
+		} // namespace Ex3
+
+	} // namespace Lec2
 
 	namespace Lec4
 	{
@@ -1546,109 +1646,8 @@ namespace others
 
 }; // namespace past
 
-
-namespace Lec2
+namespace Lec3
 {
-	namespace Ex1
-	{
-		const int MAX_TV_CHANNEL = 100;
-		bool getTvStatus(const char* tvName)
-		{
-			return true;
-		}
-		int getTvCurrentChannel(const char* tvName)
-		{
-			return 0;
-		}
-		int main()
-		{
-			auto tv1 = "tv1";
-			bool isTvOpen = getTvStatus(tv1);
-			int currentChannel = getTvCurrentChannel(tv1);
-			if (isTvOpen)
-				if (currentChannel <= MAX_TV_CHANNEL)
-					currentChannel++;
-			if (isTvOpen && currentChannel <= MAX_TV_CHANNEL)
-				currentChannel++;
-			return 0;
-		}
-	} // namescpace Ex1
-
-	namespace Ex2
-	{
-		// Return max of two int values
-		//int max(int num1, int num2)
-		//{
-		//	if (num1 > num2) return num1;
-		//	else return num2;
-		//}
-
-		// Return max of two double values
-		double max(double num1, double num2)
-		{
-			if (num1 > num2) return num1;
-			else return num2;
-		}
-
-		// Return max of three double values
-		double max(double num1, double num2, double num3)
-		{
-			return max(max(num1, num2), num3);
-		}
-
-		int main()
-		{
-			// Invoke the max function with int parameters
-			cout << "The maximum of 3 and 4 is "
-				<< max(3, 4) << endl;
-
-			// Invoke the max function with the double parameters
-			cout << "The maximum of 3.0 and 5.4 is "
-				<< max(3.0, 5.4) << endl;
-
-			// Invoke the max function with three double parameters
-			cout << "The maximum of 3.0, 5.4, and 10.14 is "
-				<< max(3.0, 5.4, 10.14) << endl;
-
-			// Invoke the max function with an int and a double parameters
-			cout << "The maximum of 3.5 and 4 is "
-				<< max(3.5, 4) << endl;
-
-			return 0;
-		}
-	} // namespace Ex2
-
-	namespace Ex3
-	{
-
-		// Function to calculate the square of an integer
-		int square(int number)
-		{
-			return number * number;
-		}
-
-		// Function to double the value of an integer
-		int doubleValue(int number)
-		{
-			return 2 * number;
-		}
-
-		int main()
-		{
-			int value = 5;
-
-			// Call the square function
-			cout << "The square of " << value
-				<< " is " << square(value) << endl;
-
-			// Call the doubleValue function
-			cout << "Double the value of " << value
-				<< " is " << doubleValue(value) << endl;
-
-			return 0;
-		}
-	} // namespace Ex3
-
 	namespace Ex4
 	{
 		void modifyValues(int a, int b)
@@ -1711,12 +1710,11 @@ namespace Lec2
 			return 0;
 		}
 	} // namespace Ex6
-
-} // namespace Lec2
+} // namespace Lec3
 
 
 int main()
 {
-	Lec2::Ex6::main();
+	Lec3::Ex6::main();
 	return 0;
 }
