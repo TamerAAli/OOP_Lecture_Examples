@@ -1830,7 +1830,7 @@ namespace Lec3
 		}
 		int main()
 		{
-			int a[5] = {1, 2, 3, 4, 5};
+			int a[5] = { 1, 2, 3, 4, 5 };
 			int b[5];
 			reverse(a, b, 5);
 			return 0;
@@ -1887,15 +1887,45 @@ namespace Lec3
 		int main()
 		{
 			Student stu1;
-			cin.getline(stu1.name);
+			getline(cin, stu1.name);
 			return 0;
 		}
 	} // namespace Ex11
+
+	namespace Ex12
+	{
+		int x; // Global variable
+
+		class Foo2
+		{
+		public:
+			int x = 10, y = 10; // Data fields
+
+			void print()
+			{
+				int x = 20; // Local variable
+				cout << "Local x is " << x << endl;
+				cout << "Member x is " << Foo2::x << endl;
+				cout << "Global x is " << Ex12::x << endl;
+				cout << "Local y is " << y << endl;
+			}
+		};
+
+		int main()
+		{
+			Foo2 foo;
+			foo.print();
+
+			return 0;
+		}
+
+	} // namespace Ex12
+
 } // namespace Lec3
 
 
 int main()
 {
-	Lec3::Ex6::main();
+	Lec3::Ex12::main();
 	return 0;
 }
