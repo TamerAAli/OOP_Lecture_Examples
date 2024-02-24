@@ -249,23 +249,47 @@ namespace others
 			}
 		} // namespace Ex3
 
+		namespace Ex4
+		{
+			// Find the maximum of two double values
+			double max(double num1, double num2)
+			{
+				if (num1 > num2)
+					return num1;
+				else
+					return num2;
+			}
+
+			// Find the maximum of three double values
+			double max(double n1, double n2, double n3)
+			{
+				double max1 = max(n1, n2);
+				double max2 = max(n2, n3);
+				return max(max1, max2);
+			}
+
+			// Find max of array of double values
+			double max(double values[], int size)
+			{
+				double max = values[0];
+				for (int i = 1; i < size; i++)
+					if (values[i] > max)
+						max = values[i];
+				return max;
+			}
+
+			int main()
+			{
+				cout << max(1.0, 2) << endl;
+				cout << max(1, 2.0) << endl;
+				//cout << maxNumber(1, 2) << endl;
+				return 0;
+			}
+		} // namespace Ex4
 	} // namespace Lec2
 
 	namespace Lec4
 	{
-		namespace Ex1
-		{
-			enum Day { SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY };
-			int main()
-			{
-				Day day; // Declare
-				day = MONDAY; // Assign to one of the values
-				cout << day;
-				Day day2 = WEDNESDAY; // Declare and Assign 
-				//cin >> day2;
-				return 0;
-			}
-		} // namespace Ex1
 
 	} // namespace Lec4
 
@@ -1648,9 +1672,9 @@ namespace others
 
 namespace Lec3
 {
-	namespace Ex4
+	namespace Ex1
 	{
-		void modifyValues(int a, int b)
+		void resetValues(int a, int b)
 		{
 			a = 0;
 			b = 0;
@@ -1658,7 +1682,7 @@ namespace Lec3
 
 		void updateNumbers(const int& m, int& n)
 		{
-			modifyValues(m, n);
+			resetValues(m, n);
 		}
 
 		int main()
@@ -1670,7 +1694,7 @@ namespace Lec3
 		}
 	} // namespace Ex4
 
-	namespace Ex5
+	namespace Ex2
 	{
 		void displaySequence(int& from, int& to)
 		{
@@ -1690,7 +1714,7 @@ namespace Lec3
 		}
 	} // namespace Ex5
 
-	namespace Ex6
+	namespace Ex3
 	{
 		int max(int& num1, int& num2)
 		{
@@ -1710,6 +1734,163 @@ namespace Lec3
 			return 0;
 		}
 	} // namespace Ex6
+
+	namespace Ex4
+	{
+		void t1();
+		void t2();
+
+		int main()
+		{
+			t1();
+			t2();
+			return 0;
+		}
+		int y;
+		void t1()
+		{
+			int x = 0;
+			cout << "In t1: x is " << ++x << ", y is " << ++y << endl;
+		}
+		void t2()
+		{
+			int x = 0;
+			cout << "In t2: x is " << ++x << ", y is " << ++y << endl;
+		}
+	} // namespace Ex4
+
+	namespace Ex5
+	{
+		void t1();
+		void t2();
+
+		int main()
+		{
+			t1();
+			t1();
+			t2();
+			return 0;
+		}
+		void t1()
+		{
+			int x = 0;
+			static int y;
+			y = 0;
+			cout << "In t1: x is " << ++x << ", y is " << ++y << endl;
+		}
+		void t2()
+		{
+			int x = 0;
+			static int y;
+			cout << "In t2: x is " << ++x << ", y is " << ++y << endl;
+		}
+	} // namespace Ex4
+
+	namespace Ex6
+	{
+		void printArray(int arr[], int arraySize); // Prototype
+
+		int main()
+		{
+			int numbers[2];
+			numbers[0] = -5; numbers[1] = 8;
+			printArray(numbers, 2);
+			return 0;
+		}
+
+		void printArray(int arr[], int arraySize)
+		{
+			cout << arr;
+			for (int i = 0; i < arraySize; i++)
+				cout << arr[i] << " ";
+		}
+	} // namespace Ex6
+
+	namespace Ex7
+	{
+		void p(/*const*/ int arr[], int arraySize)
+		{
+			for (int i = 0; i < arraySize; i++)
+				arr[i]++;
+		}
+		int main()
+		{
+			int numbers[] = { 1, 4, 3, 6, 8 };
+			p(numbers, 5);
+			return 0;
+		}
+	} // namespace Ex7
+
+	namespace Ex8
+	{
+		void reverse(const int inArr[], int outArr[], int size)
+		{
+			for (int i = 0, j = size - 1; i < size; i++, j--)
+				outArr[j] = inArr[i];
+		}
+		int main()
+		{
+			int a[5] = {1, 2, 3, 4, 5};
+			int b[5];
+			reverse(a, b, 5);
+			return 0;
+		}
+	} // namespace Ex8
+
+	namespace Ex9
+	{
+		void m(int num, int arr[], int size)
+		{
+			num = 1001;
+			arr[0] = 5555;
+		}
+
+		int main()
+		{
+			int x = 1;
+			int y[] = { 2,3 };
+
+			m(x, y, 2);
+
+			cout << "x is " << x << endl;
+			cout << "y[0] is " << y[0] << endl;
+			cout << "y[1] is " << y[1] << endl;
+
+			return 0;
+		}
+	} // namespace Ex9
+
+	namespace Ex10
+	{
+		enum Day { SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY };
+		int main()
+		{
+			Day day; // Declare
+			day = MONDAY; // Assign to one of the values
+			cout << day;
+			Day day2 = WEDNESDAY; // Declare and Assign 
+			//cin >> day2;
+			return 0;
+		}
+	} // namespace Ex1
+
+	namespace Ex11
+	{
+		struct Student
+		{
+			int studentID;
+			string name;
+			short intake;
+			double gpa;
+		};
+
+		int main()
+		{
+			Student stu1;
+			cin.getline(stu1.name);
+			return 0;
+		}
+	} // namespace Ex11
 } // namespace Lec3
 
 
