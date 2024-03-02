@@ -288,75 +288,147 @@ namespace others
 		} // namespace Ex4
 	} // namespace Lec2
 
-	namespace Lec4
-	{
-
-	} // namespace Lec4
-
-	namespace Lec5
+	namespace Lec3
 	{
 		namespace Ex1
 		{
-			class Demo
+			void resetValues(int a, int b)
 			{
-			public:
-				Demo() // Constructor
-				{
-					cout << "1. Welcome to the constructor!\n";
-				}
-				~Demo() // Destructor
-				{
-					cout << "2. The destructor is now running.\n";
-				}
-			};
+				a = 0;
+				b = 0;
+			}
+
+			void updateNumbers(const int& m, int& n)
+			{
+				resetValues(m, n);
+			}
 
 			int main()
 			{
-				Demo demoObject; // Define a demo object;
-
-				cout << "A. This program demonstrates an object\n";
-				cout << "B. To demo the constructor / destructor.\n";
+				int x = 5, y = 5;
+				updateNumbers(x, y);
+				cout << x << " " << y;
 				return 0;
 			}
-		} // Ex1
+		} // namespace Ex4
+
 		namespace Ex2
 		{
-			class Demo
+			void displaySequence(int& from, int& to)
 			{
-			public:
-				Demo() // Constructor
-				{
-					cout << "1. Welcome to the constructor!\n";
-				}
-				~Demo() // Destructor
-				{
-					cout << "2. The destructor is now running.\n";
-				}
-			};
-
-			void SomeGlobalFunction()
-			{
-				Demo demoObject; // Define a demo object;
+				while (from <= to) cout << from++ << endl;
 			}
 
 			int main()
 			{
-				SomeGlobalFunction();
-
-				cout << "A. This program demonstrates an object\n";
-				cout << "B. To demo the constructor / destructor.\n";
+				cout << "Enter two numbers: ";
+				int num1, num2;
+				cin >> num1 >> num2;
+				cout << "The sequence:" << endl;
+				displaySequence(num1, num2);
+				cout << "That was the sequence from "
+					<< num1 << " to " << num2 << endl;
 				return 0;
 			}
-		} // Ex2
+		} // namespace Ex5
 
-		namespace freeEx
+		namespace Ex3
 		{
+			int max(int& num1, int& num2)
+			{
+				int result;
+				if (num1 > num2)
+					result = num1;
+				else
+					result = num2;
+				return result;
+			}
 
 			int main()
 			{
+				int i = 5;
+				int j = 2;
+				int k = max(i, j);
 				return 0;
 			}
-		} // freeEx
+		} // namespace Ex6
+
+		namespace Ex4
+		{
+			void t1();
+			void t2();
+
+			int main()
+			{
+				t1();
+				t2();
+				return 0;
+			}
+			int y;
+			void t1()
+			{
+				int x = 0;
+				cout << "In t1: x is " << ++x << ", y is " << ++y << endl;
+			}
+			void t2()
+			{
+				int x = 0;
+				cout << "In t2: x is " << ++x << ", y is " << ++y << endl;
+			}
+		} // namespace Ex4
+
+		namespace Ex5
+		{
+			void t1();
+			void t2();
+
+			int main()
+			{
+				t1();
+				t1();
+				t2();
+				return 0;
+			}
+			void t1()
+			{
+				int x = 0;
+				static int y;
+				y = 0;
+				cout << "In t1: x is " << ++x << ", y is " << ++y << endl;
+			}
+			void t2()
+			{
+				int x = 0;
+				static int y;
+				cout << "In t2: x is " << ++x << ", y is " << ++y << endl;
+			}
+		} // namespace Ex4
+
+		namespace Ex6
+		{
+			void printArray(int arr[], int arraySize); // Prototype
+
+			int main()
+			{
+				int numbers[2];
+				numbers[0] = -5; numbers[1] = 8;
+				printArray(numbers, 2);
+				return 0;
+			}
+
+			void printArray(int arr[], int arraySize)
+			{
+				cout << arr;
+				for (int i = 0; i < arraySize; i++)
+					cout << arr[i] << " ";
+			}
+		} // namespace Ex6
+
+	} // namespace Lec3
+
+	namespace Lec5
+	{
+
 	} // namespace Lec5
 
 	namespace Lec6
@@ -1670,143 +1742,10 @@ namespace others
 
 }; // namespace past
 
-namespace Lec3
+
+namespace Lec4
 {
 	namespace Ex1
-	{
-		void resetValues(int a, int b)
-		{
-			a = 0;
-			b = 0;
-		}
-
-		void updateNumbers(const int& m, int& n)
-		{
-			resetValues(m, n);
-		}
-
-		int main()
-		{
-			int x = 5, y = 5;
-			updateNumbers(x, y);
-			cout << x << " " << y;
-			return 0;
-		}
-	} // namespace Ex4
-
-	namespace Ex2
-	{
-		void displaySequence(int& from, int& to)
-		{
-			while (from <= to) cout << from++ << endl;
-		}
-
-		int main()
-		{
-			cout << "Enter two numbers: ";
-			int num1, num2;
-			cin >> num1 >> num2;
-			cout << "The sequence:" << endl;
-			displaySequence(num1, num2);
-			cout << "That was the sequence from "
-				<< num1 << " to " << num2 << endl;
-			return 0;
-		}
-	} // namespace Ex5
-
-	namespace Ex3
-	{
-		int max(int& num1, int& num2)
-		{
-			int result;
-			if (num1 > num2)
-				result = num1;
-			else
-				result = num2;
-			return result;
-		}
-
-		int main()
-		{
-			int i = 5;
-			int j = 2;
-			int k = max(i, j);
-			return 0;
-		}
-	} // namespace Ex6
-
-	namespace Ex4
-	{
-		void t1();
-		void t2();
-
-		int main()
-		{
-			t1();
-			t2();
-			return 0;
-		}
-		int y;
-		void t1()
-		{
-			int x = 0;
-			cout << "In t1: x is " << ++x << ", y is " << ++y << endl;
-		}
-		void t2()
-		{
-			int x = 0;
-			cout << "In t2: x is " << ++x << ", y is " << ++y << endl;
-		}
-	} // namespace Ex4
-
-	namespace Ex5
-	{
-		void t1();
-		void t2();
-
-		int main()
-		{
-			t1();
-			t1();
-			t2();
-			return 0;
-		}
-		void t1()
-		{
-			int x = 0;
-			static int y;
-			y = 0;
-			cout << "In t1: x is " << ++x << ", y is " << ++y << endl;
-		}
-		void t2()
-		{
-			int x = 0;
-			static int y;
-			cout << "In t2: x is " << ++x << ", y is " << ++y << endl;
-		}
-	} // namespace Ex4
-
-	namespace Ex6
-	{
-		void printArray(int arr[], int arraySize); // Prototype
-
-		int main()
-		{
-			int numbers[2];
-			numbers[0] = -5; numbers[1] = 8;
-			printArray(numbers, 2);
-			return 0;
-		}
-
-		void printArray(int arr[], int arraySize)
-		{
-			cout << arr;
-			for (int i = 0; i < arraySize; i++)
-				cout << arr[i] << " ";
-		}
-	} // namespace Ex6
-
-	namespace Ex7
 	{
 		void p(/*const*/ int arr[], int arraySize)
 		{
@@ -1819,9 +1758,9 @@ namespace Lec3
 			p(numbers, 5);
 			return 0;
 		}
-	} // namespace Ex7
+	} // namespace Ex1
 
-	namespace Ex8
+	namespace Ex2
 	{
 		void reverse(const int inArr[], int outArr[], int size)
 		{
@@ -1835,9 +1774,9 @@ namespace Lec3
 			reverse(a, b, 5);
 			return 0;
 		}
-	} // namespace Ex8
+	} // namespace Ex2
 
-	namespace Ex9
+	namespace Ex3
 	{
 		void m(int num, int arr[], int size)
 		{
@@ -1858,9 +1797,9 @@ namespace Lec3
 
 			return 0;
 		}
-	} // namespace Ex9
+	} // namespace Ex3
 
-	namespace Ex10
+	namespace Ex4
 	{
 		enum Day { SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY };
 		int main()
@@ -1872,9 +1811,9 @@ namespace Lec3
 			//cin >> day2;
 			return 0;
 		}
-	} // namespace Ex1
+	} // namespace Ex4
 
-	namespace Ex11
+	namespace Ex5
 	{
 		struct Student
 		{
@@ -1890,9 +1829,9 @@ namespace Lec3
 			getline(cin, stu1.name);
 			return 0;
 		}
-	} // namespace Ex11
+	} // namespace Ex5
 
-	namespace Ex12
+	namespace Ex6
 	{
 		int x; // Global variable
 
@@ -1906,8 +1845,8 @@ namespace Lec3
 				int x = 20; // Local variable
 				cout << "Local x is " << x << endl;
 				cout << "Member x is " << Foo2::x << endl;
-				cout << "Global x is " << Ex12::x << endl;
-				cout << "Local y is " << y << endl;
+				cout << "Global x is " << Ex6::x << endl;
+				cout << "Member y is " << y << endl;
 			}
 		};
 
@@ -1919,13 +1858,68 @@ namespace Lec3
 			return 0;
 		}
 
-	} // namespace Ex12
+	} // namespace Ex6
 
-} // namespace Lec3
+	namespace Ex7
+	{
+		class Demo
+		{
+		public:
+			Demo() // Constructor
+			{
+				cout << "1. Welcome to the constructor!\n";
+			}
+			~Demo() // Destructor
+			{
+				cout << "2. The destructor is now running.\n";
+			}
+		};
+
+		int main()
+		{
+			Demo demoObject; // Define a demo object;
+
+			cout << "A. This program demonstrates an object\n";
+			cout << "B. To demo the constructor / destructor.\n";
+			return 0;
+		}
+	} // Ex7
+
+	namespace Ex8
+	{
+		class Demo
+		{
+		public:
+			Demo() // Constructor
+			{
+				cout << "1. Welcome to the constructor!\n";
+			}
+			~Demo() // Destructor
+			{
+				cout << "2. The destructor is now running.\n";
+			}
+		};
+
+		void SomeGlobalFunction()
+		{
+			Demo demoObject; // Define a demo object;
+		}
+
+		int main()
+		{
+			SomeGlobalFunction();
+
+			cout << "A. This program demonstrates an object\n";
+			cout << "B. To demo the constructor / destructor.\n";
+			return 0;
+		}
+	} // Ex8
+
+} // namespace Lec4
 
 
 int main()
 {
-	Lec3::Ex12::main();
+	Lec4::Ex6::main();
 	return 0;
 }
