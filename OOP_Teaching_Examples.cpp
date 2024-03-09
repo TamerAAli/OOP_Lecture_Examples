@@ -426,23 +426,100 @@ namespace others
 
 	} // namespace Lec3
 
-	namespace Lec5
-	{
-
-	} // namespace Lec5
-
-	namespace Lec6
+	namespace Lec4
 	{
 		namespace Ex1
 		{
+			void p(/*const*/ int arr[], int arraySize)
+			{
+				for (int i = 0; i < arraySize; i++)
+					arr[i]++;
+			}
 			int main()
 			{
-				string s1 = "CIE202", s2 = "CIE 202";
-				bool check = s1 == s2; // abstraction example: == is a function
+				int numbers[] = { 1, 4, 3, 6, 8 };
+				p(numbers, 5);
 				return 0;
 			}
 		} // namespace Ex1
 
+		namespace Ex2
+		{
+			void reverse(const int inArr[], int outArr[], int size)
+			{
+				for (int i = 0, j = size - 1; i < size; i++, j--)
+					outArr[j] = inArr[i];
+			}
+			int main()
+			{
+				int a[5] = { 1, 2, 3, 4, 5 };
+				int b[5];
+				reverse(a, b, 5);
+				return 0;
+			}
+		} // namespace Ex2
+
+		namespace Ex3
+		{
+			void m(int num, int arr[], int size)
+			{
+				num = 1001;
+				arr[0] = 5555;
+			}
+
+			int main()
+			{
+				int x = 1;
+				int y[] = { 2,3 };
+
+				m(x, y, 2);
+
+				cout << "x is " << x << endl;
+				cout << "y[0] is " << y[0] << endl;
+				cout << "y[1] is " << y[1] << endl;
+
+				return 0;
+			}
+		} // namespace Ex3
+
+		namespace Ex4
+		{
+			enum Day { SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY };
+			int main()
+			{
+				Day day; // Declare
+				day = MONDAY; // Assign to one of the values
+				cout << day;
+				Day day2 = WEDNESDAY; // Declare and Assign 
+				//cin >> day2;
+				return 0;
+			}
+		} // namespace Ex4
+
+		namespace Ex5
+		{
+			struct Student
+			{
+				int studentID;
+				string name;
+				short intake;
+				double gpa;
+			};
+
+			int main()
+			{
+				Student stu1;
+				getline(cin, stu1.name);
+				return 0;
+			}
+		} // namespace Ex5
+
+	} // namespace Lec4
+
+
+
+	namespace Lec6 // generic prog
+	{
 		namespace Ex2
 		{
 			class GeometricObject
@@ -497,6 +574,7 @@ namespace others
 			}
 
 		} // namespace Ex3
+
 		namespace Ex4
 		{
 			class ClassB;
@@ -1743,99 +1821,13 @@ namespace others
 }; // namespace past
 
 
-namespace Lec4
+namespace Lec5
 {
 	namespace Ex1
 	{
-		void p(/*const*/ int arr[], int arraySize)
-		{
-			for (int i = 0; i < arraySize; i++)
-				arr[i]++;
-		}
-		int main()
-		{
-			int numbers[] = { 1, 4, 3, 6, 8 };
-			p(numbers, 5);
-			return 0;
-		}
-	} // namespace Ex1
-
-	namespace Ex2
-	{
-		void reverse(const int inArr[], int outArr[], int size)
-		{
-			for (int i = 0, j = size - 1; i < size; i++, j--)
-				outArr[j] = inArr[i];
-		}
-		int main()
-		{
-			int a[5] = { 1, 2, 3, 4, 5 };
-			int b[5];
-			reverse(a, b, 5);
-			return 0;
-		}
-	} // namespace Ex2
-
-	namespace Ex3
-	{
-		void m(int num, int arr[], int size)
-		{
-			num = 1001;
-			arr[0] = 5555;
-		}
-
-		int main()
-		{
-			int x = 1;
-			int y[] = { 2,3 };
-
-			m(x, y, 2);
-
-			cout << "x is " << x << endl;
-			cout << "y[0] is " << y[0] << endl;
-			cout << "y[1] is " << y[1] << endl;
-
-			return 0;
-		}
-	} // namespace Ex3
-
-	namespace Ex4
-	{
-		enum Day { SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY };
-		int main()
-		{
-			Day day; // Declare
-			day = MONDAY; // Assign to one of the values
-			cout << day;
-			Day day2 = WEDNESDAY; // Declare and Assign 
-			//cin >> day2;
-			return 0;
-		}
-	} // namespace Ex4
-
-	namespace Ex5
-	{
-		struct Student
-		{
-			int studentID;
-			string name;
-			short intake;
-			double gpa;
-		};
-
-		int main()
-		{
-			Student stu1;
-			getline(cin, stu1.name);
-			return 0;
-		}
-	} // namespace Ex5
-
-	namespace Ex6
-	{
 		int x; // Global variable
 
-		class Foo2
+		class Test
 		{
 		public:
 			int x = 10, y = 10; // Data fields
@@ -1844,21 +1836,208 @@ namespace Lec4
 			{
 				int x = 20; // Local variable
 				cout << "Local x is " << x << endl;
-				cout << "Member x is " << Foo2::x << endl;
-				cout << "Global x is " << Ex6::x << endl;
+				cout << "Member x is " << Test::x << endl;
+				cout << "Global x is " << Ex1::x << endl;
 				cout << "Member y is " << y << endl;
 			}
 		};
 
 		int main()
 		{
-			Foo2 foo;
-			foo.print();
+			Test test;
+			test.print();
 
 			return 0;
 		}
 
-	} // namespace Ex6
+	} // namespace Ex1
+
+	namespace Ex2 // Abstraction
+	{
+		int main()
+		{
+			string s1 = "CIE202", s2 = "CIE 202";
+			bool check = s1 == s2; // abstraction example: == is a function
+			return 0;
+		}
+	} // namespace Ex2
+
+	namespace Ex3
+	{
+		class TV
+		{
+		private:
+			int channel = 1, volumeLevel = 1;
+			bool on = false;
+
+		public:
+			// Getters (Accessors):
+			// returnType getPropertyName()
+			int getChannel()
+			{
+				return channel;
+			}
+			bool isOn()
+			{
+				return on;
+			}
+
+			// Setters (Mutators):
+			// void setPropertyName(dataType value)
+			void setChannel(int newChannel)
+			{
+				if (on && newChannel >= 1 && newChannel <= 120)
+					channel = newChannel;
+			}
+			void TurnOn()
+			{
+				on = true;
+			}
+			void TurnOff()
+			{
+				on = false;
+			}
+		};
+
+	} // namespace Ex3
+
+	namespace Ex4
+	{
+		class Grade
+		{
+		private:
+			int static minGrade;
+			int grade;
+
+		public:
+			void setGrade(int v);
+			double getGrade() const;
+			static void setMinGrade(int v);
+			bool isPassing() const;
+			string getPF() const;
+		};
+
+		int Grade::minGrade = 60;
+
+		void Grade::setGrade(int v) { grade = v; }
+		double Grade::getGrade() const { return grade; }
+
+		void Grade::setMinGrade(int v)
+		{
+			minGrade = v;
+		}
+
+		bool Grade::isPassing() const
+		{
+			return grade >= minGrade;
+		}
+
+		string Grade::getPF() const
+		{
+			if (isPassing()) return "P";
+			else return "F";
+		}
+
+		int main()
+		{
+			Grade s[10];
+			for (int i = 0; i < 10; i++)
+				s[i].setGrade(10 * i + 1);
+
+			for (int i = 0; i < 10; i++)
+				cout << i << ": " << s[i].getPF() << endl;
+
+			cout << string(4, '-') << endl;
+
+			Grade::setMinGrade(20);
+			for (int i = 0; i < 10; i++)
+				cout << i << ": " << s[i].getPF() << endl;
+
+			return 0;
+		}
+
+	}//Ex4
+
+	namespace Ex5
+	{
+		class Circle
+		{
+		public:
+			Circle(double = 1);
+			~Circle();
+			double getArea() const { return radius * radius * 3.14; }
+			double getRadius() const { return radius; }
+			void setRadius(double r) { radius = r; };
+			static int getNumOfObjects();
+
+		private:
+			double radius;
+			static int numOfObjects;
+		};
+
+		int Circle::numOfObjects = 0;
+
+		Circle::Circle(double newRadius)
+		{
+			radius = newRadius;
+			numOfObjects++;
+		}
+
+		int Circle::getNumOfObjects()
+		{
+			return numOfObjects;
+		}
+
+		Circle::~Circle()
+		{
+			numOfObjects--;
+		}
+
+		int main()
+		{
+			cout << "Number of circle objects created: "
+				<< Circle::getNumOfObjects() << endl;
+
+			Circle circ1;
+			cout << "The radius of the circle is "
+				<< circ1.getRadius() << endl;
+			cout << "Number of circle objects created: "
+				<< Circle::getNumOfObjects() << endl;
+
+			Circle circ2(5.0);
+			cout << "The radius of the circle is "
+				<< circ2.getRadius() << endl;
+			cout << "Number of circle objects created: "
+				<< circ2.getNumOfObjects() << endl;
+			return 0;
+		}
+
+	} // Ex5
+
+	namespace Ex6
+	{
+		class Demo
+		{
+		public:
+			Demo() // Constructor
+			{
+				cout << "1. Welcome to the constructor!\n";
+			}
+			~Demo() // Destructor
+			{
+				cout << "2. The destructor is running.\n";
+			}
+		};
+
+		int main()
+		{
+			Demo demoObject; // Define a demo object;
+
+			cout << "A. This is a demo\n";
+			cout << "B. for constructor / destructor.\n";
+			return 0;
+		}
+	} // Ex6
 
 	namespace Ex7
 	{
@@ -1871,55 +2050,87 @@ namespace Lec4
 			}
 			~Demo() // Destructor
 			{
-				cout << "2. The destructor is now running.\n";
-			}
-		};
-
-		int main()
-		{
-			Demo demoObject; // Define a demo object;
-
-			cout << "A. This program demonstrates an object\n";
-			cout << "B. To demo the constructor / destructor.\n";
-			return 0;
-		}
-	} // Ex7
-
-	namespace Ex8
-	{
-		class Demo
-		{
-		public:
-			Demo() // Constructor
-			{
-				cout << "1. Welcome to the constructor!\n";
-			}
-			~Demo() // Destructor
-			{
-				cout << "2. The destructor is now running.\n";
+				cout << "2. The destructor is running.\n";
 			}
 		};
 
 		void SomeGlobalFunction()
 		{
-			Demo demoObject; // Define a demo object;
+			Demo demoObject;
 		}
 
 		int main()
 		{
 			SomeGlobalFunction();
 
-			cout << "A. This program demonstrates an object\n";
-			cout << "B. To demo the constructor / destructor.\n";
+			cout << "A. This is a demo\n";
+			cout << "B. for constructor / destructor.\n";
+			return 0;
+		}
+	} // Ex7
+
+	namespace Ex8
+	{
+		class Book
+		{
+		private:
+			string title, author;
+			static int bookCount; // Static member
+
+		public:
+			// Constructor
+			Book(string t, string a);
+
+			// Getters
+			string getTitle() const { return title; }
+			string getAuthor() const { return author; }
+
+			// Setters
+			void setTitle(const string& t) { title = t; }
+			void setAuthor(const string& a) { author = a; }
+
+			// Const function to display book details
+			void displayDetails() const;
+
+			// Static member function to get the total book count
+			static int getTotalBookCount() { return bookCount; }
+		};
+
+		// Initialize static member
+		int Book::bookCount = 0;
+
+		Book::Book(string t, string a)
+		{
+			title = t;
+			author = a;
+
+			bookCount++;
+		}
+		inline void Book::displayDetails() const
+		{
+			cout << title << ", " << author << endl;
+		}
+
+		int main()
+		{
+			Book book1("Age of Science", "Ahmed Zewail");
+			Book book2("The Book of Healing", "Ibn Sina");
+
+			book1.displayDetails();
+			book2.displayDetails();
+
+			cout << "Total books: " << Book::getTotalBookCount() << endl;
+
 			return 0;
 		}
 	} // Ex8
 
-} // namespace Lec4
+} // namespace Lec5
 
 
+using namespace Lec5;
 int main()
 {
-	Lec4::Ex6::main();
+	Ex2::main();
 	return 0;
 }
