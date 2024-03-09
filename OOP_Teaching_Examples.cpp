@@ -1823,7 +1823,7 @@ namespace others
 
 namespace Lec5
 {
-	namespace Ex1
+	namespace Ex0
 	{
 		int x; // Global variable
 
@@ -1837,7 +1837,7 @@ namespace Lec5
 				int x = 20; // Local variable
 				cout << "Local x is " << x << endl;
 				cout << "Member x is " << Test::x << endl;
-				cout << "Global x is " << Ex1::x << endl;
+				cout << "Global x is " << Ex0::x << endl;
 				cout << "Member y is " << y << endl;
 			}
 		};
@@ -1846,6 +1846,63 @@ namespace Lec5
 		{
 			Test test;
 			test.print();
+
+			return 0;
+		}
+
+	} // namespace Ex0
+
+	namespace Ex1
+	{
+
+		class Circle1
+		{
+		private:
+			double radius = 1;
+			double area = 3.14;
+		public:
+			void setRadius(double r) { radius = r; }
+			void calcArea() { area = 3.14 * radius * radius; }
+			double getRadius() { return radius; }
+			double getArea() { return area; }
+		};
+
+		class Circle2
+		{
+		private:
+			double radius = 1;
+			double area = 3.14;
+		public:
+			void setRadius(double r)
+			{
+				radius = r;
+				area = 3.14 * radius * radius;
+			}
+			double getRadius() { return radius; }
+			double getArea() { return area; }
+		};
+
+		class Circle3
+		{
+		private:
+			double radius = 1;
+
+		public:
+			void setRadius(double r) { radius = r; }
+			double getRadius() { return radius; }
+			double getArea() { return 3.14 * radius * radius; }
+		};
+
+		int main()
+		{
+			Circle1 c1;
+			c1.setRadius(10);
+			c1.calcArea();
+			cout << "Area: " << c1.getArea() << endl;
+
+			c1.setRadius(5);
+			c1.calcArea();
+			cout << "Area: " << c1.getArea() << endl;
 
 			return 0;
 		}
@@ -2131,6 +2188,6 @@ namespace Lec5
 using namespace Lec5;
 int main()
 {
-	Ex2::main();
+	Ex1::main();
 	return 0;
 }
