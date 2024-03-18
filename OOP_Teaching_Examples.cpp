@@ -516,143 +516,203 @@ namespace others
 
 	} // namespace Lec4
 
-
-
-	namespace Lec6 // generic prog
+	namespace Lec5
 	{
-		namespace Ex2
+		//Global/Local/Member Scopes
+		namespace Ex0
 		{
-			class GeometricObject
+			int x; // Global variable
+
+			class Test
 			{
-			public: string getColor() const { return "red"; };
-			};
-
-			class Circle : public GeometricObject
-			{
-			public: double getRadius() const { return 1; };
-			};
-
-			void dispData(const GeometricObject& o)
-			{
-				cout << o.getColor();
-			}
-
-			int main()
-			{
-				Circle c;
-				dispData(c);
-				return 0;
-			}
-		} // namespaceEx2
-
-		namespace Ex3
-		{
-#include <iostream>
-
-			class BankAccount
-			{
-			private: double balance;
-
 			public:
-				BankAccount(double initBal) : balance(initBal) {}
+				int x = 10, y = 10; // Data fields
 
-				bool hasSameBalance(const BankAccount& other) const
+				void print()
 				{
-					return balance == other.balance;
+					int x = 20; // Local variable
+					cout << "Local x is " << x << endl;
+					cout << "Member x is " << Test::x << endl;
+					cout << "Global x is " << Ex0::x << endl;
+					cout << "Member y is " << y << endl;
 				}
 			};
 
-			int main() {
-				BankAccount account1(5000.00), account2(3000.00);
-
-				if (account1.hasSameBalance(account2))
-					cout << "Same balance." << endl;
-				else
-					cout << "Different balances." << endl;
+			int main()
+			{
+				Test test;
+				test.print();
 
 				return 0;
 			}
+
+		} // namespace Ex0
+
+		namespace Ex1
+		{
+
+			class Circle1
+			{
+			private:
+				double radius = 1;
+				double area = 3.14;
+			public:
+				void setRadius(double r) { radius = r; }
+				void calcArea() { area = 3.14 * radius * radius; }
+				double getRadius() { return radius; }
+				double getArea() { return area; }
+			};
+
+			class Circle2
+			{
+			private:
+				double radius = 1;
+				double area = 3.14;
+			public:
+				void setRadius(double r)
+				{
+					radius = r;
+					area = 3.14 * radius * radius;
+				}
+				double getRadius() { return radius; }
+				double getArea() { return area; }
+			};
+
+			class Circle3
+			{
+			private:
+				double radius = 1;
+
+			public:
+				void setRadius(double r) { radius = r; }
+				double getRadius() { return radius; }
+				double getArea() { return 3.14 * radius * radius; }
+			};
+
+			int main()
+			{
+				Circle1 c1;
+				c1.setRadius(10);
+				c1.calcArea();
+				cout << "Area: " << c1.getArea() << endl;
+
+				c1.setRadius(5);
+				c1.calcArea();
+				cout << "Area: " << c1.getArea() << endl;
+
+				return 0;
+			}
+
+		} // namespace Ex1
+
+		namespace Ex2 // Abstraction
+		{
+			int main()
+			{
+				string s1 = "CIE202", s2 = "CIE 202";
+				bool check = s1 == s2; // abstraction example: == is a function
+				return 0;
+			}
+		} // namespace Ex2
+
+		namespace Ex3
+		{
+			class TV
+			{
+			private:
+				int channel = 1, volumeLevel = 1;
+				bool on = false;
+
+			public:
+				// Getters (Accessors):
+				// returnType getPropertyName()
+				int getChannel()
+				{
+					return channel;
+				}
+				bool isOn()
+				{
+					return on;
+				}
+
+				// Setters (Mutators):
+				// void setPropertyName(dataType value)
+				void setChannel(int newChannel)
+				{
+					if (on && newChannel >= 1 && newChannel <= 120)
+						channel = newChannel;
+				}
+				void TurnOn()
+				{
+					on = true;
+				}
+				void TurnOff()
+				{
+					on = false;
+				}
+			};
 
 		} // namespace Ex3
 
 		namespace Ex4
 		{
-			class ClassB;
-			class ClassA
+			class Grade
 			{
-			public:	int dataA = 1;
-				  //private:	int dataA = 1;
+			private:
+				int static minGrade;
+				int grade;
+
 			public:
-				bool isEqualToDataB(const ClassB& b);
+				void setGrade(int v);
+				double getGrade() const;
+				static void setMinGrade(int v);
+				bool isPassing() const;
+				string getPF() const;
 			};
 
-			class ClassB
-			{
-			public:
-				int dataB = 2;
-				bool isEqualToDataA(const ClassA& a)
-				{
-					return dataB == a.dataA; // Line 2
-				}
-			};
+			int Grade::minGrade = 60;
 
-			bool ClassA::isEqualToDataB(const ClassB& b)
+			void Grade::setGrade(int v) { grade = v; }
+			double Grade::getGrade() const { return grade; }
+
+			void Grade::setMinGrade(int v)
 			{
-				return dataA == b.dataB; // Line 1
+				minGrade = v;
 			}
+
+			bool Grade::isPassing() const
+			{
+				return grade >= minGrade;
+			}
+
+			string Grade::getPF() const
+			{
+				if (isPassing()) return "P";
+				else return "F";
+			}
+
 			int main()
 			{
-				ClassA objA;
-				ClassB objB;
-				cout << boolalpha << objB.isEqualToDataA(objA) << endl;
+				Grade s[10];
+				for (int i = 0; i < 10; i++)
+					s[i].setGrade(10 * i + 1);
+
+				for (int i = 0; i < 10; i++)
+					cout << i << ": " << s[i].getPF() << endl;
+
+				cout << string(4, '-') << endl;
+
+				Grade::setMinGrade(20);
+				for (int i = 0; i < 10; i++)
+					cout << i << ": " << s[i].getPF() << endl;
 
 				return 0;
 			}
-		} // namespace Ex4
 
-		namespace Ex5
-		{
-			class Instructor
-			{
-			private: string _name = "Default Name";
-			public:
-				void setName(string newName) { _name = newName; }
-				string getName() const { return _name; }
-			};
+		}//Ex4
+	} // namespace Lec5
 
-			class Student
-			{
-			private: Instructor* _instr = nullptr;
-			public:
-				void setInstr(Instructor& instr) { _instr = &instr; }
-				string getInstrName() const
-				{
-					if (_instr) return _instr->getName();
-					return "N/A";
-				}
-			};
-			int main()
-			{
-				Instructor instr;
-				cout << "Instr name: " << instr.getName() << endl;
-				cout << string(24, '-') << endl;
 
-				Student st1; st1.setInstr(instr);
-				Student st2; st2.setInstr(instr);
-				cout << "St 1 instr: " << st1.getInstrName() << endl;
-				cout << "St 2 instr: " << st2.getInstrName() << endl;
-				cout << string(24, '-') << endl;
-
-				instr.setName("new name");
-				cout << "Instr name: " << instr.getName() << endl;
-				cout << string(24, '-') << endl;
-
-				cout << "St 1 instr: " << st1.getInstrName() << endl;
-				cout << "St 2 instr: " << st2.getInstrName() << endl;
-				return 0;
-			}
-		} // namespace Ex5
-	} // namespace Lec6
 
 	namespace Lec8
 	{
@@ -1821,201 +1881,52 @@ namespace others
 }; // namespace past
 
 
-namespace Lec5
+
+namespace Lec6
 {
+	//All Static Class
 	namespace Ex0
 	{
-		int x; // Global variable
-
-		class Test
+		class AppConfig
 		{
+		private:
+			AppConfig() = delete;
 		public:
-			int x = 10, y = 10; // Data fields
+			static const int versionMajor;
+			static const int versionMinor;
+			static const string themeColor;
+			static const int MAX_USERS;
 
-			void print()
+			// Static function to display application configuration
+			static void displayConfig()
 			{
-				int x = 20; // Local variable
-				cout << "Local x is " << x << endl;
-				cout << "Member x is " << Test::x << endl;
-				cout << "Global x is " << Ex0::x << endl;
-				cout << "Member y is " << y << endl;
+				cout << "Application Version: " << versionMajor
+					<< "." << versionMinor << endl;
+				cout << "Theme Color: " << themeColor << endl;
+				cout << "Maximum Number of Users: "
+					<< MAX_USERS << endl;
 			}
 		};
 
+		// Initialize static members
+		const int AppConfig::versionMajor = 1;
+		const int AppConfig::versionMinor = 0;
+		const string AppConfig::themeColor
+			= "DarkBlue";
+		const int AppConfig::MAX_USERS = 100;
+
 		int main()
 		{
-			Test test;
-			test.print();
+			// Accessing and using static class members
+			// without instantiation
+			AppConfig::displayConfig();
 
 			return 0;
 		}
-
 	} // namespace Ex0
 
+	//Static with Constructor/Destructor
 	namespace Ex1
-	{
-
-		class Circle1
-		{
-		private:
-			double radius = 1;
-			double area = 3.14;
-		public:
-			void setRadius(double r) { radius = r; }
-			void calcArea() { area = 3.14 * radius * radius; }
-			double getRadius() { return radius; }
-			double getArea() { return area; }
-		};
-
-		class Circle2
-		{
-		private:
-			double radius = 1;
-			double area = 3.14;
-		public:
-			void setRadius(double r)
-			{
-				radius = r;
-				area = 3.14 * radius * radius;
-			}
-			double getRadius() { return radius; }
-			double getArea() { return area; }
-		};
-
-		class Circle3
-		{
-		private:
-			double radius = 1;
-
-		public:
-			void setRadius(double r) { radius = r; }
-			double getRadius() { return radius; }
-			double getArea() { return 3.14 * radius * radius; }
-		};
-
-		int main()
-		{
-			Circle1 c1;
-			c1.setRadius(10);
-			c1.calcArea();
-			cout << "Area: " << c1.getArea() << endl;
-
-			c1.setRadius(5);
-			c1.calcArea();
-			cout << "Area: " << c1.getArea() << endl;
-
-			return 0;
-		}
-
-	} // namespace Ex1
-
-	namespace Ex2 // Abstraction
-	{
-		int main()
-		{
-			string s1 = "CIE202", s2 = "CIE 202";
-			bool check = s1 == s2; // abstraction example: == is a function
-			return 0;
-		}
-	} // namespace Ex2
-
-	namespace Ex3
-	{
-		class TV
-		{
-		private:
-			int channel = 1, volumeLevel = 1;
-			bool on = false;
-
-		public:
-			// Getters (Accessors):
-			// returnType getPropertyName()
-			int getChannel()
-			{
-				return channel;
-			}
-			bool isOn()
-			{
-				return on;
-			}
-
-			// Setters (Mutators):
-			// void setPropertyName(dataType value)
-			void setChannel(int newChannel)
-			{
-				if (on && newChannel >= 1 && newChannel <= 120)
-					channel = newChannel;
-			}
-			void TurnOn()
-			{
-				on = true;
-			}
-			void TurnOff()
-			{
-				on = false;
-			}
-		};
-
-	} // namespace Ex3
-
-	namespace Ex4
-	{
-		class Grade
-		{
-		private:
-			int static minGrade;
-			int grade;
-
-		public:
-			void setGrade(int v);
-			double getGrade() const;
-			static void setMinGrade(int v);
-			bool isPassing() const;
-			string getPF() const;
-		};
-
-		int Grade::minGrade = 60;
-
-		void Grade::setGrade(int v) { grade = v; }
-		double Grade::getGrade() const { return grade; }
-
-		void Grade::setMinGrade(int v)
-		{
-			minGrade = v;
-		}
-
-		bool Grade::isPassing() const
-		{
-			return grade >= minGrade;
-		}
-
-		string Grade::getPF() const
-		{
-			if (isPassing()) return "P";
-			else return "F";
-		}
-
-		int main()
-		{
-			Grade s[10];
-			for (int i = 0; i < 10; i++)
-				s[i].setGrade(10 * i + 1);
-
-			for (int i = 0; i < 10; i++)
-				cout << i << ": " << s[i].getPF() << endl;
-
-			cout << string(4, '-') << endl;
-
-			Grade::setMinGrade(20);
-			for (int i = 0; i < 10; i++)
-				cout << i << ": " << s[i].getPF() << endl;
-
-			return 0;
-		}
-
-	}//Ex4
-
-	namespace Ex5
 	{
 		class Circle
 		{
@@ -2069,9 +1980,10 @@ namespace Lec5
 			return 0;
 		}
 
-	} // Ex5
+	} // Ex1
 
-	namespace Ex6
+	//Demo1 for Constructor/Destructor order
+	namespace Ex2
 	{
 		class Demo
 		{
@@ -2094,9 +2006,10 @@ namespace Lec5
 			cout << "B. for constructor / destructor.\n";
 			return 0;
 		}
-	} // Ex6
+	} // Ex2
 
-	namespace Ex7
+	//Demo2 for Constructor/Destructor order
+	namespace Ex3
 	{
 		class Demo
 		{
@@ -2124,9 +2037,10 @@ namespace Lec5
 			cout << "B. for constructor / destructor.\n";
 			return 0;
 		}
-	} // Ex7
+	} // Ex3
 
-	namespace Ex8
+	//Class Example with Constructor/Destructor Static
+	namespace Ex4
 	{
 		class Book
 		{
@@ -2180,12 +2094,186 @@ namespace Lec5
 
 			return 0;
 		}
-	} // Ex8
+	} // Ex4
 
-} // namespace Lec5
+	//Intro to Inheritance
+	namespace Ex5
+	{
+		class GeometricObject
+		{
+		public: string getColor() const { return "red"; };
+		};
+
+		class Circle : public GeometricObject
+		{
+		public: double getRadius() const { return 1; };
+		};
+
+		void dispData(const GeometricObject& o)
+		{
+			cout << o.getColor();
+		}
+
+		int main()
+		{
+			Circle c;
+			dispData(c);
+			return 0;
+		}
+	} // namespaceEx5
+
+	//Intro to Class cross communication
+	namespace Ex6
+	{
+		class BankAccount
+		{
+		private: double balance;
+
+		public:
+			BankAccount(double initBal) : balance(initBal) {}
+
+			bool hasSameBalance(const BankAccount& other) const
+			{
+				return balance == other.balance;
+			}
+		};
+
+		int main() {
+			BankAccount account1(5000.00), account2(3000.00);
+
+			if (account1.hasSameBalance(account2))
+				cout << "Same balance." << endl;
+			else
+				cout << "Different balances." << endl;
+
+			return 0;
+		}
+
+	} // namespace Ex6
+
+	//Intro to Class cross communication
+	namespace Ex7
+	{
+		class ClassB;
+		class ClassA
+		{
+		public:	int dataA = 1;
+			  //private:	int dataA = 1;
+		public:
+			bool isEqualToDataB(const ClassB& b);
+		};
+
+		class ClassB
+		{
+		public:
+			int dataB = 2;
+			bool isEqualToDataA(const ClassA& a)
+			{
+				return dataB == a.dataA; // Line 2
+			}
+		};
+
+		bool ClassA::isEqualToDataB(const ClassB& b)
+		{
+			return dataA == b.dataB; // Line 1
+		}
+		int main()
+		{
+			ClassA objA;
+			ClassB objB;
+			cout << boolalpha << objB.isEqualToDataA(objA) << endl;
+
+			return 0;
+		}
+	} // namespace Ex7
+
+	//Intro to Association
+	namespace Ex8
+	{
+		class Instructor
+		{
+		private: string _name = "Default Name";
+		public:
+			void setName(string newName) { _name = newName; }
+			string getName() const { return _name; }
+		};
+
+		class Student
+		{
+		private: Instructor* _instr = nullptr;
+		public:
+			void setInstr(Instructor& instr) { _instr = &instr; }
+			string getInstrName() const
+			{
+				if (_instr) return _instr->getName();
+				return "N/A";
+			}
+		};
+		int main()
+		{
+			Instructor instr;
+			cout << "Instr name: " << instr.getName() << endl;
+			cout << string(24, '-') << endl;
+
+			Student st1; st1.setInstr(instr);
+			Student st2; st2.setInstr(instr);
+			cout << "St 1 instr: " << st1.getInstrName() << endl;
+			cout << "St 2 instr: " << st2.getInstrName() << endl;
+			cout << string(24, '-') << endl;
+
+			instr.setName("new name");
+			cout << "Instr name: " << instr.getName() << endl;
+			cout << string(24, '-') << endl;
+
+			cout << "St 1 instr: " << st1.getInstrName() << endl;
+			cout << "St 2 instr: " << st2.getInstrName() << endl;
+			return 0;
+		}
+	} // namespace Ex8
+
+	//Passing Objects to Functions
+	namespace Ex9
+	{
+		class Circle
+		{
+		public:
+			Circle(double r = 1) : radius(r) {}
+
+			double getArea() const;
+			double getRadius() const;
+			void setRadius(double r);
+
+		private:
+			double radius;
+		};
+		void displayCircle(const Circle& c)
+		{
+			cout << "Radius: "
+				<< c.getRadius() << endl;
+			cout << "Area: "
+				<< c.getArea() << endl;
+		}
+		void initializeCircle(Circle& c, double r)
+		{
+			c.setRadius(r);
+		}
+		int main()
+		{
+			Circle c(5);
+			initializeCircle(c, 10);
+			displayCircle(c);
+			return 0;
+		}
+		double Circle::getArea() const { return radius * radius * 3.14159; }
+		double Circle::getRadius() const { return radius; }
+		void Circle::setRadius(double r) { radius = r; }
+	} // namespace Ex9
+
+} // namespace Lec6
 
 
-using namespace Lec5;
+using namespace Lec6;
+
 int main()
 {
 	Ex1::main();
