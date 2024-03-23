@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <list>
+#include <vector>
 using namespace std;
 
 namespace others
@@ -712,96 +713,427 @@ namespace others
 		}//Ex4
 	} // namespace Lec5
 
-
-
-	namespace Lec8
+	namespace Lec6
 	{
+		//All Static Class
+		namespace Ex0
+		{
+			class AppConfig
+			{
+			private:
+				AppConfig() = delete;
+			public:
+				static const int versionMajor;
+				static const int versionMinor;
+				static const string themeColor;
+				static const int MAX_USERS;
+
+				// Static function to display application configuration
+				static void displayConfig()
+				{
+					cout << "Application Version: " << versionMajor
+						<< "." << versionMinor << endl;
+					cout << "Theme Color: " << themeColor << endl;
+					cout << "Maximum Number of Users: "
+						<< MAX_USERS << endl;
+				}
+			};
+
+			// Initialize static members
+			const int AppConfig::versionMajor = 1;
+			const int AppConfig::versionMinor = 0;
+			const string AppConfig::themeColor
+				= "DarkBlue";
+			const int AppConfig::MAX_USERS = 100;
+
+			int main()
+			{
+				// Accessing and using static class members
+				// without instantiation
+				AppConfig::displayConfig();
+
+				return 0;
+			}
+		} // namespace Ex0
+
+		//Static with Constructor/Destructor
 		namespace Ex1
 		{
-			void printArray(int* list, int size)
+			class Circle
 			{
-				for (int i = 0; i < size; i++)
-					cout << list[i] << " ";
+			public:
+				Circle(double = 1);
+				~Circle();
+				double getArea() const { return radius * radius * 3.14; }
+				double getRadius() const { return radius; }
+				void setRadius(double r) { radius = r; };
+				static int getNumOfObjects();
+
+			private:
+				double radius;
+				static int numOfObjects;
+			};
+
+			int Circle::numOfObjects = 0;
+
+			Circle::Circle(double newRadius)
+			{
+				radius = newRadius;
+				numOfObjects++;
+			}
+
+			int Circle::getNumOfObjects()
+			{
+				return numOfObjects;
+			}
+
+			Circle::~Circle()
+			{
+				numOfObjects--;
 			}
 
 			int main()
 			{
-				int a[] = { 1,2,3 };
-				printArray(a, 3);
+				cout << "Number of circle objects created: "
+					<< Circle::getNumOfObjects() << endl;
+
+				Circle circ1;
+				cout << "The radius of the circle is "
+					<< circ1.getRadius() << endl;
+				cout << "Number of circle objects created: "
+					<< Circle::getNumOfObjects() << endl;
+
+				Circle circ2(5.0);
+				cout << "The radius of the circle is "
+					<< circ2.getRadius() << endl;
+				cout << "Number of circle objects created: "
+					<< circ2.getNumOfObjects() << endl;
 				return 0;
 			}
-		} // namespace Ex1
 
+		} // Ex1
+
+		//Demo1 for Constructor/Destructor order
 		namespace Ex2
 		{
-			void reverse(int* list, int size)
+			class Demo
 			{
-				int* left = list;
-				int* right = list + size - 1;
-
-				for (; left < right; ++left, --right)
+			public:
+				Demo() // Constructor
 				{
-					int temp = *left;
-					*left = *right;
-					*right = temp;
+					cout << "1. Welcome to the constructor!\n";
 				}
-			}
+				~Demo() // Destructor
+				{
+					cout << "2. The destructor is running.\n";
+				}
+			};
 
 			int main()
 			{
-				int myArray[5] =
-				{ 1, 2, 3, 4, 5 };
+				Demo demoObject; // Define a demo object;
 
-				reverse(myArray, 5);
-
-				// Print the reversed array
-				for (int i = 0; i < 5; i++)
-					cout << myArray[i] << " ";
-
+				cout << "A. This is a demo\n";
+				cout << "B. for constructor / destructor.\n";
 				return 0;
 			}
-		} // namespace Ex2
+		} // Ex2
 
+		//Demo2 for Constructor/Destructor order
 		namespace Ex3
 		{
+			class Demo
+			{
+			public:
+				Demo() // Constructor
+				{
+					cout << "1. Welcome to the constructor!\n";
+				}
+				~Demo() // Destructor
+				{
+					cout << "2. The destructor is running.\n";
+				}
+			};
+
+			void SomeGlobalFunction()
+			{
+				Demo demoObject;
+			}
+
 			int main()
 			{
-				char continueInput = 'Y';
+				SomeGlobalFunction();
 
-				while (continueInput == 'Y')
+				cout << "A. This is a demo\n";
+				cout << "B. for constructor / destructor.\n";
+				return 0;
+			}
+		} // Ex3
+
+		//Class Example with Constructor/Destructor Static
+		namespace Ex4
+		{
+			class Book
+			{
+			private:
+				string title, author;
+				static int bookCount; // Static member
+
+			public:
+				// Constructor
+				Book(string t, string a);
+
+				// Getters
+				string getTitle() const { return title; }
+				string getAuthor() const { return author; }
+
+				// Setters
+				void setTitle(const string& t) { title = t; }
+				void setAuthor(const string& a) { author = a; }
+
+				// Const function to display book details
+				void displayDetails() const;
+
+				// Static member function to get the total book count
+				static int getTotalBookCount() { return bookCount; }
+			};
+
+			// Initialize static member
+			int Book::bookCount = 0;
+
+			Book::Book(string t, string a)
+			{
+				title = t;
+				author = a;
+
+				bookCount++;
+			}
+			inline void Book::displayDetails() const
+			{
+				cout << title << ", " << author << endl;
+			}
+
+			int main()
+			{
+				Book book1("Age of Science", "Ahmed Zewail");
+				Book book2("The Book of Healing", "Ibn Sina");
+
+				book1.displayDetails();
+				book2.displayDetails();
+
+				cout << "Total books: " << Book::getTotalBookCount() << endl;
+
+				return 0;
+			}
+		} // Ex4
+
+		//Intro to Inheritance
+		namespace Ex5
+		{
+			class GeometricObject
+			{
+			public: string getColor() const { return "red"; };
+			};
+
+			class Circle : public GeometricObject
+			{
+			public: double getRadius() const { return 1; };
+			};
+
+			void dispData(const GeometricObject& o)
+			{
+				cout << o.getColor();
+			}
+
+			int main()
+			{
+				Circle c;
+				dispData(c);
+				return 0;
+			}
+		} // namespaceEx5
+
+		//Intro to Class cross communication
+		namespace Ex6
+		{
+			class BankAccount
+			{
+			private: double balance;
+
+			public:
+				BankAccount(double initBal) : balance(initBal) {}
+
+				bool hasSameBalance(const BankAccount& other) const
 				{
-					cout << "Enter the size of the array: ";
-					int size;
-					cin >> size;
-					int* array = new int[size];
-
-					cout << "Enter " << size << " integers:" << endl;
-					int sum = 0;
-					for (int i = 0; i < size; ++i)
-					{
-						cin >> array[i];
-						sum += array[i];
-					}
-
-					cout << "You entered:" << endl;
-					for (int i = 0; i < size; ++i)
-						cout << array[i] << " ";
-					cout << endl;
-					cout << "The sum is: " << sum << endl;
-
-					delete[] array;
-
-
-					// Ask user to repeat or exit
-					cout << "Do you want to enter another array? (Y/N): ";
-					cin >> continueInput;
+					return balance == other.balance;
 				}
+			};
+
+			int main() {
+				BankAccount account1(5000.00), account2(3000.00);
+
+				if (account1.hasSameBalance(account2))
+					cout << "Same balance." << endl;
+				else
+					cout << "Different balances." << endl;
 
 				return 0;
 			}
 
-		} // namespace Ex3
-	} // namespace Lec8
+		} // namespace Ex6
+
+		//Intro to Class cross communication
+		namespace Ex7
+		{
+			class ClassB;
+			class ClassA
+			{
+			public:	int dataA = 1;
+				  //private:	int dataA = 1;
+			public:
+				bool isEqualToDataB(const ClassB& b);
+			};
+
+			class ClassB
+			{
+			public:
+				int dataB = 2;
+				bool isEqualToDataA(const ClassA& a)
+				{
+					return dataB == a.dataA; // Line 2
+				}
+			};
+
+			bool ClassA::isEqualToDataB(const ClassB& b)
+			{
+				return dataA == b.dataB; // Line 1
+			}
+			int main()
+			{
+				ClassA objA;
+				ClassB objB;
+				cout << boolalpha << objB.isEqualToDataA(objA) << endl;
+
+				return 0;
+			}
+		} // namespace Ex7
+
+		//Intro to Association
+		namespace Ex8
+		{
+			class Instructor
+			{
+			private: string _name = "Default Name";
+			public:
+				void setName(string newName) { _name = newName; }
+				string getName() const { return _name; }
+			};
+
+			class Student
+			{
+			private: Instructor* _instr = nullptr;
+			public:
+				void setInstr(Instructor& instr) { _instr = &instr; }
+				string getInstrName() const
+				{
+					if (_instr) return _instr->getName();
+					return "N/A";
+				}
+			};
+			int main()
+			{
+				Instructor instr;
+				cout << "Instr name: " << instr.getName() << endl;
+				cout << string(24, '-') << endl;
+
+				Student st1; st1.setInstr(instr);
+				Student st2; st2.setInstr(instr);
+				cout << "St 1 instr: " << st1.getInstrName() << endl;
+				cout << "St 2 instr: " << st2.getInstrName() << endl;
+				cout << string(24, '-') << endl;
+
+				instr.setName("new name");
+				cout << "Instr name: " << instr.getName() << endl;
+				cout << string(24, '-') << endl;
+
+				cout << "St 1 instr: " << st1.getInstrName() << endl;
+				cout << "St 2 instr: " << st2.getInstrName() << endl;
+				return 0;
+			}
+		} // namespace Ex8
+
+		//Passing Objects to Functions
+		namespace Ex9
+		{
+			class Circle
+			{
+			public:
+				Circle(double r = 1) : radius(r) {}
+
+				double getArea() const;
+				double getRadius() const;
+				void setRadius(double r);
+
+			private:
+				double radius;
+			};
+			void displayCircle(const Circle& c)
+			{
+				cout << "Radius: "
+					<< c.getRadius() << endl;
+				cout << "Area: "
+					<< c.getArea() << endl;
+			}
+			void initializeCircle(Circle& c, double r)
+			{
+				c.setRadius(r);
+			}
+			int main()
+			{
+				Circle c(5);
+				initializeCircle(c, 10);
+				displayCircle(c);
+				return 0;
+			}
+			double Circle::getArea() const { return radius * radius * 3.14159; }
+			double Circle::getRadius() const { return radius; }
+			void Circle::setRadius(double r) { radius = r; }
+		} // namespace Ex9
+
+		//Different constructors
+		namespace Ex10
+		{
+			class Rectangle
+			{
+			private:
+				double width = 1;
+				double length = 2;
+			public:
+				//Rectangle(double w, double h) : length(w), width(h) {}
+				Rectangle() : length(width), width(20) {}
+				//Rectangle() : length(10), width(length) {}
+				//Rectangle() : length(10), width(20) {}
+				double getLength() const;
+				double getWidth() const;
+			};
+			double Rectangle::getLength() const { return length; }
+			double Rectangle::getWidth() const { return width; }
+			void displayRectangle(const Rectangle& r)
+			{
+				cout << "Length: " << r.getLength() << endl;
+				cout << "Width: " << r.getWidth() << endl;
+			}
+			int main()
+			{
+				Rectangle r;
+				displayRectangle(r);
+				return 0;
+			}
+		} // namespace Ex10
+
+	} // namespace Lec6
+
+
 
 	namespace Lec9
 	{
@@ -1507,22 +1839,22 @@ namespace others
 			class Rectangle : public GeometricObject
 			{
 			private:
+				double length = 1;
 				double width = 1;
-				double height = 1;
 			public:
 				virtual double getArea() const override
 				{
-					return height * width;
+					return width * length;
 				}
 				virtual double getPerimeter() const override
 				{
-					return 2 * (height + width);
+					return 2 * (width + length);
 				}
-				Rectangle(double width, double height)
-					: height(height), width(width)
+				Rectangle(double length, double width)
+					: width(width), length(length)
 				{}
+				double getLength() const { return length; }
 				double getWidth() const { return width; }
-				double getHeight() const { return height; }
 			};
 
 			void displayGeometricObject(const GeometricObject* g)
@@ -1537,8 +1869,8 @@ namespace others
 				}
 				if (ptrR != nullptr)
 				{
-					cout << "The width is " << ptrR->getWidth() << endl;
-					cout << "The height is " << ptrR->getHeight() << endl;
+					cout << "The width is " << ptrR->getLength() << endl;
+					cout << "The height is " << ptrR->getWidth() << endl;
 				}
 				if (g != NULL)
 				{
@@ -1881,398 +2213,163 @@ namespace others
 }; // namespace past
 
 
-
-namespace Lec6
+namespace Lec7
 {
-	//All Static Class
-	namespace Ex0
-	{
-		class AppConfig
-		{
-		private:
-			AppConfig() = delete;
-		public:
-			static const int versionMajor;
-			static const int versionMinor;
-			static const string themeColor;
-			static const int MAX_USERS;
-
-			// Static function to display application configuration
-			static void displayConfig()
-			{
-				cout << "Application Version: " << versionMajor
-					<< "." << versionMinor << endl;
-				cout << "Theme Color: " << themeColor << endl;
-				cout << "Maximum Number of Users: "
-					<< MAX_USERS << endl;
-			}
-		};
-
-		// Initialize static members
-		const int AppConfig::versionMajor = 1;
-		const int AppConfig::versionMinor = 0;
-		const string AppConfig::themeColor
-			= "DarkBlue";
-		const int AppConfig::MAX_USERS = 100;
-
-		int main()
-		{
-			// Accessing and using static class members
-			// without instantiation
-			AppConfig::displayConfig();
-
-			return 0;
-		}
-	} // namespace Ex0
-
-	//Static with Constructor/Destructor
+	// Aggregation and Composition
 	namespace Ex1
 	{
-		class Circle
-		{
-		public:
-			Circle(double = 1);
-			~Circle();
-			double getArea() const { return radius * radius * 3.14; }
-			double getRadius() const { return radius; }
-			void setRadius(double r) { radius = r; };
-			static int getNumOfObjects();
-
-		private:
-			double radius;
-			static int numOfObjects;
-		};
-
-		int Circle::numOfObjects = 0;
-
-		Circle::Circle(double newRadius)
-		{
-			radius = newRadius;
-			numOfObjects++;
-		}
-
-		int Circle::getNumOfObjects()
-		{
-			return numOfObjects;
-		}
-
-		Circle::~Circle()
-		{
-			numOfObjects--;
-		}
-
-		int main()
-		{
-			cout << "Number of circle objects created: "
-				<< Circle::getNumOfObjects() << endl;
-
-			Circle circ1;
-			cout << "The radius of the circle is "
-				<< circ1.getRadius() << endl;
-			cout << "Number of circle objects created: "
-				<< Circle::getNumOfObjects() << endl;
-
-			Circle circ2(5.0);
-			cout << "The radius of the circle is "
-				<< circ2.getRadius() << endl;
-			cout << "Number of circle objects created: "
-				<< circ2.getNumOfObjects() << endl;
-			return 0;
-		}
-
-	} // Ex1
-
-	//Demo1 for Constructor/Destructor order
-	namespace Ex2
-	{
-		class Demo
-		{
-		public:
-			Demo() // Constructor
-			{
-				cout << "1. Welcome to the constructor!\n";
-			}
-			~Demo() // Destructor
-			{
-				cout << "2. The destructor is running.\n";
-			}
-		};
-
-		int main()
-		{
-			Demo demoObject; // Define a demo object;
-
-			cout << "A. This is a demo\n";
-			cout << "B. for constructor / destructor.\n";
-			return 0;
-		}
-	} // Ex2
-
-	//Demo2 for Constructor/Destructor order
-	namespace Ex3
-	{
-		class Demo
-		{
-		public:
-			Demo() // Constructor
-			{
-				cout << "1. Welcome to the constructor!\n";
-			}
-			~Demo() // Destructor
-			{
-				cout << "2. The destructor is running.\n";
-			}
-		};
-
-		void SomeGlobalFunction()
-		{
-			Demo demoObject;
-		}
-
-		int main()
-		{
-			SomeGlobalFunction();
-
-			cout << "A. This is a demo\n";
-			cout << "B. for constructor / destructor.\n";
-			return 0;
-		}
-	} // Ex3
-
-	//Class Example with Constructor/Destructor Static
-	namespace Ex4
-	{
+		// Aggregation example: Library and Book
+		// The Book class represents a book with a title.
 		class Book
 		{
-		private:
-			string title, author;
-			static int bookCount; // Static member
-
+		private: string title, author;
 		public:
-			// Constructor
-			Book(string t, string a);
-
-			// Getters
-			string getTitle() const { return title; }
-			string getAuthor() const { return author; }
-
-			// Setters
-			void setTitle(const string& t) { title = t; }
-			void setAuthor(const string& a) { author = a; }
-
-			// Const function to display book details
-			void displayDetails() const;
-
-			// Static member function to get the total book count
-			static int getTotalBookCount() { return bookCount; }
+			Book(string t = "title", string a = "author")
+				: title(t), author(a) {}
 		};
 
-		// Initialize static member
-		int Book::bookCount = 0;
-
-		Book::Book(string t, string a)
+		class TwoBookPackage
 		{
-			title = t;
-			author = a;
+		private: Book book1, book2;
+		public:
+			TwoBookPackage(const Book& b1, const Book& b2)
+				: book1(b1), book2(b2) {}
+		};
 
-			bookCount++;
-		}
-		inline void Book::displayDetails() const
+		void testAggregation()
 		{
-			cout << title << ", " << author << endl;
-		}
-
-		int main()
-		{
+			// Books exist independently of the TwoBookPackage
 			Book book1("Age of Science", "Ahmed Zewail");
 			Book book2("The Book of Healing", "Ibn Sina");
 
-			book1.displayDetails();
-			book2.displayDetails();
-
-			cout << "Total books: " << Book::getTotalBookCount() << endl;
-
-			return 0;
-		}
-	} // Ex4
-
-	//Intro to Inheritance
-	namespace Ex5
-	{
-		class GeometricObject
-		{
-		public: string getColor() const { return "red"; };
-		};
-
-		class Circle : public GeometricObject
-		{
-		public: double getRadius() const { return 1; };
-		};
-
-		void dispData(const GeometricObject& o)
-		{
-			cout << o.getColor();
+			TwoBookPackage package(book1, book2);
 		}
 
-		int main()
+		// Composition example: Apartment and Room
+		class Room
 		{
-			Circle c;
-			dispData(c);
-			return 0;
-		}
-	} // namespaceEx5
-
-	//Intro to Class cross communication
-	namespace Ex6
-	{
-		class BankAccount
-		{
-		private: double balance;
-
+		private: string name;
 		public:
-			BankAccount(double initBal) : balance(initBal) {}
-
-			bool hasSameBalance(const BankAccount& other) const
-			{
-				return balance == other.balance;
-			}
+			Room(string n = "Room") : name(n) {}
 		};
 
-		int main() {
-			BankAccount account1(5000.00), account2(3000.00);
-
-			if (account1.hasSameBalance(account2))
-				cout << "Same balance." << endl;
-			else
-				cout << "Different balances." << endl;
-
-			return 0;
-		}
-
-	} // namespace Ex6
-
-	//Intro to Class cross communication
-	namespace Ex7
-	{
-		class ClassB;
-		class ClassA
+		// The Apartment class represents an apartment, which is composed of Rooms.
+		// Rooms cannot logically exist without an apartment, illustrating a strong relationship.
+		class TwoRoomApartment
 		{
-		public:	int dataA = 1;
-			  //private:	int dataA = 1;
-		public:
-			bool isEqualToDataB(const ClassB& b);
-		};
-
-		class ClassB
-		{
-		public:
-			int dataB = 2;
-			bool isEqualToDataA(const ClassA& a)
-			{
-				return dataB == a.dataA; // Line 2
-			}
-		};
-
-		bool ClassA::isEqualToDataB(const ClassB& b)
-		{
-			return dataA == b.dataB; // Line 1
-		}
-		int main()
-		{
-			ClassA objA;
-			ClassB objB;
-			cout << boolalpha << objB.isEqualToDataA(objA) << endl;
-
-			return 0;
-		}
-	} // namespace Ex7
-
-	//Intro to Association
-	namespace Ex8
-	{
-		class Instructor
-		{
-		private: string _name = "Default Name";
-		public:
-			void setName(string newName) { _name = newName; }
-			string getName() const { return _name; }
-		};
-
-		class Student
-		{
-		private: Instructor* _instr = nullptr;
-		public:
-			void setInstr(Instructor& instr) { _instr = &instr; }
-			string getInstrName() const
-			{
-				if (_instr) return _instr->getName();
-				return "N/A";
-			}
-		};
-		int main()
-		{
-			Instructor instr;
-			cout << "Instr name: " << instr.getName() << endl;
-			cout << string(24, '-') << endl;
-
-			Student st1; st1.setInstr(instr);
-			Student st2; st2.setInstr(instr);
-			cout << "St 1 instr: " << st1.getInstrName() << endl;
-			cout << "St 2 instr: " << st2.getInstrName() << endl;
-			cout << string(24, '-') << endl;
-
-			instr.setName("new name");
-			cout << "Instr name: " << instr.getName() << endl;
-			cout << string(24, '-') << endl;
-
-			cout << "St 1 instr: " << st1.getInstrName() << endl;
-			cout << "St 2 instr: " << st2.getInstrName() << endl;
-			return 0;
-		}
-	} // namespace Ex8
-
-	//Passing Objects to Functions
-	namespace Ex9
-	{
-		class Circle
-		{
-		public:
-			Circle(double r = 1) : radius(r) {}
-
-			double getArea() const;
-			double getRadius() const;
-			void setRadius(double r);
-
 		private:
-			double radius;
+			Room room1, room2;
+
+		public:
+			TwoRoomApartment(string n1, string n2)
+			{
+				room1 = Room(n1);
+				room2 = Room(n2);
+			}
 		};
-		void displayCircle(const Circle& c)
+
+		void testComposition()
 		{
-			cout << "Radius: "
-				<< c.getRadius() << endl;
-			cout << "Area: "
-				<< c.getArea() << endl;
+			TwoRoomApartment apartment("Living Room", "Bedroom");
 		}
-		void initializeCircle(Circle& c, double r)
-		{
-			c.setRadius(r);
-		}
+
 		int main()
 		{
-			Circle c(5);
-			initializeCircle(c, 10);
-			displayCircle(c);
+			testAggregation();
+			testComposition();
 			return 0;
 		}
-		double Circle::getArea() const { return radius * radius * 3.14159; }
-		double Circle::getRadius() const { return radius; }
-		void Circle::setRadius(double r) { radius = r; }
-	} // namespace Ex9
 
-} // namespace Lec6
+	}// namespace Ex1
+
+	namespace Ex2
+	{
+		void printArray(int* list, int size)
+		{
+			for (int i = 0; i < size; i++)
+				cout << list[i] << " ";
+		}
+
+		int main()
+		{
+			int a[] = { 1,2,3 };
+			printArray(a, 3);
+			return 0;
+		}
+	} // namespace Ex2
+
+	namespace Ex3
+	{
+		void reverse(int* list, int size)
+		{
+			int* left = list;
+			int* right = list + size - 1;
+
+			for (; left < right; ++left, --right)
+			{
+				int temp = *left;
+				*left = *right;
+				*right = temp;
+			}
+		}
+
+		int main()
+		{
+			int myArray[5] =
+			{ 1, 2, 3, 4, 5 };
+
+			reverse(myArray, 5);
+
+			// Print the reversed array
+			for (int i = 0; i < 5; i++)
+				cout << myArray[i] << " ";
+
+			return 0;
+		}
+	} // namespace Ex3
+
+	namespace Ex4
+	{
+		int main()
+		{
+			char continueInput = 'Y';
+
+			while (continueInput == 'Y')
+			{
+				cout << "Enter the size of the array: ";
+				int size;
+				cin >> size;
+				int* array = new int[size];
+
+				cout << "Enter " << size << " integers:" << endl;
+				int sum = 0;
+				for (int i = 0; i < size; ++i)
+				{
+					cin >> array[i];
+					sum += array[i];
+				}
+
+				cout << "You entered:" << endl;
+				for (int i = 0; i < size; ++i)
+					cout << array[i] << " ";
+				cout << endl;
+				cout << "The sum is: " << sum << endl;
+
+				delete[] array;
 
 
-using namespace Lec6;
+				// Ask user to repeat or exit
+				cout << "Do you want to enter another array? (Y/N): ";
+				cin >> continueInput;
+			}
+
+			return 0;
+		}
+
+	} // namespace Ex4
+} // namespace Lec7
+
+using namespace Lec7;
 
 int main()
 {
