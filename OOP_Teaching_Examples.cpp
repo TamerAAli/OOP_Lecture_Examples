@@ -2230,9 +2230,9 @@ namespace Lec7
 
 		class TwoBookPackage
 		{
-		private: Book book1, book2;
+		private: Book &book1, &book2;
 		public:
-			TwoBookPackage(const Book& b1, const Book& b2)
+			TwoBookPackage(Book& b1, Book& b2)
 				: book1(b1), book2(b2) {}
 		};
 
@@ -2270,7 +2270,10 @@ namespace Lec7
 
 		void testComposition()
 		{
-			TwoRoomApartment apartment("Living Room", "Bedroom");
+			TwoRoomApartment apartment(
+				"Living Room",
+				"Bedroom"
+			);
 		}
 
 		int main()
