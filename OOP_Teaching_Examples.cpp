@@ -1133,132 +1133,79 @@ namespace others
 
 	} // namespace Lec6
 
-
-
-	namespace Lec9
+	namespace Lec7
 	{
+		// Aggregation and Composition
 		namespace Ex1
 		{
-			void reverse_lastLec(int* list, int size)
+			// Aggregation example: Library and Book
+			// The Book class represents a book with a title.
+			class Book
 			{
-				int* left = list;
-				int* right = list + size - 1;
+			private: string title, author;
+			public:
+				Book(string t = "title", string a = "author")
+					: title(t), author(a) {}
+			};
 
-				for (; left < right; ++left, --right)
-				{
-					int temp = *left;
-					*left = *right;
-					*right = temp;
-				}
+			class TwoBookPackage
+			{
+			private: Book& book1, & book2;
+			public:
+				TwoBookPackage(Book& b1, Book& b2)
+					: book1(b1), book2(b2) {}
+			};
+
+			void testAggregation()
+			{
+				// Books exist independently of the TwoBookPackage
+				Book book1("Age of Science", "Ahmed Zewail");
+				Book book2("The Book of Healing", "Ibn Sina");
+
+				TwoBookPackage package(book1, book2);
 			}
 
-			int* reverse(int* list, int size)
+			// Composition example: Apartment and Room
+			class Room
 			{
-				//int* result = list;
-				//int result[size];
-				//int result[1000];
-				//int* result = new int[size];
+			private: string name;
+			public:
+				Room(string n = "Room") : name(n) {}
+			};
 
-				for (int i = 0; i < size; ++i)
-					list[i] = list[size - 1 - i];
-				return list;
-			}
-
-			int main()
-			{
-				int myArray[5] = { 1, 2, 3, 4, 5 };
-
-				reverse_lastLec(myArray, 5);
-
-				// Print the original array
-				cout << "Original array: ";
-				for (int i = 0; i < 5; i++)
-					cout << myArray[i] << " ";
-				cout << endl;
-
-				// Print the reversed array
-
-				return 0;
-			}
-		} // namespace Ex1
-
-		namespace Ex2
-		{
-#include <iostream>
-			using namespace std;
-
-			class AudioBuffer
+			// The Apartment class represents an apartment, which is composed of Rooms.
+			// Rooms cannot logically exist without an apartment, illustrating a strong relationship.
+			class TwoRoomApartment
 			{
 			private:
-				const int NUM_SAMPLES; // Number of samples
-				float* samples = nullptr; // Pointer to array of samples
+				Room room1, room2;
 
 			public:
-				AudioBuffer(int nSamples) : NUM_SAMPLES(nSamples)
+				TwoRoomApartment(string n1, string n2)
 				{
-					if (!nSamples) return;
-
-					samples = new float[nSamples];
-					for (int i = 0; i < nSamples; ++i)
-						samples[i] = 0.0f; // default values
-				}
-
-				~AudioBuffer()
-				{
-					if (this->samples)
-						delete[] this->samples;
-				}
-
-				void setSample(int index, float value)
-				{
-					samples[index] = value;
+					room1 = Room(n1);
+					room2 = Room(n2);
 				}
 			};
 
-			int main()
+			void testComposition()
 			{
-				AudioBuffer buffer(5);
-
-				// Set some sample values
-				buffer.setSample(0, 0.1f);
-				buffer.setSample(1, 0.5f);
-				buffer.setSample(2, 0.9f);
-
-				return 0; // Destructor is called
+				TwoRoomApartment apartment(
+					"Living Room",
+					"Bedroom"
+				);
 			}
-		} // namespace Ex2
 
-		namespace Ex3 // const pointer
-		{
-			//int main()
-			//{
-			//	double radius = 5, length = 4;
-			//	const double MAX_RADIUS = 100;
-
-			//	double* const ptr1 = &radius;
-			//	cout << *ptr1 << endl;
-			//	*ptr1 += 5;
-
-			//	ptr1 = &length;
-			//	cout << *ptr1 << endl;
-			//	*ptr1 += 5;
-
-			//	ptr1 = &MAX_RADIUS;
-			//	cout << *ptr1 << endl;
-
-			//	return 0;
-			//}
-		} // namespace Ex3
-
-		namespace freeExample
-		{
 			int main()
 			{
+				testAggregation();
+				testComposition();
 				return 0;
 			}
-		} // namespace freeExample
 
-	} // namespace Lec9
+		}// namespace Ex1
+	} // namespace Lec7
+
 
 	namespace Lec10
 	{
@@ -2213,78 +2160,8 @@ namespace others
 }; // namespace past
 
 
-namespace Lec7
+namespace Lec9
 {
-	// Aggregation and Composition
-	namespace Ex1
-	{
-		// Aggregation example: Library and Book
-		// The Book class represents a book with a title.
-		class Book
-		{
-		private: string title, author;
-		public:
-			Book(string t = "title", string a = "author")
-				: title(t), author(a) {}
-		};
-
-		class TwoBookPackage
-		{
-		private: Book &book1, &book2;
-		public:
-			TwoBookPackage(Book& b1, Book& b2)
-				: book1(b1), book2(b2) {}
-		};
-
-		void testAggregation()
-		{
-			// Books exist independently of the TwoBookPackage
-			Book book1("Age of Science", "Ahmed Zewail");
-			Book book2("The Book of Healing", "Ibn Sina");
-
-			TwoBookPackage package(book1, book2);
-		}
-
-		// Composition example: Apartment and Room
-		class Room
-		{
-		private: string name;
-		public:
-			Room(string n = "Room") : name(n) {}
-		};
-
-		// The Apartment class represents an apartment, which is composed of Rooms.
-		// Rooms cannot logically exist without an apartment, illustrating a strong relationship.
-		class TwoRoomApartment
-		{
-		private:
-			Room room1, room2;
-
-		public:
-			TwoRoomApartment(string n1, string n2)
-			{
-				room1 = Room(n1);
-				room2 = Room(n2);
-			}
-		};
-
-		void testComposition()
-		{
-			TwoRoomApartment apartment(
-				"Living Room",
-				"Bedroom"
-			);
-		}
-
-		int main()
-		{
-			testAggregation();
-			testComposition();
-			return 0;
-		}
-
-	}// namespace Ex1
-
 	namespace Ex2
 	{
 		void printArray(int* list, int size)
@@ -2370,9 +2247,131 @@ namespace Lec7
 		}
 
 	} // namespace Ex4
-} // namespace Lec7
 
-using namespace Lec7;
+	namespace Ex5
+	{
+		void reverse_lastLec(int* list, int size)
+		{
+			int* left = list;
+			int* right = list + size - 1;
+
+			for (; left < right; ++left, --right)
+			{
+				int temp = *left;
+				*left = *right;
+				*right = temp;
+			}
+		}
+
+		int* reverse(int* list, int size)
+		{
+			//int* result = list;
+			//int result[size];
+			//int result[1000];
+			//int* result = new int[size];
+
+			for (int i = 0; i < size; ++i)
+				list[i] = list[size - 1 - i];
+			return list;
+		}
+
+		int main()
+		{
+			int myArray[5] = { 1, 2, 3, 4, 5 };
+
+			reverse_lastLec(myArray, 5);
+
+			// Print the original array
+			cout << "Original array: ";
+			for (int i = 0; i < 5; i++)
+				cout << myArray[i] << " ";
+			cout << endl;
+
+			// Print the reversed array
+
+			return 0;
+		}
+	} // namespace Ex1
+
+	namespace Ex6
+	{
+#include <iostream>
+		using namespace std;
+
+		class AudioBuffer
+		{
+		private:
+			const int NUM_SAMPLES; // Number of samples
+			float* samples = nullptr; // Pointer to array of samples
+
+		public:
+			AudioBuffer(int nSamples) : NUM_SAMPLES(nSamples)
+			{
+				if (!nSamples) return;
+
+				samples = new float[nSamples];
+				for (int i = 0; i < nSamples; ++i)
+					samples[i] = 0.0f; // default values
+			}
+
+			~AudioBuffer()
+			{
+				if (this->samples)
+					delete[] this->samples;
+			}
+
+			void setSample(int index, float value)
+			{
+				samples[index] = value;
+			}
+		};
+
+		int main()
+		{
+			AudioBuffer buffer(5);
+
+			// Set some sample values
+			buffer.setSample(0, 0.1f);
+			buffer.setSample(1, 0.5f);
+			buffer.setSample(2, 0.9f);
+
+			return 0; // Destructor is called
+		}
+	} // namespace Ex2
+
+	namespace Ex7 // const pointer
+	{
+		//int main()
+		//{
+		//	double radius = 5, length = 4;
+		//	const double MAX_RADIUS = 100;
+
+		//	double* const ptr1 = &radius;
+		//	cout << *ptr1 << endl;
+		//	*ptr1 += 5;
+
+		//	ptr1 = &length;
+		//	cout << *ptr1 << endl;
+		//	*ptr1 += 5;
+
+		//	ptr1 = &MAX_RADIUS;
+		//	cout << *ptr1 << endl;
+
+		//	return 0;
+		//}
+	} // namespace Ex3
+
+	namespace freeExample
+	{
+		int main()
+		{
+			return 0;
+		}
+	} // namespace freeExample
+
+} // namespace Lec9
+
+using namespace Lec9;
 
 int main()
 {
