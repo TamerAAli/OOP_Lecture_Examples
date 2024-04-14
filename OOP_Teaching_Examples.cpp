@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <list>
 #include <vector>
@@ -2160,8 +2161,9 @@ namespace others
 }; // namespace past
 
 
-namespace Lec9
+namespace Lec10
 {
+	// printArray
 	namespace Ex2
 	{
 		void printArray(int* list, int size)
@@ -2169,7 +2171,6 @@ namespace Lec9
 			for (int i = 0; i < size; i++)
 				cout << list[i] << " ";
 		}
-
 		int main()
 		{
 			int a[] = { 1,2,3 };
@@ -2178,6 +2179,7 @@ namespace Lec9
 		}
 	} // namespace Ex2
 
+	// reverse
 	namespace Ex3
 	{
 		void reverse(int* list, int size)
@@ -2208,47 +2210,8 @@ namespace Lec9
 		}
 	} // namespace Ex3
 
+	// reverse with return
 	namespace Ex4
-	{
-		int main()
-		{
-			char continueInput = 'Y';
-
-			while (continueInput == 'Y')
-			{
-				cout << "Enter the size of the array: ";
-				int size;
-				cin >> size;
-				int* array = new int[size];
-
-				cout << "Enter " << size << " integers:" << endl;
-				int sum = 0;
-				for (int i = 0; i < size; ++i)
-				{
-					cin >> array[i];
-					sum += array[i];
-				}
-
-				cout << "You entered:" << endl;
-				for (int i = 0; i < size; ++i)
-					cout << array[i] << " ";
-				cout << endl;
-				cout << "The sum is: " << sum << endl;
-
-				delete[] array;
-
-
-				// Ask user to repeat or exit
-				cout << "Do you want to enter another array? (Y/N): ";
-				cin >> continueInput;
-			}
-
-			return 0;
-		}
-
-	} // namespace Ex4
-
-	namespace Ex5
 	{
 		void reverse_lastLec(int* list, int size)
 		{
@@ -2291,55 +2254,117 @@ namespace Lec9
 
 			return 0;
 		}
-	} // namespace Ex1
+	} // namespace Ex4
 
-	namespace Ex6
+	// repeat dyn array
+	namespace Ex5
 	{
-#include <iostream>
-		using namespace std;
-
-		class AudioBuffer
-		{
-		private:
-			const int NUM_SAMPLES; // Number of samples
-			float* samples = nullptr; // Pointer to array of samples
-
-		public:
-			AudioBuffer(int nSamples) : NUM_SAMPLES(nSamples)
-			{
-				if (!nSamples) return;
-
-				samples = new float[nSamples];
-				for (int i = 0; i < nSamples; ++i)
-					samples[i] = 0.0f; // default values
-			}
-
-			~AudioBuffer()
-			{
-				if (this->samples)
-					delete[] this->samples;
-			}
-
-			void setSample(int index, float value)
-			{
-				samples[index] = value;
-			}
-		};
-
 		int main()
 		{
-			AudioBuffer buffer(5);
+			char continueInput = 'Y';
 
-			// Set some sample values
-			buffer.setSample(0, 0.1f);
-			buffer.setSample(1, 0.5f);
-			buffer.setSample(2, 0.9f);
+			while (continueInput == 'Y')
+			{
+				cout << "Enter the size of the array: ";
+				int size;
+				cin >> size;
+				int* array = new int[size];
 
-			return 0; // Destructor is called
+				cout << "Enter " << size << " integers:" << endl;
+				int sum = 0;
+				for (int i = 0; i < size; ++i)
+				{
+					cin >> array[i];
+					sum += array[i];
+				}
+
+				cout << "You entered:" << endl;
+				for (int i = 0; i < size; ++i)
+					cout << array[i] << " ";
+				cout << endl;
+				cout << "The sum is: " << sum << endl;
+
+				delete[] array;
+
+
+				// Ask user to repeat or exit
+				cout << "Do you want to enter another array? (Y/N): ";
+				cin >> continueInput;
+			}
+
+			return 0;
 		}
+
+	} // namespace Ex5
+
+	// destructor importance
+	// copy constructor
+	namespace Ex6
+	{
+class AudioBuffer
+{
+private:
+float* samples = nullptr; // Array of samples
+int size = 0;
+public:
+const int CAPACITY;
+AudioBuffer(int n = 0) : CAPACITY(n)
+{
+	if (n <= 0) return;
+	samples = new float[n];
+	for (int i = 0; i < n; ++i) samples[i] = 0.0;
+}
+
+AudioBuffer(const AudioBuffer& other) :
+	CAPACITY(other.CAPACITY), size(other.size)
+{
+	if (other.CAPACITY <= 0) return;
+
+	this->samples = new float[other.CAPACITY];
+
+	for (int i = 0; i < this->CAPACITY; ++i)
+		this->samples[i] = other.samples[i];
+}
+
+~AudioBuffer()
+{
+	delete[] samples;
+	samples = nullptr;
+}
+bool addSample(float value)
+{
+	if (!samples || size >= CAPACITY) return false;
+
+	samples[size++] = value;
+	return true;
+}
+};
+
+int main()
+{
+int NUM_SAMPLES = 50;
+AudioBuffer buffer(NUM_SAMPLES);
+
+// Open a file for reading
+ifstream file("samples.txt");
+
+float sample;
+
+// Read sample values from the file
+while (file >> sample &&
+	buffer.addSample(sample))
+{
+}
+
+file.close(); // Close the file
+
+return 0; // Destructor is called
+}
+
 	} // namespace Ex2
 
-	namespace Ex7 // const pointer
+	// const pointer
+	namespace Ex7
 	{
 		//int main()
 		//{
@@ -2369,12 +2394,12 @@ namespace Lec9
 		}
 	} // namespace freeExample
 
-} // namespace Lec9
+} // namespace Lec10
 
-using namespace Lec9;
+using namespace Lec10;
 
 int main()
 {
-	Ex1::main();
+	Ex6::main();
 	return 0;
 }
