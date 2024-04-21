@@ -1207,381 +1207,207 @@ namespace others
 		}// namespace Ex1
 	} // namespace Lec7
 
-
 	namespace Lec10
 	{
-		namespace Ex1
-		{
-			class GeometricObject
-			{
-			public:
-				GeometricObject();
-				GeometricObject(const string&, bool);
-				string getColor() const;
-				void setColor(const string&);
-				bool isFilled() const;
-				void setFilled(bool);
-				string toString() const;
-
-			private:
-				string color;
-				bool filled;
-			}; // Must place semicolon here
-
-			GeometricObject::GeometricObject()
-				: color("white"), filled(false)
-			{
-			}
-
-			GeometricObject::GeometricObject(const string& col, bool fil)
-			{
-				color = col;
-				filled = fil;
-			}
-
-			string GeometricObject::getColor() const
-			{
-				return color;
-			}
-
-			void GeometricObject::setColor(const string& col)
-			{
-				color = col;
-			}
-
-			bool GeometricObject::isFilled() const
-			{
-				return filled;
-			}
-
-			void GeometricObject::setFilled(bool fil)
-			{
-				filled = fil;
-			}
-
-			string GeometricObject::toString() const
-			{
-				return "Geometric Object";
-			}
-
-
-			class Circle : public GeometricObject
-			{
-			public:
-				Circle();
-				Circle(double);
-				Circle(double, const string&, bool);
-				double getRadius() const;
-				void setRadius(double);
-				double getArea() const;
-				double getPerimeter() const;
-				double getDiameter() const;
-				string toString() const;
-
-			private:
-				double radius;
-			}; // Must place semicolon here
-
-			// Construct a default circle object
-			Circle::Circle()
-			{
-				radius = 1;
-			}
-
-			// Construct a circle object with specified radius
-			Circle::Circle(double newRadius)
-			{
-				setRadius(newRadius);
-			}
-
-			// Construct a circle object with specified radius,
-			//  color and filled values
-			Circle::Circle(double newRadius, const string& col, bool fil)
-			{
-
-
-
-			}
-
-			// Return the radius of this circle
-			double Circle::getRadius() const
-			{
-				return radius;
-			}
-
-			// Return the diameter of this circle
-			double Circle::getDiameter() const
-			{
-				return 2 * radius;
-			}
-
-			// Set a new radius
-			void Circle::setRadius(double newRadius)
-			{
-				if (newRadius >= 0)
-					radius = newRadius;
-				else
-					radius = 0;
-			}
-			// Return the area of this circle
-			double Circle::getArea() const
-			{
-				return radius * radius * 3.14159;
-			}
-
-			// Return the perimeter of this circle
-			double Circle::getPerimeter() const
-			{
-				return 2 * radius * 3.14159;
-			}
-
-			// Redefine the toString function
-			string Circle::toString() const
-			{
-				return "Circle object";
-			}
-		} // namespace Ex1
-
+		// printArray
 		namespace Ex2
 		{
-			class BaseClass
+			void printArray(int* list, int size)
 			{
-			public:
-				BaseClass() // Constructor
-				{
-					cout << "BaseClass constructor.\n";
-				}
-				~BaseClass() // Destructor
-				{
-					cout << "BaseClass destructor.\n";
-				}
-			};
-			class DerivedClass : public BaseClass
-			{
-			public:
-				DerivedClass() // Constructor
-				{
-					cout << "DerivedClass constructor.\n";
-				}
-				~DerivedClass() // Destructor
-				{
-					cout << "DerivedClass destructor.\n";
-				}
-			};
-
+				for (int i = 0; i < size; i++)
+					cout << list[i] << " ";
+			}
 			int main()
 			{
-				cout << "We will now define a DerivedClass object.\n";
-				DerivedClass object;
-				cout << "The program is now going to end.\n";
-
+				int a[] = { 1,2,3 };
+				printArray(a, 3);
 				return 0;
 			}
+		} // namespace Ex2
 
-		} // namespace
-
+		// reverse
 		namespace Ex3
 		{
-			class BaseClass
+			void reverse(int* list, int size)
 			{
-			public:
-				BaseClass() { cout << "1 "; }
-				~BaseClass() { cout << "2 "; }
-			};
-			class DerivedClass : public BaseClass
-			{
-			public:
-				DerivedClass() { cout << "3 "; }
-				~DerivedClass() { cout << "4 "; }
-			};
-			DerivedClass* someFunc()
-			{
-				cout << "5 "; DerivedClass* ptr = new DerivedClass;
-				cout << "6 "; return ptr;
+				int* left = list;
+				int* right = list + size - 1;
+
+				for (; left < right; ++left, --right)
+				{
+					int temp = *left;
+					*left = *right;
+					*right = temp;
+				}
 			}
+
 			int main()
 			{
-				cout << "7 "; DerivedClass* ptr = someFunc();
-				cout << "8 "; delete ptr;
+				int myArray[5] =
+				{ 1, 2, 3, 4, 5 };
+
+				reverse(myArray, 5);
+
+				// Print the reversed array
+				for (int i = 0; i < 5; i++)
+					cout << myArray[i] << " ";
+
 				return 0;
 			}
 		} // namespace Ex3
 
+		// reverse with return
 		namespace Ex4
 		{
-			class Mover
+			void reverse_lastLec(int* list, int size)
 			{
-			protected: int incr, coveredD;
-			public:
-				Mover() : incr(10), coveredD(0) {}
-				void move() { coveredD += incr; }
-				int getCoveredDistance() const { return coveredD; }
-			};
+				int* left = list;
+				int* right = list + size - 1;
 
-			class FastRunner : public Mover
-			{
-			public: FastRunner() { incr = 30; }
-			};
-			class SlowWalker : public Mover
-			{
-			public: SlowWalker() { incr = 5; }
-			};
+				for (; left < right; ++left, --right)
+				{
+					int temp = *left;
+					*left = *right;
+					*right = temp;
+				}
+			}
 
+			int* reverse(int* list, int size)
+			{
+				//int* result = list;
+				//int result[size];
+				//int result[1000];
+				//int* result = new int[size];
+
+				for (int i = 0; i < size; ++i)
+					list[i] = list[size - 1 - i];
+				return list;
+			}
 
 			int main()
 			{
-				FastRunner runner;
-				SlowWalker walker;
+				int myArray[5] = { 1, 2, 3, 4, 5 };
 
-				runner.move();  // Moves by 30 units
-				walker.move();  // Moves by 5 units
+				reverse_lastLec(myArray, 5);
 
-				cout << "Runner covered: " << runner.getCoveredDistance() << endl;
-				cout << "Walker covered: " << walker.getCoveredDistance() << endl;
+				// Print the original array
+				cout << "Original array: ";
+				for (int i = 0; i < 5; i++)
+					cout << myArray[i] << " ";
+				cout << endl;
+
+				// Print the reversed array
 
 				return 0;
 			}
 		} // namespace Ex4
 
+		// repeat dyn array
 		namespace Ex5
 		{
-			class P
+			int main()
 			{
-			public: void print() { cout << "P "; }
-			};
+				char continueInput = 'Y';
 
-			class Q :public P { };
+				while (continueInput == 'Y')
+				{
+					cout << "Enter the size of the array: ";
+					int size;
+					cin >> size;
+					int* array = new int[size];
 
-			class R :public Q { public: void print() { cout << "R "; } };
+					cout << "Enter " << size << " integers:" << endl;
+					int sum = 0;
+					for (int i = 0; i < size; ++i)
+					{
+						cin >> array[i];
+						sum += array[i];
+					}
 
-			void display(P& p) { p.print(); }
+					cout << "You entered:" << endl;
+					for (int i = 0; i < size; ++i)
+						cout << array[i] << " ";
+					cout << endl;
+					cout << "The sum is: " << sum << endl;
 
-			int main(void)
-			{
-				P* p = new R;
-				p->print();
+					delete[] array;
+
+
+					// Ask user to repeat or exit
+					cout << "Do you want to enter another array? (Y/N): ";
+					cin >> continueInput;
+				}
+
 				return 0;
 			}
 
 		} // namespace Ex5
 
+		// destructor importance
+		// copy constructor
 		namespace Ex6
 		{
-			class GeomObj
+			class AudioBuffer
 			{
+			private:
+				float* samples = nullptr; // Array of samples
+				int size = 0;
 			public:
-				string toString()
+				const int CAPACITY;
+				AudioBuffer(int n = 0) : CAPACITY(n)
 				{
-					return "GeomObj";
+					if (n <= 0) return;
+					samples = new float[n];
+					for (int i = 0; i < n; ++i) samples[i] = 0.0;
 				}
-			};
-			class Circle : public GeomObj
-			{
-			public:
-				string toString()
+
+				AudioBuffer(const AudioBuffer& other) :
+					CAPACITY(other.CAPACITY), size(other.size)
 				{
-					return "Circle";
+					if (other.CAPACITY <= 0) return;
+
+					this->samples = new float[other.CAPACITY];
+
+					for (int i = 0; i < this->CAPACITY; ++i)
+						this->samples[i] = other.samples[i];
 				}
-			};
-			void dispType(GeomObj* geo)
-			{
-				cout << geo->toString();
-				cout << endl;
-			}
 
-			int main()
-			{
-				GeomObj* base = new GeomObj;
-				dispType(base);
-
-				Circle* derived = new Circle;
-				dispType(derived);
-
-				return 0;
-			}
-		} // namespace Ex6
-
-		namespace Ex7
-		{
-			class Animal
-			{
-			public: virtual void Speak() { }
-			};
-			class Dog : public Animal { void Speak() { cout << "Woof!"; } };
-			class Duck : public Animal { void Speak() { cout << "Quack!"; } };
-			class Cat : public Animal { void Speak() { cout << "Meow!"; } };
-
-			int main()
-			{
-				Animal* animals[3] =
+				~AudioBuffer()
 				{
-					new Dog(),
-					new Duck(),
-					new Cat()
-				};
-
-				for (int i = 0; i < 3; i++)
-					animals[i]->Speak();
-				return 0;
-			}
-		} // namespace Ex7
-
-		// override / final
-		namespace Ex8
-		{
-			class Base
-			{
-			public:
-				void display()
-				{
-					cout << "Base" << endl;
+					delete[] samples;
+					samples = nullptr;
 				}
-			};
-
-			class Derived : public Base
-			{
-			public:
-				void desplay()
+				bool addSample(float value)
 				{
-					cout << "Derived" << endl;
+					if (!samples || size >= CAPACITY) return false;
+
+					samples[size++] = value;
+					return true;
 				}
 			};
 
 			int main()
 			{
-				Base* b = new Derived;
-				b->display();
-				return 0;
-			}
-		} // namespace Ex7
+				int NUM_SAMPLES = 50;
+				AudioBuffer buffer(NUM_SAMPLES);
 
-		namespace Ex9
-		{
-			class Base
-			{
-			public: int baseData = 5;
-			};
-			class Derived : public Base
-			{
-			public: long double extraData = 5;
-			};
-			void display(Base** arr, int size)
-			{
-				for (int i = 0; i < size; i++)
-					cout << arr[i]->baseData << endl;
+				// Open a file for reading
+				ifstream file("samples.txt");
+
+				float sample;
+
+				// Read sample values from the file
+				while (file >> sample &&
+					buffer.addSample(sample))
+				{
+				}
+
+				file.close(); // Close the file
+
+				return 0; // Destructor is called
 			}
 
-			int main()
-			{
-				Base** arr = new Base * [3]; // Array of Derived objects, but pointer is of type Base
-				arr[0] = new Derived;
-				arr[1] = new Derived;
-				arr[2] = new Derived;
-				display(arr, 3);
-				return 0;
-			}
-
-		} // namespace Ex8
+		} // namespace Ex2
 
 		namespace freeExample
 		{
@@ -1590,9 +1416,12 @@ namespace others
 				return 0;
 			}
 		} // namespace freeExample
-	} // namespace L10
 
-	namespace Lec11
+	} // namespace Lec10
+
+
+
+	namespace Lec11_
 	{
 		namespace Ex1
 		{
@@ -2161,211 +1990,98 @@ namespace others
 }; // namespace past
 
 
-namespace Lec10
+namespace Lec11
 {
-	// printArray
-	namespace Ex2
-	{
-		void printArray(int* list, int size)
-		{
-			for (int i = 0; i < size; i++)
-				cout << list[i] << " ";
-		}
-		int main()
-		{
-			int a[] = { 1,2,3 };
-			printArray(a, 3);
-			return 0;
-		}
-	} // namespace Ex2
-
-	// reverse
-	namespace Ex3
-	{
-		void reverse(int* list, int size)
-		{
-			int* left = list;
-			int* right = list + size - 1;
-
-			for (; left < right; ++left, --right)
-			{
-				int temp = *left;
-				*left = *right;
-				*right = temp;
-			}
-		}
-
-		int main()
-		{
-			int myArray[5] =
-			{ 1, 2, 3, 4, 5 };
-
-			reverse(myArray, 5);
-
-			// Print the reversed array
-			for (int i = 0; i < 5; i++)
-				cout << myArray[i] << " ";
-
-			return 0;
-		}
-	} // namespace Ex3
-
-	// reverse with return
-	namespace Ex4
-	{
-		void reverse_lastLec(int* list, int size)
-		{
-			int* left = list;
-			int* right = list + size - 1;
-
-			for (; left < right; ++left, --right)
-			{
-				int temp = *left;
-				*left = *right;
-				*right = temp;
-			}
-		}
-
-		int* reverse(int* list, int size)
-		{
-			//int* result = list;
-			//int result[size];
-			//int result[1000];
-			//int* result = new int[size];
-
-			for (int i = 0; i < size; ++i)
-				list[i] = list[size - 1 - i];
-			return list;
-		}
-
-		int main()
-		{
-			int myArray[5] = { 1, 2, 3, 4, 5 };
-
-			reverse_lastLec(myArray, 5);
-
-			// Print the original array
-			cout << "Original array: ";
-			for (int i = 0; i < 5; i++)
-				cout << myArray[i] << " ";
-			cout << endl;
-
-			// Print the reversed array
-
-			return 0;
-		}
-	} // namespace Ex4
-
-	// repeat dyn array
-	namespace Ex5
-	{
-		int main()
-		{
-			char continueInput = 'Y';
-
-			while (continueInput == 'Y')
-			{
-				cout << "Enter the size of the array: ";
-				int size;
-				cin >> size;
-				int* array = new int[size];
-
-				cout << "Enter " << size << " integers:" << endl;
-				int sum = 0;
-				for (int i = 0; i < size; ++i)
-				{
-					cin >> array[i];
-					sum += array[i];
-				}
-
-				cout << "You entered:" << endl;
-				for (int i = 0; i < size; ++i)
-					cout << array[i] << " ";
-				cout << endl;
-				cout << "The sum is: " << sum << endl;
-
-				delete[] array;
-
-
-				// Ask user to repeat or exit
-				cout << "Do you want to enter another array? (Y/N): ";
-				cin >> continueInput;
-			}
-
-			return 0;
-		}
-
-	} // namespace Ex5
-
 	// destructor importance
 	// copy constructor
-	namespace Ex6
+	namespace Ex1a
 	{
-class AudioBuffer
-{
-private:
-float* samples = nullptr; // Array of samples
-int size = 0;
-public:
-const int CAPACITY;
-AudioBuffer(int n = 0) : CAPACITY(n)
-{
-	if (n <= 0) return;
-	samples = new float[n];
-	for (int i = 0; i < n; ++i) samples[i] = 0.0;
-}
+		class AudioBuffer
+		{
+		private:
+			float* samples = nullptr; // Array of samples
+			int size = 0;
+		public:
+			const int CAPACITY;
+			AudioBuffer(int n = 0) : CAPACITY(n)
+			{
+				if (n <= 0) return;
+				samples = new float[n];
+				for (int i = 0; i < n; ++i) samples[i] = 0.0;
+			}
 
-AudioBuffer(const AudioBuffer& other) :
-	CAPACITY(other.CAPACITY), size(other.size)
-{
-	if (other.CAPACITY <= 0) return;
+			AudioBuffer(const AudioBuffer& other) :
+				CAPACITY(other.CAPACITY), size(other.size)
+			{
+				if (other.CAPACITY <= 0) return;
 
-	this->samples = new float[other.CAPACITY];
+				this->samples = new float[other.CAPACITY];
 
-	for (int i = 0; i < this->CAPACITY; ++i)
-		this->samples[i] = other.samples[i];
-}
+				for (int i = 0; i < this->CAPACITY; ++i)
+					this->samples[i] = other.samples[i];
+			}
 
-~AudioBuffer()
-{
-	delete[] samples;
-	samples = nullptr;
-}
-bool addSample(float value)
-{
-	if (!samples || size >= CAPACITY) return false;
+			~AudioBuffer()
+			{
+				delete[] samples;
+				samples = nullptr;
+			}
+			bool addSample(float value)
+			{
+				if (!samples || size >= CAPACITY) return false;
 
-	samples[size++] = value;
-	return true;
-}
-};
+				samples[size++] = value;
+				return true;
+			}
+		};
 
-int main()
-{
-int NUM_SAMPLES = 50;
-AudioBuffer buffer(NUM_SAMPLES);
+		int main()
+		{
+			int NUM_SAMPLES = 50;
+			AudioBuffer buffer(NUM_SAMPLES);
 
-// Open a file for reading
-ifstream file("samples.txt");
+			// Open a file for reading
+			ifstream file("samples.txt");
 
-float sample;
+			float sample;
 
-// Read sample values from the file
-while (file >> sample &&
-	buffer.addSample(sample))
-{
-}
+			// Read sample values from the file
+			while (file >> sample &&
+				buffer.addSample(sample))
+			{
+			}
 
-file.close(); // Close the file
+			file.close(); // Close the file
 
-return 0; // Destructor is called
-}
-
-	} // namespace Ex2
+			return 0; // Destructor is called
+		}
+	} // namespace Ex1a
 
 	// const pointer
-	namespace Ex7
+	namespace Ex1b
 	{
+		class Circle
+		{
+		private:
+			double radius;
+		public:
+			Circle(double r) : radius(r) { }
+			void setRadius(double r) { radius = r; }
+			double getRadius() const { return radius; }
+			double getArea() const { return 3.14 * radius * radius; }
+		};
+
+		// OK function!
+		void displayCircleData(const Circle* const p)
+		{
+			// p = new Circle(10); // Should not do that
+			// p->setRadius(10); // Should not do that
+
+			cout << "Radius: " << p->getRadius() << endl;
+			cout << "Area: " << p->getArea() << endl;
+		}
+
+
 		//int main()
 		//{
 		//	double radius = 5, length = 4;
@@ -2384,7 +2100,413 @@ return 0; // Destructor is called
 
 		//	return 0;
 		//}
+	} // namespace Ex1b
+
+	namespace Ex1
+	{
+		class GeometricObject
+		{
+		public:
+			GeometricObject();
+			GeometricObject(const string&, bool);
+			string getColor() const;
+			void setColor(const string&);
+			bool isFilled() const;
+			void setFilled(bool);
+			string toString() const;
+
+		private:
+			string color;
+			bool filled;
+		}; // Must place semicolon here
+
+		GeometricObject::GeometricObject()
+			: color("white"), filled(false)
+		{
+		}
+
+		GeometricObject::GeometricObject(const string& col, bool fil)
+		{
+			color = col;
+			filled = fil;
+		}
+
+		string GeometricObject::getColor() const
+		{
+			return color;
+		}
+
+		void GeometricObject::setColor(const string& col)
+		{
+			color = col;
+		}
+
+		bool GeometricObject::isFilled() const
+		{
+			return filled;
+		}
+
+		void GeometricObject::setFilled(bool fil)
+		{
+			filled = fil;
+		}
+
+		string GeometricObject::toString() const
+		{
+			return "Geometric Object";
+		}
+
+
+		class Circle : public GeometricObject
+		{
+		public:
+			Circle();
+			Circle(double);
+			Circle(double, const string&, bool);
+			double getRadius() const;
+			void setRadius(double);
+			double getArea() const;
+			double getPerimeter() const;
+			double getDiameter() const;
+			string toString() const;
+
+		private:
+			double radius;
+		}; // Must place semicolon here
+
+		// Construct a default circle object
+		Circle::Circle()
+		{
+			radius = 1;
+		}
+
+		// Construct a circle object with specified radius
+		Circle::Circle(double newRadius)
+		{
+			setRadius(newRadius);
+		}
+
+		// Construct a circle object with specified radius,
+		//  color and filled values
+		Circle::Circle(double newRadius, const string& col, bool fil)
+		{
+
+
+
+		}
+
+		// Return the radius of this circle
+		double Circle::getRadius() const
+		{
+			return radius;
+		}
+
+		// Return the diameter of this circle
+		double Circle::getDiameter() const
+		{
+			return 2 * radius;
+		}
+
+		// Set a new radius
+		void Circle::setRadius(double newRadius)
+		{
+			if (newRadius >= 0)
+				radius = newRadius;
+			else
+				radius = 0;
+		}
+		// Return the area of this circle
+		double Circle::getArea() const
+		{
+			return radius * radius * 3.14159;
+		}
+
+		// Return the perimeter of this circle
+		double Circle::getPerimeter() const
+		{
+			return 2 * radius * 3.14159;
+		}
+
+		// Redefine the toString function
+		string Circle::toString() const
+		{
+			return "Circle object";
+		}
+	} // namespace Ex1
+
+	namespace Ex2
+	{
+		class BaseClass
+		{
+		public:
+			BaseClass() // Constructor
+			{
+				cout << "BaseClass constructor.\n";
+			}
+			~BaseClass() // Destructor
+			{
+				cout << "BaseClass destructor.\n";
+			}
+		};
+		class DerivedClass : public BaseClass
+		{
+		public:
+			DerivedClass() // Constructor
+			{
+				cout << "DerivedClass constructor.\n";
+			}
+			~DerivedClass() // Destructor
+			{
+				cout << "DerivedClass destructor.\n";
+			}
+		};
+
+		int main()
+		{
+			cout << "We will now define a DerivedClass object.\n";
+			DerivedClass object;
+			cout << "The program is now going to end.\n";
+
+			return 0;
+		}
+
+	} // namespace
+
+	namespace Ex3
+	{
+		class BaseClass
+		{
+		public:
+			BaseClass() { cout << "1 "; }
+			~BaseClass() { cout << "2 "; }
+		};
+		class DerivedClass : public BaseClass
+		{
+		public:
+			DerivedClass() { cout << "3 "; }
+			~DerivedClass() { cout << "4 "; }
+		};
+		DerivedClass* someFunc()
+		{
+			cout << "5 "; DerivedClass* ptr = new DerivedClass;
+			cout << "6 "; return ptr;
+		}
+		int main()
+		{
+			cout << "7 "; DerivedClass* ptr = someFunc();
+			cout << "8 "; delete ptr;
+			return 0;
+		}
 	} // namespace Ex3
+
+	namespace Ex3b
+	{
+		class BaseClass
+		{
+		private:
+			int privData;
+			void privMethod() { }
+		protected:
+			int protData;
+			void protMethod() { }
+		public:
+			int pubData;
+			void pubMethod() { }
+		};
+		class DerivedClass : public BaseClass
+		{
+		public:
+			void DerivedClassMethod()
+			{
+				this->protData = 5;
+			}
+		};
+		int	main()
+		{
+			BaseClass base;
+			base.pubData = 10;
+			DerivedClass derived;
+			derived.pubData = 8;
+
+			return 0;
+		}
+	} // namespace Ex3b
+
+	namespace Ex4
+	{
+		class Mover
+		{
+		protected: int incr, coveredD;
+		public:
+			Mover() : incr(10), coveredD(0) {}
+			void move() { coveredD += incr; }
+			int getCoveredDistance() const { return coveredD; }
+		};
+
+		class FastRunner : public Mover
+		{
+		public: FastRunner() { incr = 30; }
+		};
+		class SlowWalker : public Mover
+		{
+		public: SlowWalker() { incr = 5; }
+		};
+
+
+		int main()
+		{
+			FastRunner runner;
+			SlowWalker walker;
+
+			runner.move();  // Moves by 30 units
+			walker.move();  // Moves by 5 units
+
+			cout << "Runner covered: " << runner.getCoveredDistance() << endl;
+			cout << "Walker covered: " << walker.getCoveredDistance() << endl;
+
+			return 0;
+		}
+	} // namespace Ex4
+
+	namespace Ex5
+	{
+		class P
+		{
+		public: void print() { cout << "P "; }
+		};
+
+		class Q :public P { };
+
+		class R :public Q { public: void print() { cout << "R "; } };
+
+		void display(P& p) { p.print(); }
+
+		int main(void)
+		{
+			P* p = new R;
+			p->print();
+			return 0;
+		}
+
+	} // namespace Ex5
+
+	namespace Ex6
+	{
+		class GeomObj
+		{
+		public:
+			string toString()
+			{
+				return "GeomObj";
+			}
+		};
+		class Circle : public GeomObj
+		{
+		public:
+			string toString()
+			{
+				return "Circle";
+			}
+		};
+		void dispType(GeomObj* geo)
+		{
+			cout << geo->toString();
+			cout << endl;
+		}
+
+		int main()
+		{
+			GeomObj* base = new GeomObj;
+			dispType(base);
+
+			Circle* derived = new Circle;
+			dispType(derived);
+
+			return 0;
+		}
+	} // namespace Ex6
+
+	namespace Ex7
+	{
+		class Animal
+		{
+		public: virtual void Speak() { }
+		};
+		class Dog : public Animal { void Speak() { cout << "Woof!"; } };
+		class Duck : public Animal { void Speak() { cout << "Quack!"; } };
+		class Cat : public Animal { void Speak() { cout << "Meow!"; } };
+
+		int main()
+		{
+			Animal* animals[3] =
+			{
+				new Dog(),
+				new Duck(),
+				new Cat()
+			};
+
+			for (int i = 0; i < 3; i++)
+				animals[i]->Speak();
+			return 0;
+		}
+	} // namespace Ex7
+
+	// override / final
+	namespace Ex8
+	{
+		class Base
+		{
+		public:
+			void display()
+			{
+				cout << "Base" << endl;
+			}
+		};
+
+		class Derived : public Base
+		{
+		public:
+			void desplay()
+			{
+				cout << "Derived" << endl;
+			}
+		};
+
+		int main()
+		{
+			Base* b = new Derived;
+			b->display();
+			return 0;
+		}
+	} // namespace Ex7
+
+	namespace Ex9
+	{
+		class Base
+		{
+		public: int baseData = 5;
+		};
+		class Derived : public Base
+		{
+		public: long double extraData = 5;
+		};
+		void display(Base** arr, int size)
+		{
+			for (int i = 0; i < size; i++)
+				cout << arr[i]->baseData << endl;
+		}
+
+		int main()
+		{
+			Base** arr = new Base * [3]; // Array of Derived objects, but pointer is of type Base
+			arr[0] = new Derived;
+			arr[1] = new Derived;
+			arr[2] = new Derived;
+			display(arr, 3);
+			return 0;
+		}
+
+	} // namespace Ex8
 
 	namespace freeExample
 	{
@@ -2393,13 +2515,11 @@ return 0; // Destructor is called
 			return 0;
 		}
 	} // namespace freeExample
+} // namespace L11
 
-} // namespace Lec10
-
-using namespace Lec10;
+using namespace Lec11;
 
 int main()
 {
-	Ex6::main();
 	return 0;
 }
