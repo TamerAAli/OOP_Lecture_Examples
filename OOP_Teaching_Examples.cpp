@@ -2712,7 +2712,7 @@ namespace Lec12
 		class GeometricObject
 		{
 		public:
-			virtual double getArea() const {};
+			virtual double getArea() const = 0;
 			virtual ~GeometricObject() {}
 		};
 
