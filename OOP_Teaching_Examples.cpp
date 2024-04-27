@@ -1419,97 +1419,395 @@ namespace others
 
 	} // namespace Lec10
 
-
-
-	namespace Lec11_
+	namespace Lec11
 	{
-		namespace Ex1
+		// destructor importance
+		// // copy constructor
+		namespace Ex1a
 		{
-			class Base
+			class AudioBuffer
 			{
+			private:
+				float* samples = nullptr; // Array of samples
+				int size = 0;
 			public:
-				void func() { cout << "Base fn" << endl; }
-				virtual void vfunc() { cout << "Base virFn" << endl; }
-			};
+				const int CAPACITY;
+				AudioBuffer(int n = 0) : CAPACITY(n)
+				{
+					if (n <= 0) return;
+					samples = new float[n];
+					for (int i = 0; i < n; ++i) samples[i] = 0.0;
+				}
 
-			class Derived : public Base
-			{
-			public:
-				void func() { cout << "Derived fn" << endl; }
-				void vfunc() override { cout << "Derived  virFn" << endl; }
+				AudioBuffer(const AudioBuffer& other) :
+					CAPACITY(other.CAPACITY), size(other.size)
+				{
+					if (other.CAPACITY <= 0) return;
+
+					this->samples = new float[other.CAPACITY];
+
+					for (int i = 0; i < this->CAPACITY; ++i)
+						this->samples[i] = other.samples[i];
+				}
+
+				~AudioBuffer()
+				{
+					delete[] samples;
+					samples = nullptr;
+				}
+				bool addSample(float value)
+				{
+					if (!samples || size >= CAPACITY) return false;
+
+					samples[size++] = value;
+					return true;
+				}
 			};
 
 			int main()
 			{
-				Base* b = new Derived();
-				b->func();
-				b->vfunc();
-				delete b;
-				return 0;
+				int NUM_SAMPLES = 50;
+				AudioBuffer buffer(NUM_SAMPLES);
+
+				// Open a file for reading
+				ifstream file("samples.txt");
+
+				float sample;
+
+				// Read sample values from the file
+				while (file >> sample &&
+					buffer.addSample(sample))
+				{
+				}
+
+				file.close(); // Close the file
+
+				return 0; // Destructor is called
+			}
+		} // namespace Ex1a
+
+		// const pointer
+		namespace Ex1b
+		{
+			class Circle
+			{
+			private:
+				double radius;
+			public:
+				Circle(double r) : radius(r) { }
+				void setRadius(double r) { radius = r; }
+				double getRadius() const { return radius; }
+				double getArea() const { return 3.14 * radius * radius; }
+			};
+
+			// OK function!
+			void displayCircleData(const Circle* const p)
+			{
+				// p = new Circle(10); // Should not do that
+				// p->setRadius(10); // Should not do that
+
+				cout << "Radius: " << p->getRadius() << endl;
+				cout << "Area: " << p->getArea() << endl;
+			}
+
+
+			//int main()
+			//{
+			//	double radius = 5, length = 4;
+			//	const double MAX_RADIUS = 100;
+
+			//	double* const ptr1 = &radius;
+			//	cout << *ptr1 << endl;
+			//	*ptr1 += 5;
+
+			//	ptr1 = &length;
+			//	cout << *ptr1 << endl;
+			//	*ptr1 += 5;
+
+			//	ptr1 = &MAX_RADIUS;
+			//	cout << *ptr1 << endl;
+
+			//	return 0;
+			//}
+		} // namespace Ex1b
+
+		// Basic inheritance
+		namespace Ex1
+		{
+			class GeometricObject
+			{
+			public:
+				GeometricObject();
+				GeometricObject(const string&, bool);
+				string getColor() const;
+				void setColor(const string&);
+				bool isFilled() const;
+				void setFilled(bool);
+				string toString() const;
+
+			private:
+				string color;
+				bool filled;
+			}; // Must place semicolon here
+
+			GeometricObject::GeometricObject()
+				: color("white"), filled(false)
+			{
+			}
+
+			GeometricObject::GeometricObject(const string& col, bool fil)
+			{
+				color = col;
+				filled = fil;
+			}
+
+			string GeometricObject::getColor() const
+			{
+				return color;
+			}
+
+			void GeometricObject::setColor(const string& col)
+			{
+				color = col;
+			}
+
+			bool GeometricObject::isFilled() const
+			{
+				return filled;
+			}
+
+			void GeometricObject::setFilled(bool fil)
+			{
+				filled = fil;
+			}
+
+			string GeometricObject::toString() const
+			{
+				return "Geometric Object";
+			}
+
+
+			class Circle : public GeometricObject
+			{
+			public:
+				Circle();
+				Circle(double);
+				Circle(double, const string&, bool);
+				double getRadius() const;
+				void setRadius(double);
+				double getArea() const;
+				double getPerimeter() const;
+				double getDiameter() const;
+				string toString() const;
+
+			private:
+				double radius;
+			}; // Must place semicolon here
+
+			// Construct a default circle object
+			Circle::Circle()
+			{
+				radius = 1;
+			}
+
+			// Construct a circle object with specified radius
+			Circle::Circle(double newRadius)
+			{
+				setRadius(newRadius);
+			}
+
+			// Construct a circle object with specified radius,
+			//  color and filled values
+			Circle::Circle(double newRadius, const string& col, bool fil)
+			{
+
+
+
+			}
+
+			// Return the radius of this circle
+			double Circle::getRadius() const
+			{
+				return radius;
+			}
+
+			// Return the diameter of this circle
+			double Circle::getDiameter() const
+			{
+				return 2 * radius;
+			}
+
+			// Set a new radius
+			void Circle::setRadius(double newRadius)
+			{
+				if (newRadius >= 0)
+					radius = newRadius;
+				else
+					radius = 0;
+			}
+			// Return the area of this circle
+			double Circle::getArea() const
+			{
+				return radius * radius * 3.14159;
+			}
+
+			// Return the perimeter of this circle
+			double Circle::getPerimeter() const
+			{
+				return 2 * radius * 3.14159;
+			}
+
+			// Redefine the toString function
+			string Circle::toString() const
+			{
+				return "Circle object";
 			}
 		} // namespace Ex1
 
+		//Chaining 1
 		namespace Ex2
 		{
-			class Animal
+			class BaseClass
 			{
-			public: virtual void speak() const { cout << "Sound." << endl; }
-			};
-
-			class Dog : public Animal
-			{
-			public: void speak() const override final { cout << "Woof!" << endl; }
-			};
-
-			class Cat : public Animal
-			{
-			public: void speak() const override { cout << "Meow!" << endl; }
-			};
-
-			class Duck : public Animal
-			{
-			public: void speak() const override;
-			};
-
-			void Duck::speak() const { cout << "Quack!" << endl; }
-
-
-			//class BullDog : public Dog
-			//{
-			//public: void speak() const { cout << "Woof!" << endl; }
-			//};
-
-			int main()
-			{
-				Animal* animals[3] =
+			public:
+				BaseClass() // Constructor
 				{
-					new Dog(),
-					new Duck(),
-					new Cat()
-				};
+					cout << "BaseClass constructor.\n";
+				}
+				~BaseClass() // Destructor
+				{
+					cout << "BaseClass destructor.\n";
+				}
+			};
+			class DerivedClass : public BaseClass
+			{
+			public:
+				DerivedClass() // Constructor
+				{
+					cout << "DerivedClass constructor.\n";
+				}
+				~DerivedClass() // Destructor
+				{
+					cout << "DerivedClass destructor.\n";
+				}
+			};
 
-				for (int i = 0; i < 3; i++)
-					animals[i]->speak();
-
-				return 0;
-			}
-
-
-		} // namespace Ex2
-
-		namespace freeExample
-		{
 			int main()
 			{
+				cout << "We will now define a DerivedClass object.\n";
+				DerivedClass object;
+				cout << "The program is now going to end.\n";
+
 				return 0;
 			}
-		} // freeExample
 
+		} // namespace
+
+		//Chaining 2
+		namespace Ex3
+		{
+			class BaseClass
+			{
+			public:
+				BaseClass() { cout << "1 "; }
+				~BaseClass() { cout << "2 "; }
+			};
+			class DerivedClass : public BaseClass
+			{
+			public:
+				DerivedClass() { cout << "3 "; }
+				~DerivedClass() { cout << "4 "; }
+			};
+			DerivedClass* someFunc()
+			{
+				cout << "5 "; DerivedClass* ptr = new DerivedClass;
+				cout << "6 "; return ptr;
+			}
+			int main()
+			{
+				cout << "7 "; DerivedClass* ptr = someFunc();
+				cout << "8 "; delete ptr;
+				return 0;
+			}
+		} // namespace Ex3
+
+		//Accessing base class members 1
+		namespace Ex3b
+		{
+			class BaseClass
+			{
+			private:
+				int privData;
+				void privMethod() { }
+			protected:
+				int protData;
+				void protMethod() { }
+			public:
+				int pubData;
+				void pubMethod() { }
+			};
+			class DerivedClass : public BaseClass
+			{
+			public:
+				void DerivedClassMethod()
+				{
+					this->protData = 5;
+				}
+			};
+			int	main()
+			{
+				BaseClass base;
+				base.pubData = 10;
+				DerivedClass derived;
+				derived.pubData = 8;
+
+				return 0;
+			}
+		} // namespace Ex3b
+
+		// Example of protected members
+		namespace Ex4
+		{
+			class Mover
+			{
+			protected: int incr, coveredD;
+			public:
+				Mover() : incr(10), coveredD(0) {}
+				void move() { coveredD += incr; }
+				int getCoveredDistance() const { return coveredD; }
+			};
+
+			class FastRunner : public Mover
+			{
+			public: FastRunner() { incr = 30; }
+			};
+			class SlowWalker : public Mover
+			{
+			public: SlowWalker() { incr = 5; }
+			};
+
+
+			int main()
+			{
+				FastRunner runner;
+				SlowWalker walker;
+
+				runner.move();  // Moves by 30 units
+				walker.move();  // Moves by 5 units
+
+				cout << "Runner covered: " << runner.getCoveredDistance() << endl;
+				cout << "Walker covered: " << walker.getCoveredDistance() << endl;
+
+				return 0;
+			}
+		} // namespace Ex4
 
 	} // namespace Lec11
 
-	namespace Lec12
+
+	namespace Lec12_
 	{
+		// Ex1 - Multiple Inheritance
 		namespace Ex1
 		{
 			class Person
@@ -1554,6 +1852,7 @@ namespace others
 			}
 		} // namespace Ex1
 
+		// Parent Copy Constructor
 		namespace Ex2
 		{
 			class B
@@ -1888,6 +2187,7 @@ namespace others
 			}
 		}
 
+		// Fraction
 		namespace freeEx
 		{
 			class Fraction
@@ -1990,385 +2290,50 @@ namespace others
 }; // namespace past
 
 
-namespace Lec11
+namespace Lec12
 {
-	// destructor importance
-	// copy constructor
-	namespace Ex1a
-	{
-		class AudioBuffer
-		{
-		private:
-			float* samples = nullptr; // Array of samples
-			int size = 0;
-		public:
-			const int CAPACITY;
-			AudioBuffer(int n = 0) : CAPACITY(n)
-			{
-				if (n <= 0) return;
-				samples = new float[n];
-				for (int i = 0; i < n; ++i) samples[i] = 0.0;
-			}
-
-			AudioBuffer(const AudioBuffer& other) :
-				CAPACITY(other.CAPACITY), size(other.size)
-			{
-				if (other.CAPACITY <= 0) return;
-
-				this->samples = new float[other.CAPACITY];
-
-				for (int i = 0; i < this->CAPACITY; ++i)
-					this->samples[i] = other.samples[i];
-			}
-
-			~AudioBuffer()
-			{
-				delete[] samples;
-				samples = nullptr;
-			}
-			bool addSample(float value)
-			{
-				if (!samples || size >= CAPACITY) return false;
-
-				samples[size++] = value;
-				return true;
-			}
-		};
-
-		int main()
-		{
-			int NUM_SAMPLES = 50;
-			AudioBuffer buffer(NUM_SAMPLES);
-
-			// Open a file for reading
-			ifstream file("samples.txt");
-
-			float sample;
-
-			// Read sample values from the file
-			while (file >> sample &&
-				buffer.addSample(sample))
-			{
-			}
-
-			file.close(); // Close the file
-
-			return 0; // Destructor is called
-		}
-	} // namespace Ex1a
-
-	// const pointer
-	namespace Ex1b
-	{
-		class Circle
-		{
-		private:
-			double radius;
-		public:
-			Circle(double r) : radius(r) { }
-			void setRadius(double r) { radius = r; }
-			double getRadius() const { return radius; }
-			double getArea() const { return 3.14 * radius * radius; }
-		};
-
-		// OK function!
-		void displayCircleData(const Circle* const p)
-		{
-			// p = new Circle(10); // Should not do that
-			// p->setRadius(10); // Should not do that
-
-			cout << "Radius: " << p->getRadius() << endl;
-			cout << "Area: " << p->getArea() << endl;
-		}
-
-
-		//int main()
-		//{
-		//	double radius = 5, length = 4;
-		//	const double MAX_RADIUS = 100;
-
-		//	double* const ptr1 = &radius;
-		//	cout << *ptr1 << endl;
-		//	*ptr1 += 5;
-
-		//	ptr1 = &length;
-		//	cout << *ptr1 << endl;
-		//	*ptr1 += 5;
-
-		//	ptr1 = &MAX_RADIUS;
-		//	cout << *ptr1 << endl;
-
-		//	return 0;
-		//}
-	} // namespace Ex1b
-
+	//Accessing base class members 2
 	namespace Ex1
 	{
-		class GeometricObject
-		{
-		public:
-			GeometricObject();
-			GeometricObject(const string&, bool);
-			string getColor() const;
-			void setColor(const string&);
-			bool isFilled() const;
-			void setFilled(bool);
-			string toString() const;
-
-		private:
-			string color;
-			bool filled;
-		}; // Must place semicolon here
-
-		GeometricObject::GeometricObject()
-			: color("white"), filled(false)
-		{
-		}
-
-		GeometricObject::GeometricObject(const string& col, bool fil)
-		{
-			color = col;
-			filled = fil;
-		}
-
-		string GeometricObject::getColor() const
-		{
-			return color;
-		}
-
-		void GeometricObject::setColor(const string& col)
-		{
-			color = col;
-		}
-
-		bool GeometricObject::isFilled() const
-		{
-			return filled;
-		}
-
-		void GeometricObject::setFilled(bool fil)
-		{
-			filled = fil;
-		}
-
-		string GeometricObject::toString() const
-		{
-			return "Geometric Object";
-		}
-
-
-		class Circle : public GeometricObject
-		{
-		public:
-			Circle();
-			Circle(double);
-			Circle(double, const string&, bool);
-			double getRadius() const;
-			void setRadius(double);
-			double getArea() const;
-			double getPerimeter() const;
-			double getDiameter() const;
-			string toString() const;
-
-		private:
-			double radius;
-		}; // Must place semicolon here
-
-		// Construct a default circle object
-		Circle::Circle()
-		{
-			radius = 1;
-		}
-
-		// Construct a circle object with specified radius
-		Circle::Circle(double newRadius)
-		{
-			setRadius(newRadius);
-		}
-
-		// Construct a circle object with specified radius,
-		//  color and filled values
-		Circle::Circle(double newRadius, const string& col, bool fil)
-		{
-
-
-
-		}
-
-		// Return the radius of this circle
-		double Circle::getRadius() const
-		{
-			return radius;
-		}
-
-		// Return the diameter of this circle
-		double Circle::getDiameter() const
-		{
-			return 2 * radius;
-		}
-
-		// Set a new radius
-		void Circle::setRadius(double newRadius)
-		{
-			if (newRadius >= 0)
-				radius = newRadius;
-			else
-				radius = 0;
-		}
-		// Return the area of this circle
-		double Circle::getArea() const
-		{
-			return radius * radius * 3.14159;
-		}
-
-		// Return the perimeter of this circle
-		double Circle::getPerimeter() const
-		{
-			return 2 * radius * 3.14159;
-		}
-
-		// Redefine the toString function
-		string Circle::toString() const
-		{
-			return "Circle object";
-		}
-	} // namespace Ex1
-
-	namespace Ex2
-	{
-		class BaseClass
-		{
-		public:
-			BaseClass() // Constructor
-			{
-				cout << "BaseClass constructor.\n";
-			}
-			~BaseClass() // Destructor
-			{
-				cout << "BaseClass destructor.\n";
-			}
-		};
-		class DerivedClass : public BaseClass
-		{
-		public:
-			DerivedClass() // Constructor
-			{
-				cout << "DerivedClass constructor.\n";
-			}
-			~DerivedClass() // Destructor
-			{
-				cout << "DerivedClass destructor.\n";
-			}
-		};
-
-		int main()
-		{
-			cout << "We will now define a DerivedClass object.\n";
-			DerivedClass object;
-			cout << "The program is now going to end.\n";
-
-			return 0;
-		}
-
-	} // namespace
-
-	namespace Ex3
-	{
-		class BaseClass
-		{
-		public:
-			BaseClass() { cout << "1 "; }
-			~BaseClass() { cout << "2 "; }
-		};
-		class DerivedClass : public BaseClass
-		{
-		public:
-			DerivedClass() { cout << "3 "; }
-			~DerivedClass() { cout << "4 "; }
-		};
-		DerivedClass* someFunc()
-		{
-			cout << "5 "; DerivedClass* ptr = new DerivedClass;
-			cout << "6 "; return ptr;
-		}
-		int main()
-		{
-			cout << "7 "; DerivedClass* ptr = someFunc();
-			cout << "8 "; delete ptr;
-			return 0;
-		}
-	} // namespace Ex3
-
-	namespace Ex3b
-	{
-		class BaseClass
+		class Base
 		{
 		private:
-			int privData;
-			void privMethod() { }
+			int bsPvDta;
+			void bsPvMthd() { }
 		protected:
-			int protData;
-			void protMethod() { }
+			int bsPtDta;
+			void bsPtMthd() { }
 		public:
-			int pubData;
-			void pubMethod() { }
+			int bsPbDta;
+			void bsPbMthd() { }
 		};
-		class DerivedClass : public BaseClass
+		class Derived : public Base
+			//class Derived : protected Base
+			//class Derived : private Base
 		{
 		public:
-			void DerivedClassMethod()
-			{
-				this->protData = 5;
-			}
+			void drvPbMthd() { this->bsPtDta = 5; }
+		};
+		class DerivedDerived : public Derived
+		{
+		public:
+			void drvDrvPbMthd() { this->bsPtDta = 5; }
 		};
 		int	main()
 		{
-			BaseClass base;
-			base.pubData = 10;
-			DerivedClass derived;
-			derived.pubData = 8;
+			Base bs;
+			bs.bsPbDta = 10;
+			Derived drv;
+			drv.drvPbMthd();
+			DerivedDerived drvDrv;
+			drvDrv.drvPbMthd();
 
 			return 0;
 		}
 	} // namespace Ex3b
 
-	namespace Ex4
-	{
-		class Mover
-		{
-		protected: int incr, coveredD;
-		public:
-			Mover() : incr(10), coveredD(0) {}
-			void move() { coveredD += incr; }
-			int getCoveredDistance() const { return coveredD; }
-		};
-
-		class FastRunner : public Mover
-		{
-		public: FastRunner() { incr = 30; }
-		};
-		class SlowWalker : public Mover
-		{
-		public: SlowWalker() { incr = 5; }
-		};
-
-
-		int main()
-		{
-			FastRunner runner;
-			SlowWalker walker;
-
-			runner.move();  // Moves by 30 units
-			walker.move();  // Moves by 5 units
-
-			cout << "Runner covered: " << runner.getCoveredDistance() << endl;
-			cout << "Walker covered: " << walker.getCoveredDistance() << endl;
-
-			return 0;
-		}
-	} // namespace Ex4
-
-	namespace Ex5
+	// Redefinition
+	namespace Ex2
 	{
 		class P
 		{
@@ -2390,17 +2355,18 @@ namespace Lec11
 
 	} // namespace Ex5
 
-	namespace Ex6
+	// Generic Programing
+	namespace Ex3
 	{
-		class GeomObj
+		class GeometricObject
 		{
 		public:
 			string toString()
 			{
-				return "GeomObj";
+				return "Geometric Object";
 			}
 		};
-		class Circle : public GeomObj
+		class Circle : public GeometricObject
 		{
 		public:
 			string toString()
@@ -2408,7 +2374,15 @@ namespace Lec11
 				return "Circle";
 			}
 		};
-		void dispType(GeomObj* geo)
+		class Rectangle : public GeometricObject
+		{
+		public:
+			string toString()
+			{
+				return "Rectangle";
+			}
+		};
+		void dispType(GeometricObject* geo)
 		{
 			cout << geo->toString();
 			cout << endl;
@@ -2416,7 +2390,15 @@ namespace Lec11
 
 		int main()
 		{
-			GeomObj* base = new GeomObj;
+			GeometricObject geo;
+			Circle cir;
+			Rectangle rec;
+
+			cout << geo.toString() << endl;
+			cout << cir.toString() << endl;
+			cout << rec.toString() << endl;
+
+			GeometricObject* base = new GeometricObject;
 			dispType(base);
 
 			Circle* derived = new Circle;
@@ -2426,15 +2408,126 @@ namespace Lec11
 		}
 	} // namespace Ex6
 
-	namespace Ex7
+	// Polymorphism
+	namespace Ex4
 	{
 		class Animal
 		{
-		public: virtual void Speak() { }
+		public:
+			virtual void Speak() { cout << "Noise!\n"; }
+			~Animal() {}
 		};
-		class Dog : public Animal { void Speak() { cout << "Woof!"; } };
-		class Duck : public Animal { void Speak() { cout << "Quack!"; } };
-		class Cat : public Animal { void Speak() { cout << "Meow!"; } };
+		class Dog : public Animal
+		{
+		public: void Speak() { cout << "Woof!\n"; }
+		};
+		class Duck : public Animal
+		{
+		public: void Speak() { cout << "Quack!\n"; }
+		};
+		class Cat : public Animal
+		{
+		public: void Speak() { cout << "Meow!\n"; }
+		};
+		//class Wolf : public Animal
+		//{
+		//public: void Speak() { cout << "Howl!"; }
+		//};
+
+		Animal* createAnimal()
+		{
+			int choice;
+			cout << "Choose an animal: ";
+			cin >> choice;
+			switch (choice)
+			{
+			case 1: return new Dog();
+			case 2: return new Duck();
+			case 3: return new Cat();
+				//case 4: return new Wolf();
+			default: return nullptr;
+			}
+		}
+
+		void test1()
+		{
+			int n;
+			cout << "Number of animals: ";
+			cin >> n;
+
+			vector<Animal*> animals;
+
+			for (int i = 0; i < n; i++)
+				animals.push_back(createAnimal());
+
+			for (Animal* animal : animals)
+				if (animal) animal->Speak();
+
+			// Clean up
+			for (Animal* animal : animals)
+				delete animal;
+		}
+
+		void test2()
+		{
+			Animal* animals[3] =
+			{
+				new Dog(),
+				new Duck(),
+				new Cat()
+			};
+
+			for (int i = 0; i < 3; i++)
+				animals[i]->Speak();
+		}
+	} // namespace Ex4
+
+	// virtual & override & final
+	namespace Ex5
+	{
+		class Animal
+		{
+		public: virtual void speak() const { cout << "Noise." << endl; }
+		};
+
+		class Dog : public Animal
+		{
+		public: void speak() const override final { cout << "Woof!" << endl; }
+		};
+
+		class Cat : public Animal
+		{
+			//public: void speak() { cout << "Meow!" << endl; }
+		public: void speak() const override { cout << "Meow!" << endl; }
+		};
+
+		class Duck : public Animal
+		{
+			//public: void speaks() const { cout << "Quack!" << endl; }
+		public: void speak() const override { cout << "Quack!" << endl; }
+		};
+
+		//class BullDog : public  Dog
+		//{
+		//public: void speak() const override { cout << "WOOF!" << endl; }
+		//};
+
+		class Base final
+		{
+			// Class contents
+		};
+		//class Derived : public Base { };  // Compile-time error: Base is marked 'final'
+
+		class Base2
+		{
+		public: virtual void doSomething() final { /*Code*/ }
+		};
+
+		class Derived : public Base2
+		{
+			//void doSomething() { }  // Error: doSomething() is 'final' in Base
+		};
+
 
 		int main()
 		{
@@ -2446,80 +2539,231 @@ namespace Lec11
 			};
 
 			for (int i = 0; i < 3; i++)
-				animals[i]->Speak();
+				animals[i]->speak();
+
 			return 0;
 		}
-	} // namespace Ex7
+	} // namespace
 
-	// override / final
-	namespace Ex8
+	// virtual & override quiz
+	namespace Ex6
 	{
 		class Base
 		{
 		public:
-			void display()
-			{
-				cout << "Base" << endl;
-			}
+			void func() { cout << "Base fn" << endl; }
+			virtual void vfunc() { cout << "Base virFn" << endl; }
 		};
 
 		class Derived : public Base
 		{
 		public:
-			void desplay()
-			{
-				cout << "Derived" << endl;
-			}
+			void func() { cout << "Derived fn" << endl; }
+			void vfunc() override { cout << "Derived  virFn" << endl; }
 		};
 
 		int main()
 		{
-			Base* b = new Derived;
-			b->display();
+			Base* b = new Derived();
+			b->func();
+			b->vfunc();
+			delete b;
 			return 0;
 		}
-	} // namespace Ex7
+	} // namespace Ex6
 
-	namespace Ex9
+	// Bad pointer arithmatics
+	namespace Ex7
 	{
 		class Base
 		{
-		public: int baseData = 5;
+		public:
+			int baseData;
+			Base(int i = 5) : baseData(i) {}
 		};
+
 		class Derived : public Base
 		{
-		public: long double extraData = 5;
+		public:
+			long double extraData;
+			Derived(int i = 6, long double d = 7)
+				: Base(i), extraData(d) {}
 		};
-		void display(Base** arr, int size)
+
+		void display(Base arr[], int size)
+		{
+			for (int i = 0; i < size; i++)
+				cout << arr[i].baseData << endl;
+		}
+
+		void display(Base* arr[], int size)
 		{
 			for (int i = 0; i < size; i++)
 				cout << arr[i]->baseData << endl;
 		}
 
-		int main()
+		void test1()
 		{
-			Base** arr = new Base * [3]; // Array of Derived objects, but pointer is of type Base
-			arr[0] = new Derived;
-			arr[1] = new Derived;
-			arr[2] = new Derived;
+			// Array of Derived objects, but pointer is of type Base
+			Base* arr = new Derived[]
+			{
+				Derived(1, 1.5),
+				Derived(2, 2.5),
+				Derived(3, 3.5)
+			};
 			display(arr, 3);
-			return 0;
 		}
 
+		void test2()
+		{
+			// Array of Derived objects, but pointer is of type Base
+			Base** arr = new Base * []
+				{
+					new Derived(1, 1.5),
+						new Derived(2, 2.5),
+						new Derived(3, 3.5)
+				};
+			display(arr, 3);
+		}
+
+		//class Base
+		//{
+		//public: int baseData = 5;
+		//};
+
+		//class Derived : public Base
+		//{
+		//public: long double extraData = 5;
+		//};
+
+		//void display(Base arr[], int size)
+		//{
+		//	for (int i = 0; i < size; i++)
+		//		cout << arr[i].baseData
+		//		<< endl;
+		//}
+		//int test1()
+		//{
+		//	Base* arr = new Derived[3];
+
+
+
+		//	display(arr, 3);
+		//	return 0;
+		//}
+
+
+	} // namespace Ex7
+
+	// Bad pointer arithmatics
+	namespace Ex8
+	{
+		class Base
+		{
+		public:
+			int baseData;
+			Base(int b = 0) : baseData(b) {}
+			virtual void show() { std::cout << "Base: " << baseData << std::endl; }
+			virtual ~Base() {}
+		};
+
+		class Derived1 : public Base
+		{
+		public:
+			double derivedData1;
+			Derived1(int b = 0, double d1 = 0.0) : Base(b), derivedData1(d1) {}
+			void show() override { std::cout << "Derived1: " << baseData << ", " << derivedData1 << std::endl; }
+		};
+
+		class Derived2 : public Base
+		{
+		public:
+			double derivedData1, derivedData2;
+			Derived2(int b = 0, double d1 = 0.0, double d2 = 0.0) : Base(b), derivedData1(d1), derivedData2(d2) {}
+			void show() override { std::cout << "Derived2: " << baseData << ", " << derivedData1 << ", " << derivedData2 << std::endl; }
+		};
+
+		void test()
+		{
+			Base* objects[3]; // Array of pointers to Base objects
+			objects[0] = new Derived1(1, 1.1);
+			objects[1] = new Derived2(2, 2.2, 2.3);
+			objects[2] = new Derived1(3, 3.3);
+
+			for (int i = 0; i < 3; ++i) {
+				objects[i]->show();
+			}
+
+			//// Attempting to use pointer arithmetic (incorrect and dangerous)
+			//Base* ptr = objects[0];
+			//for (int i = 0; i < 3; ++i) {
+			//	(ptr + i)->show(); // This is incorrect: ptr + i does not account for the actual sizes of the objects
+			//}
+
+			// Cleanup
+			for (int i = 0; i < 3; ++i) {
+				delete objects[i];
+			}
+		}
 	} // namespace Ex8
 
-	namespace freeExample
+	namespace Ex9
 	{
-		int main()
+		class GeometricObject
 		{
-			return 0;
-		}
-	} // namespace freeExample
-} // namespace L11
+		public:
+			virtual double getArea() const {};
+			virtual ~GeometricObject() {}
+		};
 
-using namespace Lec11;
+		class Circle : public GeometricObject
+		{
+		private: double radius;
+		public:
+			virtual double getArea() const override
+			{
+				return radius * radius * 3.14;
+			}
+			Circle(double r = 1) : radius(r) {}
+		};
+
+		class Rectangle : public GeometricObject
+		{
+		private: double length, width;
+		public:
+			virtual double getArea() const override
+			{
+				return width * length;
+			}
+			Rectangle(double l = 1, double w = 1)
+				: width(w), length(l) {}
+		};
+
+		void displayArea(GeometricObject* g[], int size)
+		{
+			for (int i = 0; i < size; i++)
+				cout << "Area: " << g[i]->getArea() << endl;
+		}
+
+		void test()
+		{
+			GeometricObject* arr[] =
+			{
+				new Rectangle(3,4),
+				new Rectangle(5,6),
+				new Circle(5),
+				new Circle(9)
+			};
+
+			displayArea(arr, 4);
+		}
+	} // namespace Ex9
+} // namespace L12
+
+using namespace Lec12;
 
 int main()
 {
+	Ex9::test();
 	return 0;
 }
