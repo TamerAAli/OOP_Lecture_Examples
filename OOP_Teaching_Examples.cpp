@@ -1804,8 +1804,449 @@ namespace others
 
 	} // namespace Lec11
 
+	namespace Lec12
+	{
+		//Accessing base class members 2
+		namespace Ex1
+		{
+			class Base
+			{
+			private:
+				int bsPvDta;
+				void bsPvMthd() { }
+			protected:
+				int bsPtDta;
+				void bsPtMthd() { }
+			public:
+				int bsPbDta;
+				void bsPbMthd() { }
+			};
+			class Derived : public Base
+				//class Derived : protected Base
+				//class Derived : private Base
+			{
+			public:
+				void drvPbMthd() { this->bsPtDta = 5; }
+			};
+			class DerivedDerived : public Derived
+			{
+			public:
+				void drvDrvPbMthd() { this->bsPtDta = 5; }
+			};
+			int	main()
+			{
+				Base bs;
+				bs.bsPbDta = 10;
+				Derived drv;
+				drv.drvPbMthd();
+				DerivedDerived drvDrv;
+				drvDrv.drvPbMthd();
 
-	namespace Lec12_
+				return 0;
+			}
+		} // namespace Ex3b
+
+		// Redefinition
+		namespace Ex2
+		{
+			class P
+			{
+			public: void print() { cout << "P "; }
+			};
+
+			class Q :public P { };
+
+			class R :public Q { public: void print() { cout << "R "; } };
+
+			void display(P& p) { p.print(); }
+
+			int main(void)
+			{
+				P* p = new R;
+				p->print();
+				return 0;
+			}
+
+		} // namespace Ex5
+
+		// Generic Programing
+		namespace Ex3
+		{
+			class GeometricObject
+			{
+			public:
+				string toString()
+				{
+					return "Geometric Object";
+				}
+			};
+			class Circle : public GeometricObject
+			{
+			public:
+				string toString()
+				{
+					return "Circle";
+				}
+			};
+			class Rectangle : public GeometricObject
+			{
+			public:
+				string toString()
+				{
+					return "Rectangle";
+				}
+			};
+			void dispType(GeometricObject* geo)
+			{
+				cout << geo->toString();
+				cout << endl;
+			}
+
+			int main()
+			{
+				GeometricObject geo;
+				Circle cir;
+				Rectangle rec;
+
+				cout << geo.toString() << endl;
+				cout << cir.toString() << endl;
+				cout << rec.toString() << endl;
+
+				GeometricObject* base = new GeometricObject;
+				dispType(base);
+
+				Circle* derived = new Circle;
+				dispType(derived);
+
+				return 0;
+			}
+		} // namespace Ex6
+
+		// Polymorphism
+		namespace Ex4
+		{
+			class Animal
+			{
+			public:
+				virtual void Speak() { cout << "Noise!\n"; }
+				~Animal() {}
+			};
+			class Dog : public Animal
+			{
+			public: void Speak() { cout << "Woof!\n"; }
+			};
+			class Duck : public Animal
+			{
+			public: void Speak() { cout << "Quack!\n"; }
+			};
+			class Cat : public Animal
+			{
+			public: void Speak() { cout << "Meow!\n"; }
+			};
+			//class Wolf : public Animal
+			//{
+			//public: void Speak() { cout << "Howl!"; }
+			//};
+
+			Animal* createAnimal()
+			{
+				int choice;
+				cout << "Choose an animal: ";
+				cin >> choice;
+				switch (choice)
+				{
+				case 1: return new Dog();
+				case 2: return new Duck();
+				case 3: return new Cat();
+					//case 4: return new Wolf();
+				default: return nullptr;
+				}
+			}
+
+			void test1()
+			{
+				int n;
+				cout << "Number of animals: ";
+				cin >> n;
+
+				vector<Animal*> animals;
+
+				for (int i = 0; i < n; i++)
+					animals.push_back(createAnimal());
+
+				for (Animal* animal : animals)
+					if (animal) animal->Speak();
+
+				// Clean up
+				for (Animal* animal : animals)
+					delete animal;
+			}
+
+			void test2()
+			{
+				Animal* animals[3] =
+				{
+					new Dog(),
+					new Duck(),
+					new Cat()
+				};
+
+				for (int i = 0; i < 3; i++)
+					animals[i]->Speak();
+			}
+		} // namespace Ex4
+
+		// virtual & override & final
+		namespace Ex5
+		{
+			class Animal
+			{
+			public: virtual void speak() const { cout << "Noise." << endl; }
+			};
+
+			class Dog : public Animal
+			{
+			public: void speak() const override final { cout << "Woof!" << endl; }
+			};
+
+			class Cat : public Animal
+			{
+				//public: void speak() { cout << "Meow!" << endl; }
+			public: void speak() const override { cout << "Meow!" << endl; }
+			};
+
+			class Duck : public Animal
+			{
+				//public: void speaks() const { cout << "Quack!" << endl; }
+			public: void speak() const override { cout << "Quack!" << endl; }
+			};
+
+			//class BullDog : public  Dog
+			//{
+			//public: void speak() const override { cout << "WOOF!" << endl; }
+			//};
+
+			class Base final
+			{
+				// Class contents
+			};
+			//class Derived : public Base { };  // Compile-time error: Base is marked 'final'
+
+			class Base2
+			{
+			public: virtual void doSomething() final { /*Code*/ }
+			};
+
+			class Derived : public Base2
+			{
+				//void doSomething() { }  // Error: doSomething() is 'final' in Base
+			};
+
+
+			int main()
+			{
+				Animal* animals[3] =
+				{
+					new Dog(),
+					new Duck(),
+					new Cat()
+				};
+
+				for (int i = 0; i < 3; i++)
+					animals[i]->speak();
+
+				return 0;
+			}
+		} // namespace
+
+		// virtual & override quiz
+		namespace Ex6
+		{
+			class Base
+			{
+			public:
+				void func() { cout << "Base fn" << endl; }
+				virtual void vfunc() { cout << "Base virFn" << endl; }
+			};
+
+			class Derived : public Base
+			{
+			public:
+				void func() { cout << "Derived fn" << endl; }
+				void vfunc() override { cout << "Derived  virFn" << endl; }
+			};
+
+			int main()
+			{
+				Base* b = new Derived();
+				b->func();
+				b->vfunc();
+				delete b;
+				return 0;
+			}
+		} // namespace Ex6
+
+		// Bad pointer arithmatics
+		namespace Ex7
+		{
+			class Base
+			{
+			public:
+				int baseData;
+				Base(int i = 5) : baseData(i) {}
+			};
+
+			class Derived : public Base
+			{
+			public:
+				long double extraData;
+				Derived(int i = 6, long double d = 7)
+					: Base(i), extraData(d) {}
+			};
+
+			void display(Base arr[], int size)
+			{
+				for (int i = 0; i < size; i++)
+					cout << arr[i].baseData << endl;
+			}
+
+			void display(Base* arr[], int size)
+			{
+				for (int i = 0; i < size; i++)
+					cout << arr[i]->baseData << endl;
+			}
+
+			//void test1()
+			//{
+			//	// Array of Derived objects, but pointer is of type Base
+			//	Base* arr = new Derived[]
+			//	{
+			//		Derived(1, 1.5),
+			//		Derived(2, 2.5),
+			//		Derived(3, 3.5)
+			//	};
+			//	display(arr, 3);
+			//}
+
+			//void test2()
+			//{
+			//	// Array of Derived objects, but pointer is of type Base
+			//	Base** arr = new Base * []
+			//		{
+			//			new Derived(1, 1.5),
+			//				new Derived(2, 2.5),
+			//				new Derived(3, 3.5)
+			//		};
+			//	display(arr, 3);
+			//}
+		} // namespace Ex7
+
+		// Bad pointer arithmatics
+		namespace Ex8
+		{
+			class Base
+			{
+			public:
+				int baseData;
+				Base(int b = 0) : baseData(b) {}
+				virtual void show() { std::cout << "Base: " << baseData << std::endl; }
+				virtual ~Base() {}
+			};
+
+			class Derived1 : public Base
+			{
+			public:
+				double derivedData1;
+				Derived1(int b = 0, double d1 = 0.0) : Base(b), derivedData1(d1) {}
+				void show() override { std::cout << "Derived1: " << baseData << ", " << derivedData1 << std::endl; }
+			};
+
+			class Derived2 : public Base
+			{
+			public:
+				double derivedData1, derivedData2;
+				Derived2(int b = 0, double d1 = 0.0, double d2 = 0.0) : Base(b), derivedData1(d1), derivedData2(d2) {}
+				void show() override { std::cout << "Derived2: " << baseData << ", " << derivedData1 << ", " << derivedData2 << std::endl; }
+			};
+
+			void test()
+			{
+				Base* objects[3]; // Array of pointers to Base objects
+				objects[0] = new Derived1(1, 1.1);
+				objects[1] = new Derived2(2, 2.2, 2.3);
+				objects[2] = new Derived1(3, 3.3);
+
+				for (int i = 0; i < 3; ++i) {
+					objects[i]->show();
+				}
+
+				//// Attempting to use pointer arithmetic (incorrect and dangerous)
+				//Base* ptr = objects[0];
+				//for (int i = 0; i < 3; ++i) {
+				//	(ptr + i)->show(); // This is incorrect: ptr + i does not account for the actual sizes of the objects
+				//}
+
+				// Cleanup
+				for (int i = 0; i < 3; ++i) {
+					delete objects[i];
+				}
+			}
+		} // namespace Ex8
+
+		namespace Ex9
+		{
+			class GeometricObject
+			{
+			public:
+				virtual double getArea() const = 0;
+				virtual ~GeometricObject() {}
+			};
+
+			class Circle : public GeometricObject
+			{
+			private: double radius;
+			public:
+				virtual double getArea() const override
+				{
+					return radius * radius * 3.14;
+				}
+				Circle(double r = 1) : radius(r) {}
+			};
+
+			class Rectangle : public GeometricObject
+			{
+			private: double length, width;
+			public:
+				virtual double getArea() const override
+				{
+					return width * length;
+				}
+				Rectangle(double l = 1, double w = 1)
+					: width(w), length(l) {}
+			};
+
+			void displayArea(GeometricObject* g[], int size)
+			{
+				for (int i = 0; i < size; i++)
+					cout << "Area: " << g[i]->getArea() << endl;
+			}
+
+			void test()
+			{
+				GeometricObject* arr[] =
+				{
+					new Rectangle(3,4),
+					new Rectangle(5,6),
+					new Circle(5),
+					new Circle(9)
+				};
+
+				displayArea(arr, 4);
+			}
+		} // namespace Ex9
+	} // namespace L12
+
+	namespace Lec14
 	{
 		// Ex1 - Multiple Inheritance
 		namespace Ex1
@@ -1883,99 +2324,9 @@ namespace others
 
 	} // namespace Lec12
 
-	namespace Lec13
+	namespace Lec13_
 	{
-		namespace Ex1
-		{
-			class GeometricObject
-			{
-			public:
-				virtual double getArea() const = 0;
-				virtual double getPerimeter() const = 0;
-			};
-
-			class Circle : public GeometricObject
-			{
-			private:
-				double radius = 1;
-			public:
-				virtual double getArea() const override
-				{
-					return radius * radius * 3.14;
-				}
-				virtual double getPerimeter() const override
-				{
-					return 2 * 3.14 * radius;
-				}
-				Circle(double radius) : radius(radius) {}
-				double getRadius() const { return radius; }
-				double getDiameter() const { return 2 * radius; }
-			};
-
-			class Rectangle : public GeometricObject
-			{
-			private:
-				double length = 1;
-				double width = 1;
-			public:
-				virtual double getArea() const override
-				{
-					return width * length;
-				}
-				virtual double getPerimeter() const override
-				{
-					return 2 * (width + length);
-				}
-				Rectangle(double length, double width)
-					: width(width), length(length)
-				{}
-				double getLength() const { return length; }
-				double getWidth() const { return width; }
-			};
-
-			void displayGeometricObject(const GeometricObject* g)
-			{
-				const Circle* ptrC = dynamic_cast<const Circle*>(g);
-				const Rectangle* ptrR = dynamic_cast<const Rectangle*>(g);
-
-				if (ptrC)
-				{
-					cout << "The radius is " << ptrC->getRadius() << endl;
-					cout << "The diameter is " << ptrC->getDiameter() << endl;
-				}
-				if (ptrR != nullptr)
-				{
-					cout << "The width is " << ptrR->getLength() << endl;
-					cout << "The height is " << ptrR->getWidth() << endl;
-				}
-				if (g != NULL)
-				{
-					cout << "The area is " << g->getArea() << endl;
-					cout << "The perimeter is " << g->getPerimeter() << endl;
-				}
-
-			}
-
-			int main()
-			{
-				GeometricObject* geometricObjectList[] =
-				{
-					new Rectangle(3,4),
-					new Rectangle(6,8),
-					new Circle(5),
-					new Circle(9)
-				};
-
-				for (int i = 0; i < 4; i++)
-				{
-					displayGeometricObject(geometricObjectList[i]);
-					cout << string(20, '-') << endl;
-				}
-
-				return 0;
-			}
-		} // namespace Ex1
-
+		// Deleting this
 		namespace Ex2
 		{
 			void doSomeOtherWorkThatNeedsBigAmuontOfMemory()
@@ -2018,139 +2369,6 @@ namespace others
 				return 0;
 			}
 		} // namespace Ex2
-
-		namespace Ex3
-		{
-			class Fraction
-			{
-			public:
-				Fraction(int num, int denom);
-				Fraction(int num);
-				Fraction(const Fraction& other);
-				Fraction& operator=(const Fraction& other);
-				Fraction& operator=(const int& other);
-				Fraction operator+(const Fraction& other) const;
-				Fraction operator+(const int& other) const;
-				friend Fraction operator+(const int& lhs, const Fraction& rhs);
-				friend ostream& operator<<(ostream& cout, const Fraction& rhs);
-
-				double convertToDecimal() const
-				{
-					return double(numerator) / denominator;
-				}
-
-				operator double() const { return (double)numerator / denominator; }
-
-			private:
-				int numerator = 0;
-				int denominator = 1;
-			};
-
-			Fraction::Fraction(int num, int denom)
-				: numerator(num), denominator(denom) {}
-
-			Fraction::Fraction(int num) : Fraction(num, 1) {}
-
-			Fraction::Fraction(const Fraction& other)
-			{
-				this->numerator = other.numerator;
-				this->denominator = other.denominator;
-			}
-
-			Fraction& Fraction::operator=(const Fraction& other)
-			{
-				if (this != &other)
-				{
-					this->numerator = other.numerator;
-					this->denominator = other.denominator;
-				}
-				return *this;
-			}
-
-			Fraction& Fraction::operator=(const int& other)
-			{
-				numerator = other;
-				denominator = 1;
-				return *this;
-			}
-
-			Fraction Fraction::operator+(const Fraction& other) const
-			{
-				int newNumerator = numerator * other.denominator
-					+ other.numerator * denominator;
-				int newDenominator = denominator * other.denominator;
-
-				return Fraction(newNumerator, newDenominator);
-			}
-
-			Fraction Fraction::operator+(const int& other) const
-			{
-				int newNumerator = numerator
-					+ other * denominator;
-				int newDenominator = denominator;
-
-				return Fraction(newNumerator, newDenominator);
-			}
-
-			Fraction operator+(const int& lhs, const Fraction& rhs)
-			{
-				int newNumerator = lhs * rhs.denominator
-					+ rhs.numerator;
-				int newDenominator = rhs.denominator;
-
-				return Fraction(newNumerator, newDenominator);
-			}
-
-			ostream& operator<<(ostream& cout, const Fraction& rhs)
-			{
-				cout << rhs.numerator << " / " << rhs.denominator;
-				return cout;
-			}
-
-			void displayFraction(const Fraction& f)
-			{
-				cout << f << endl;
-			}
-
-			int main()
-			{
-				Fraction f1(1, 2);
-				cout << f1 << endl;
-
-				Fraction f2(2, 3);
-				cout << f2 << endl;
-
-				Fraction f3(3, 4);
-				cout << f3 << endl;
-
-				f1 = f2 = f3;
-				cout << f1 << endl;
-
-				f1 = f2;
-				cout << f1 << endl;
-
-				f1 = 1;
-				cout << f1 << endl;
-
-				Fraction f4 = f2 + f3;
-				cout << f4 << endl;
-
-				Fraction f5 = f2 + 5;
-				cout << f5 << endl;
-
-				Fraction f6 = 10 + f2;
-				cout << (double)f6 << endl;
-				cout << f6 << endl;
-
-				double d = f6;
-				cout << d << endl;
-
-				displayFraction(f6);
-				displayFraction(2);
-
-				return 0;
-			}
-		} // namespace Ex3
 
 		namespace freeExPrep
 		{
@@ -2290,480 +2508,526 @@ namespace others
 }; // namespace past
 
 
-namespace Lec12
+namespace Lec13
 {
-	//Accessing base class members 2
+	// Fraction Op overloading
 	namespace Ex1
 	{
-		class Base
+		class Fraction
 		{
+		public:
+			Fraction(int num, int denom);
+			Fraction(int num);
+			Fraction(const Fraction& other);
+			Fraction& operator=(const Fraction& other);
+			Fraction& operator=(const int& other);
+			Fraction operator+(const Fraction& other) const;
+			Fraction operator+(const int& other) const;
+			friend Fraction operator+(const int& lhs, const Fraction& rhs);
+			friend ostream& operator<<(ostream& cout, const Fraction& rhs);
+
+			double convertToDecimal() const
+			{
+				return double(numerator) / denominator;
+			}
+
+			operator double() const { return (double)numerator / denominator; }
+
 		private:
-			int bsPvDta;
-			void bsPvMthd() { }
-		protected:
-			int bsPtDta;
-			void bsPtMthd() { }
-		public:
-			int bsPbDta;
-			void bsPbMthd() { }
+			int numerator = 0;
+			int denominator = 1;
 		};
-		class Derived : public Base
-			//class Derived : protected Base
-			//class Derived : private Base
+
+		Fraction::Fraction(int num, int denom)
+			: numerator(num), denominator(denom) {}
+
+		Fraction::Fraction(int num) : Fraction(num, 1) {}
+
+		Fraction::Fraction(const Fraction& other)
 		{
-		public:
-			void drvPbMthd() { this->bsPtDta = 5; }
-		};
-		class DerivedDerived : public Derived
+			this->numerator = other.numerator;
+			this->denominator = other.denominator;
+		}
+
+		Fraction& Fraction::operator=(const Fraction& other)
 		{
-		public:
-			void drvDrvPbMthd() { this->bsPtDta = 5; }
-		};
-		int	main()
+			if (this != &other)
+			{
+				this->numerator = other.numerator;
+				this->denominator = other.denominator;
+			}
+			return *this;
+		}
+
+		Fraction& Fraction::operator=(const int& other)
 		{
-			Base bs;
-			bs.bsPbDta = 10;
-			Derived drv;
-			drv.drvPbMthd();
-			DerivedDerived drvDrv;
-			drvDrv.drvPbMthd();
+			numerator = other;
+			denominator = 1;
+			return *this;
+		}
+
+		Fraction Fraction::operator+(const Fraction& other) const
+		{
+			int newNumerator = numerator * other.denominator
+				+ other.numerator * denominator;
+			int newDenominator = denominator * other.denominator;
+
+			return Fraction(newNumerator, newDenominator);
+		}
+
+		Fraction Fraction::operator+(const int& other) const
+		{
+			int newNumerator = numerator
+				+ other * denominator;
+			int newDenominator = denominator;
+
+			return Fraction(newNumerator, newDenominator);
+		}
+
+		Fraction operator+(const int& lhs, const Fraction& rhs)
+		{
+			int newNumerator = lhs * rhs.denominator
+				+ rhs.numerator;
+			int newDenominator = rhs.denominator;
+
+			return Fraction(newNumerator, newDenominator);
+		}
+
+		ostream& operator<<(ostream& cout, const Fraction& rhs)
+		{
+			cout << rhs.numerator << " / " << rhs.denominator;
+			return cout;
+		}
+
+		void displayFraction(const Fraction& f)
+		{
+			cout << f << endl;
+		}
+
+		int test()
+		{
+			Fraction f1(1, 2);
+			cout << f1 << endl;
+
+			Fraction f2(2, 3);
+			cout << f2 << endl;
+
+			Fraction f3(3, 4);
+			cout << f3 << endl;
+
+			f1 = f2 = f3;
+			cout << f1 << endl;
+
+			f1 = f2;
+			cout << f1 << endl;
+
+			f1 = 1;
+			cout << f1 << endl;
+
+			Fraction f4 = f2 + f3;
+			cout << f4 << endl;
+
+			Fraction f5 = f2 + 5;
+			cout << f5 << endl;
+
+			Fraction f6 = 10 + f2;
+			cout << (double)f6 << endl;
+			cout << f6 << endl;
+
+			double d = f6;
+			cout << d << endl;
+
+			displayFraction(f6);
+			displayFraction(2);
 
 			return 0;
 		}
-	} // namespace Ex3b
+	} // namespace Ex1
 
-	// Redefinition
+	// AudioBuffer with Op= overloading
 	namespace Ex2
 	{
-		class P
+		class AudioBuffer
 		{
-		public: void print() { cout << "P "; }
+		private:
+			float* samples = nullptr; // Array of samples
+			int size = 0;
+		public:
+			int CAPACITY;
+			AudioBuffer(int n = 0) : CAPACITY(n)
+			{
+				if (n <= 0) return;
+				samples = new float[n];
+				for (int i = 0; i < n; ++i) samples[i] = 0.0;
+			}
+
+			AudioBuffer(const AudioBuffer& other) :
+				CAPACITY(other.CAPACITY), size(other.size)
+			{
+				if (other.CAPACITY <= 0) return;
+				samples = new float[other.CAPACITY];
+				for (int i = 0; i < CAPACITY; ++i) samples[i] = other.samples[i];
+			}
+
+			AudioBuffer& operator=(const AudioBuffer& other) // = Operator
+			{
+				if (other.CAPACITY <= 0 || this == &other) return *this; // Check for self-assignment
+				CAPACITY = other.CAPACITY;
+				size = other.size;
+
+				if (samples) delete[] samples; // Free old resources if needed
+				samples = new float[other.CAPACITY];
+				for (int i = 0; i < CAPACITY; ++i) samples[i] = other.samples[i];
+
+				return *this; // Return a reference to the current object
+			}
+
+			~AudioBuffer()
+			{
+				delete[] samples;
+				samples = nullptr;
+			}
+			bool addSample(float value)
+			{
+				if (!samples || size >= CAPACITY) return false;
+
+				samples[size++] = value;
+				return true;
+			}
 		};
 
-		class Q :public P { };
-
-		class R :public Q { public: void print() { cout << "R "; } };
-
-		void display(P& p) { p.print(); }
-
-		int main(void)
+		int main()
 		{
-			P* p = new R;
-			p->print();
-			return 0;
+			int NUM_SAMPLES = 50;
+			AudioBuffer buffer1(NUM_SAMPLES);
+			AudioBuffer buffer2 = buffer1;
+			buffer2 = buffer1;
+
+			// Open a file for reading
+			ifstream file("samples.txt");
+
+			float sample;
+
+			// Read sample values from the file
+			while (file >> sample &&
+				buffer1.addSample(sample))
+			{
+			}
+
+			file.close(); // Close the file
+
+			return 0; // Destructor is called
 		}
+	} // namespace Ex2
 
-	} // namespace Ex5
-
-	// Generic Programing
+	// Casting
 	namespace Ex3
 	{
 		class GeometricObject
 		{
 		public:
-			string toString()
-			{
-				return "Geometric Object";
-			}
-		};
-		class Circle : public GeometricObject
-		{
-		public:
-			string toString()
-			{
-				return "Circle";
-			}
-		};
-		class Rectangle : public GeometricObject
-		{
-		public:
-			string toString()
-			{
-				return "Rectangle";
-			}
-		};
-		void dispType(GeometricObject* geo)
-		{
-			cout << geo->toString();
-			cout << endl;
-		}
-
-		int main()
-		{
-			GeometricObject geo;
-			Circle cir;
-			Rectangle rec;
-
-			cout << geo.toString() << endl;
-			cout << cir.toString() << endl;
-			cout << rec.toString() << endl;
-
-			GeometricObject* base = new GeometricObject;
-			dispType(base);
-
-			Circle* derived = new Circle;
-			dispType(derived);
-
-			return 0;
-		}
-	} // namespace Ex6
-
-	// Polymorphism
-	namespace Ex4
-	{
-		class Animal
-		{
-		public:
-			virtual void Speak() { cout << "Noise!\n"; }
-			~Animal() {}
-		};
-		class Dog : public Animal
-		{
-		public: void Speak() { cout << "Woof!\n"; }
-		};
-		class Duck : public Animal
-		{
-		public: void Speak() { cout << "Quack!\n"; }
-		};
-		class Cat : public Animal
-		{
-		public: void Speak() { cout << "Meow!\n"; }
-		};
-		//class Wolf : public Animal
-		//{
-		//public: void Speak() { cout << "Howl!"; }
-		//};
-
-		Animal* createAnimal()
-		{
-			int choice;
-			cout << "Choose an animal: ";
-			cin >> choice;
-			switch (choice)
-			{
-			case 1: return new Dog();
-			case 2: return new Duck();
-			case 3: return new Cat();
-				//case 4: return new Wolf();
-			default: return nullptr;
-			}
-		}
-
-		void test1()
-		{
-			int n;
-			cout << "Number of animals: ";
-			cin >> n;
-
-			vector<Animal*> animals;
-
-			for (int i = 0; i < n; i++)
-				animals.push_back(createAnimal());
-
-			for (Animal* animal : animals)
-				if (animal) animal->Speak();
-
-			// Clean up
-			for (Animal* animal : animals)
-				delete animal;
-		}
-
-		void test2()
-		{
-			Animal* animals[3] =
-			{
-				new Dog(),
-				new Duck(),
-				new Cat()
-			};
-
-			for (int i = 0; i < 3; i++)
-				animals[i]->Speak();
-		}
-	} // namespace Ex4
-
-	// virtual & override & final
-	namespace Ex5
-	{
-		class Animal
-		{
-		public: virtual void speak() const { cout << "Noise." << endl; }
-		};
-
-		class Dog : public Animal
-		{
-		public: void speak() const override final { cout << "Woof!" << endl; }
-		};
-
-		class Cat : public Animal
-		{
-			//public: void speak() { cout << "Meow!" << endl; }
-		public: void speak() const override { cout << "Meow!" << endl; }
-		};
-
-		class Duck : public Animal
-		{
-			//public: void speaks() const { cout << "Quack!" << endl; }
-		public: void speak() const override { cout << "Quack!" << endl; }
-		};
-
-		//class BullDog : public  Dog
-		//{
-		//public: void speak() const override { cout << "WOOF!" << endl; }
-		//};
-
-		class Base final
-		{
-			// Class contents
-		};
-		//class Derived : public Base { };  // Compile-time error: Base is marked 'final'
-
-		class Base2
-		{
-		public: virtual void doSomething() final { /*Code*/ }
-		};
-
-		class Derived : public Base2
-		{
-			//void doSomething() { }  // Error: doSomething() is 'final' in Base
-		};
-
-
-		int main()
-		{
-			Animal* animals[3] =
-			{
-				new Dog(),
-				new Duck(),
-				new Cat()
-			};
-
-			for (int i = 0; i < 3; i++)
-				animals[i]->speak();
-
-			return 0;
-		}
-	} // namespace
-
-	// virtual & override quiz
-	namespace Ex6
-	{
-		class Base
-		{
-		public:
-			void func() { cout << "Base fn" << endl; }
-			virtual void vfunc() { cout << "Base virFn" << endl; }
-		};
-
-		class Derived : public Base
-		{
-		public:
-			void func() { cout << "Derived fn" << endl; }
-			void vfunc() override { cout << "Derived  virFn" << endl; }
-		};
-
-		int main()
-		{
-			Base* b = new Derived();
-			b->func();
-			b->vfunc();
-			delete b;
-			return 0;
-		}
-	} // namespace Ex6
-
-	// Bad pointer arithmatics
-	namespace Ex7
-	{
-		class Base
-		{
-		public:
-			int baseData;
-			Base(int i = 5) : baseData(i) {}
-		};
-
-		class Derived : public Base
-		{
-		public:
-			long double extraData;
-			Derived(int i = 6, long double d = 7)
-				: Base(i), extraData(d) {}
-		};
-
-		void display(Base arr[], int size)
-		{
-			for (int i = 0; i < size; i++)
-				cout << arr[i].baseData << endl;
-		}
-
-		void display(Base* arr[], int size)
-		{
-			for (int i = 0; i < size; i++)
-				cout << arr[i]->baseData << endl;
-		}
-
-		void test1()
-		{
-			// Array of Derived objects, but pointer is of type Base
-			Base* arr = new Derived[]
-			{
-				Derived(1, 1.5),
-				Derived(2, 2.5),
-				Derived(3, 3.5)
-			};
-			display(arr, 3);
-		}
-
-		void test2()
-		{
-			// Array of Derived objects, but pointer is of type Base
-			Base** arr = new Base * []
-				{
-					new Derived(1, 1.5),
-						new Derived(2, 2.5),
-						new Derived(3, 3.5)
-				};
-			display(arr, 3);
-		}
-
-		//class Base
-		//{
-		//public: int baseData = 5;
-		//};
-
-		//class Derived : public Base
-		//{
-		//public: long double extraData = 5;
-		//};
-
-		//void display(Base arr[], int size)
-		//{
-		//	for (int i = 0; i < size; i++)
-		//		cout << arr[i].baseData
-		//		<< endl;
-		//}
-		//int test1()
-		//{
-		//	Base* arr = new Derived[3];
-
-
-
-		//	display(arr, 3);
-		//	return 0;
-		//}
-
-
-	} // namespace Ex7
-
-	// Bad pointer arithmatics
-	namespace Ex8
-	{
-		class Base
-		{
-		public:
-			int baseData;
-			Base(int b = 0) : baseData(b) {}
-			virtual void show() { std::cout << "Base: " << baseData << std::endl; }
-			virtual ~Base() {}
-		};
-
-		class Derived1 : public Base
-		{
-		public:
-			double derivedData1;
-			Derived1(int b = 0, double d1 = 0.0) : Base(b), derivedData1(d1) {}
-			void show() override { std::cout << "Derived1: " << baseData << ", " << derivedData1 << std::endl; }
-		};
-
-		class Derived2 : public Base
-		{
-		public:
-			double derivedData1, derivedData2;
-			Derived2(int b = 0, double d1 = 0.0, double d2 = 0.0) : Base(b), derivedData1(d1), derivedData2(d2) {}
-			void show() override { std::cout << "Derived2: " << baseData << ", " << derivedData1 << ", " << derivedData2 << std::endl; }
-		};
-
-		void test()
-		{
-			Base* objects[3]; // Array of pointers to Base objects
-			objects[0] = new Derived1(1, 1.1);
-			objects[1] = new Derived2(2, 2.2, 2.3);
-			objects[2] = new Derived1(3, 3.3);
-
-			for (int i = 0; i < 3; ++i) {
-				objects[i]->show();
-			}
-
-			//// Attempting to use pointer arithmetic (incorrect and dangerous)
-			//Base* ptr = objects[0];
-			//for (int i = 0; i < 3; ++i) {
-			//	(ptr + i)->show(); // This is incorrect: ptr + i does not account for the actual sizes of the objects
-			//}
-
-			// Cleanup
-			for (int i = 0; i < 3; ++i) {
-				delete objects[i];
-			}
-		}
-	} // namespace Ex8
-
-	namespace Ex9
-	{
-		class GeometricObject
-		{
-		public:
 			virtual double getArea() const = 0;
-			virtual ~GeometricObject() {}
+			virtual double getPerimeter() const = 0;
 		};
 
 		class Circle : public GeometricObject
 		{
-		private: double radius;
+		private:
+			double radius = 1;
 		public:
 			virtual double getArea() const override
 			{
 				return radius * radius * 3.14;
 			}
-			Circle(double r = 1) : radius(r) {}
+			virtual double getPerimeter() const override
+			{
+				return 2 * 3.14 * radius;
+			}
+			Circle(double radius) : radius(radius) {}
+			double getRadius() const { return radius; }
+			double getDiameter() const { return 2 * radius; }
 		};
 
 		class Rectangle : public GeometricObject
 		{
-		private: double length, width;
+		private:
+			double length = 1;
+			double width = 1;
 		public:
 			virtual double getArea() const override
 			{
 				return width * length;
 			}
-			Rectangle(double l = 1, double w = 1)
-				: width(w), length(l) {}
+			virtual double getPerimeter() const override
+			{
+				return 2 * (width + length);
+			}
+			Rectangle(double length, double width)
+				: width(width), length(length)
+			{}
+			double getLength() const { return length; }
+			double getWidth() const { return width; }
 		};
 
-		void displayArea(GeometricObject* g[], int size)
+		void displayGeometricObject(const GeometricObject* g)
 		{
-			for (int i = 0; i < size; i++)
-				cout << "Area: " << g[i]->getArea() << endl;
+			const Circle* ptrC = dynamic_cast<const Circle*>(g);
+			const Rectangle* ptrR = dynamic_cast<const Rectangle*>(g);
+
+			if (ptrC)
+			{
+				cout << "The radius is " << ptrC->getRadius() << endl;
+				cout << "The diameter is " << ptrC->getDiameter() << endl;
+			}
+			if (ptrR != nullptr)
+			{
+				cout << "The width is " << ptrR->getLength() << endl;
+				cout << "The height is " << ptrR->getWidth() << endl;
+			}
+			if (g != NULL)
+			{
+				cout << "The area is " << g->getArea() << endl;
+				cout << "The perimeter is " << g->getPerimeter() << endl;
+			}
+
 		}
 
-		void test()
+		int main()
 		{
-			GeometricObject* arr[] =
+			GeometricObject* geometricObjectList[] =
 			{
 				new Rectangle(3,4),
-				new Rectangle(5,6),
+				new Rectangle(6,8),
 				new Circle(5),
 				new Circle(9)
 			};
 
-			displayArea(arr, 4);
-		}
-	} // namespace Ex9
-} // namespace L12
+			for (int i = 0; i < 4; i++)
+			{
+				displayGeometricObject(geometricObjectList[i]);
+				cout << string(20, '-') << endl;
+			}
 
-using namespace Lec12;
+			return 0;
+		}
+	} // namespace Ex3
+
+	namespace Q1
+	{
+		class Test
+		{
+		public:
+			int* data = nullptr;
+			int size;
+			void test(const Test& rhs)
+			{
+				{
+					if (this == &rhs) return;
+					delete[] data;
+					size = rhs.size;
+					data = new int[size];
+					for (int i = 0; i < size; i++)
+						data[i] = rhs.data[i];
+				}
+
+				{
+					int* temp = new int[size];
+					for (int i = 0; i < size; i++)
+						temp[i] = rhs.data[i];
+					delete[] data;
+					data = temp;
+				}
+
+				{
+					if (this == &rhs) return;
+					int* temp = new int[size];
+					if (!temp) return;
+					for (int i = 0; i < size; i++)
+						temp[i] = rhs.data[i];
+					delete[] data;
+					data = temp;
+				}
+			}
+		};
+	} // namespace Q1
+
+	// Exception Handling
+	namespace Ex4
+	{
+		class Dummy
+		{
+		public:
+			Dummy() { cout << "Dummy created" << endl; }
+			~Dummy() { cout << "Dummy destroyed" << endl; }
+		};
+
+		int* readDataFile(const string& flName, int size)
+		{
+			ifstream file(flName);
+			int* data = new int[size];
+
+			if (!file)
+			{
+				throw string("File not found: " + flName);
+			}
+
+			for (int i = 0; i < size; i++)
+				file >> data[i];
+
+			return data;
+		}
+
+		double calcAvg(const string& flName, int N)
+		{
+			int* data = readDataFile("counts.txt", N);
+			double sum = 0.0;
+			for (int i = 0; i < N; i++)
+				sum += data[i];
+			return sum / N;
+		}
+
+		int test()
+		{
+			try
+			{
+				int size = 10;
+				double average = calcAvg("counts.txt", size);
+				cout << "Average: " << average << endl;
+			}
+			catch (const string& errorMessage)
+			{
+				cout << "Error: " << errorMessage << endl;
+			}
+
+			return 0;
+		}
+
+		double calcAvg(const int* data, const int size)
+		{
+			double sum = 0.0;
+			for (int i = 0; i < size; i++)
+				sum += data[i];
+			return sum / size;
+		}
+
+		int test1()
+		{
+			try
+			{
+				int size = 10;
+				int* data = readDataFile("counts.txt", size);
+				double average = calcAvg(data, size);
+				cout << "Average: " << average << endl;
+			}
+			catch (const string& errorMessage)
+			{
+				cout << "Error: " << errorMessage << endl;
+			}
+
+			return 0;
+		}
+
+	} // namespace Ex3
+
+	// Exception Handling
+	namespace Ex5
+	{
+		int F1(), F2(), F3();
+
+		void test()
+		{
+			try
+			{
+				cout << F1() << endl;
+			}
+			catch (int e)
+			{
+				cout << "Exception: " << e << endl;
+			}
+			catch (string e)
+			{
+				cout << "Exception: " << e << endl;
+			}
+		}
+
+		int F1()
+		{
+			F2();
+			return 1;
+		}
+
+		int F2()
+		{
+			F3();
+			return 2;
+		}
+
+		int F3()
+		{
+			throw string("Error in F3()");
+			return 3;
+		}
+	} // namespace Ex5
+
+	namespace Ex6
+	{
+		int F1(), F2(), F3();
+		void test()
+		{
+			try
+			{
+				cout  << F1() << endl;
+			}
+			catch (int e)
+			{
+				cout  << "Exception: " << e  << endl;
+			}
+			catch (string e)
+			{
+				cout  << "Exception: " << e  << endl;
+			}
+		}
+		int F1()
+		{
+			try
+			{
+				F2();
+			}
+			catch (string e)
+			{
+				cout  << "Exception: " << e  << endl;
+				throw string("Error in F1()");
+			}
+			return 1;
+		}
+		int F2()
+		{
+			try
+			{
+				F3();
+			}
+			catch (string e)
+			{
+				cout  << "Exception: " << e  << endl;
+				throw;
+			}
+			return 2;
+		}
+
+		int F3()
+		{
+			throw string("Error in F3()");
+			return 3;
+		}
+	} // namespace Ex6
+
+} // namespace Lec13
+
+
+using namespace Lec13::Ex5;
 
 int main()
 {
-	Ex9::test();
+	test();
 	return 0;
 }
