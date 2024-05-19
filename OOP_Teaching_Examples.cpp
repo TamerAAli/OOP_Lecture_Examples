@@ -2246,55 +2246,430 @@ namespace others
 		} // namespace Ex9
 	} // namespace L12
 
-	namespace Lec14
+	namespace Lec13
 	{
-		// Ex1 - Multiple Inheritance
+		// Fraction Op overloading
 		namespace Ex1
 		{
-			class Person
+			class Fraction
 			{
-			protected:
-				string name;
 			public:
-				Person(const string& name) : name(name) {}
-				virtual ~Person() = default;
+				Fraction(int num, int denom);
+				Fraction(int num);
+				Fraction(const Fraction& other);
+				Fraction& operator=(const Fraction& other);
+				Fraction& operator=(const int& other);
+				Fraction operator+(const Fraction& other) const;
+				Fraction operator+(const int& other) const;
+				friend Fraction operator+(const int& lhs, const Fraction& rhs);
+				friend ostream& operator<<(ostream& cout, const Fraction& rhs);
 
-				void setName(const string& newName) { name = newName; }
-				string getName() const { return name; }
-			};
+				double convertToDecimal() const
+				{
+					return double(numerator) / denominator;
+				}
 
-			class Employee
-			{
-			protected:
-				int id;
-			public:
-				Employee(int id) : id(id) {}
-				virtual ~Employee() = default;
+				operator double() const { return (double)numerator / denominator; }
 
-				void setId(int newId) { id = newId; }
-				int getId() const { return id; }
-			};
-
-			class Manager : public Person, public Employee
-			{
 			private:
-				string department;
-			public:
-				Manager(const string& name, int id, const string& dept)
-					: Person(name), Employee(id), department(dept) {}
-
-				void setDepartment(const string& newDept) { department = newDept; }
-				string getDepartment() const { return department; }
+				int numerator = 0;
+				int denominator = 1;
 			};
 
-			int main()
+			Fraction::Fraction(int num, int denom)
+				: numerator(num), denominator(denom) {}
+
+			Fraction::Fraction(int num) : Fraction(num, 1) {}
+
+			Fraction::Fraction(const Fraction& other)
 			{
+				this->numerator = other.numerator;
+				this->denominator = other.denominator;
+			}
+
+			Fraction& Fraction::operator=(const Fraction& other)
+			{
+				if (this != &other)
+				{
+					this->numerator = other.numerator;
+					this->denominator = other.denominator;
+				}
+				return *this;
+			}
+
+			Fraction& Fraction::operator=(const int& other)
+			{
+				numerator = other;
+				denominator = 1;
+				return *this;
+			}
+
+			Fraction Fraction::operator+(const Fraction& other) const
+			{
+				int newNumerator = numerator * other.denominator
+					+ other.numerator * denominator;
+				int newDenominator = denominator * other.denominator;
+
+				return Fraction(newNumerator, newDenominator);
+			}
+
+			Fraction Fraction::operator+(const int& other) const
+			{
+				int newNumerator = numerator
+					+ other * denominator;
+				int newDenominator = denominator;
+
+				return Fraction(newNumerator, newDenominator);
+			}
+
+			Fraction operator+(const int& lhs, const Fraction& rhs)
+			{
+				int newNumerator = lhs * rhs.denominator
+					+ rhs.numerator;
+				int newDenominator = rhs.denominator;
+
+				return Fraction(newNumerator, newDenominator);
+			}
+
+			ostream& operator<<(ostream& cout, const Fraction& rhs)
+			{
+				cout << rhs.numerator << " / " << rhs.denominator;
+				return cout;
+			}
+
+			void displayFraction(const Fraction& f)
+			{
+				cout << f << endl;
+			}
+
+			int test()
+			{
+				Fraction f1(1, 2);
+				cout << f1 << endl;
+
+				Fraction f2(2, 3);
+				cout << f2 << endl;
+
+				Fraction f3(3, 4);
+				cout << f3 << endl;
+
+				f1 = f2 = f3;
+				cout << f1 << endl;
+
+				f1 = f2;
+				cout << f1 << endl;
+
+				f1 = 1;
+				cout << f1 << endl;
+
+				Fraction f4 = f2 + f3;
+				cout << f4 << endl;
+
+				Fraction f5 = f2 + 5;
+				cout << f5 << endl;
+
+				Fraction f6 = 10 + f2;
+				cout << (double)f6 << endl;
+				cout << f6 << endl;
+
+				double d = f6;
+				cout << d << endl;
+
+				displayFraction(f6);
+				displayFraction(2);
+
 				return 0;
 			}
 		} // namespace Ex1
 
-		// Parent Copy Constructor
+		// AudioBuffer with Op= overloading
 		namespace Ex2
+		{
+			class AudioBuffer
+			{
+			private:
+				float* samples = nullptr; // Array of samples
+				int size = 0;
+			public:
+				int CAPACITY;
+				AudioBuffer(int n = 0) : CAPACITY(n)
+				{
+					if (n <= 0) return;
+					samples = new float[n];
+					for (int i = 0; i < n; ++i) samples[i] = 0.0;
+				}
+
+				AudioBuffer(const AudioBuffer& other) :
+					CAPACITY(other.CAPACITY), size(other.size)
+				{
+					if (other.CAPACITY <= 0) return;
+					samples = new float[other.CAPACITY];
+					for (int i = 0; i < CAPACITY; ++i) samples[i] = other.samples[i];
+				}
+
+				AudioBuffer& operator=(const AudioBuffer& other) // = Operator
+				{
+					if (other.CAPACITY <= 0 || this == &other) return *this; // Check for self-assignment
+					CAPACITY = other.CAPACITY;
+					size = other.size;
+
+					if (samples) delete[] samples; // Free old resources if needed
+					samples = new float[other.CAPACITY];
+					for (int i = 0; i < CAPACITY; ++i) samples[i] = other.samples[i];
+
+					return *this; // Return a reference to the current object
+				}
+
+				~AudioBuffer()
+				{
+					delete[] samples;
+					samples = nullptr;
+				}
+				bool addSample(float value)
+				{
+					if (!samples || size >= CAPACITY) return false;
+
+					samples[size++] = value;
+					return true;
+				}
+			};
+
+			int main()
+			{
+				int NUM_SAMPLES = 50;
+				AudioBuffer buffer1(NUM_SAMPLES);
+				AudioBuffer buffer2 = buffer1;
+				buffer2 = buffer1;
+
+				// Open a file for reading
+				ifstream file("samples.txt");
+
+				float sample;
+
+				// Read sample values from the file
+				while (file >> sample &&
+					buffer1.addSample(sample))
+				{
+				}
+
+				file.close(); // Close the file
+
+				return 0; // Destructor is called
+			}
+		} // namespace Ex2
+
+		namespace Q1
+		{
+			class Test
+			{
+			public:
+				int* data = nullptr;
+				int size;
+				void test(const Test& rhs)
+				{
+					{
+						if (this == &rhs) return;
+						delete[] data;
+						size = rhs.size;
+						data = new int[size];
+						for (int i = 0; i < size; i++)
+							data[i] = rhs.data[i];
+					}
+
+					{
+						int* temp = new int[size];
+						for (int i = 0; i < size; i++)
+							temp[i] = rhs.data[i];
+						delete[] data;
+						data = temp;
+					}
+
+					{
+						if (this == &rhs) return;
+						int* temp = new int[size];
+						if (!temp) return;
+						for (int i = 0; i < size; i++)
+							temp[i] = rhs.data[i];
+						delete[] data;
+						data = temp;
+					}
+				}
+			};
+		} // namespace Q1
+
+		// Exception Handling
+		namespace Ex4
+		{
+			class Dummy
+			{
+			public:
+				Dummy() { cout << "Dummy created" << endl; }
+				~Dummy() { cout << "Dummy destroyed" << endl; }
+			};
+
+			int* readDataFile(const string& flName, int size)
+			{
+				ifstream file(flName);
+				int* data = new int[size];
+
+				if (!file)
+				{
+					throw string("File not found: " + flName);
+				}
+
+				for (int i = 0; i < size; i++)
+					file >> data[i];
+
+				return data;
+			}
+
+			double calcAvg(const string& flName, int N)
+			{
+				int* data = readDataFile("counts.txt", N);
+				double sum = 0.0;
+				for (int i = 0; i < N; i++)
+					sum += data[i];
+				return sum / N;
+			}
+
+			int test()
+			{
+				try
+				{
+					int size = 10;
+					double average = calcAvg("counts.txt", size);
+					cout << "Average: " << average << endl;
+				}
+				catch (const string& errorMessage)
+				{
+					cout << "Error: " << errorMessage << endl;
+				}
+
+				return 0;
+			}
+
+			double calcAvg(const int* data, const int size)
+			{
+				double sum = 0.0;
+				for (int i = 0; i < size; i++)
+					sum += data[i];
+				return sum / size;
+			}
+
+			int test1()
+			{
+				try
+				{
+					int size = 10;
+					int* data = readDataFile("counts.txt", size);
+					double average = calcAvg(data, size);
+					cout << "Average: " << average << endl;
+				}
+				catch (const string& errorMessage)
+				{
+					cout << "Error: " << errorMessage << endl;
+				}
+
+				return 0;
+			}
+
+		} // namespace Ex3
+
+		// Exception Handling
+		namespace Ex5
+		{
+			int F1(), F2(), F3();
+
+			void test()
+			{
+				try
+				{
+					cout << F1() << endl;
+				}
+				catch (int e)
+				{
+					cout << "Exception: " << e << endl;
+				}
+				catch (string e)
+				{
+					cout << "Exception: " << e << endl;
+				}
+			}
+
+			int F1()
+			{
+				F2();
+				return 1;
+			}
+
+			int F2()
+			{
+				F3();
+				return 2;
+			}
+
+			int F3()
+			{
+				throw string("Error in F3()");
+				return 3;
+			}
+		} // namespace Ex5
+
+		// Exception Handling
+		namespace Ex6
+		{
+			int F1(), F2(), F3();
+			void test()
+			{
+				try
+				{
+					cout << F1() << endl;
+				}
+				catch (int e)
+				{
+					cout << "Exception: " << e << endl;
+				}
+				catch (string e)
+				{
+					cout << "Exception: " << e << endl;
+				}
+			}
+			int F1()
+			{
+				try
+				{
+					F2();
+				}
+				catch (string e)
+				{
+					cout << "Exception: " << e << endl;
+					throw string("Error in F1()");
+				}
+				return 1;
+			}
+			int F2()
+			{
+				try
+				{
+					F3();
+				}
+				catch (string e)
+				{
+					cout << "Exception: " << e << endl;
+					throw;
+				}
+				return 2;
+			}
+
+			int F3()
+			{
+				throw string("Error in F3()");
+				return 3;
+			}
+		} // namespace Ex6
+
+		// Parent Copy Constructor
+		namespace Ex7
 		{
 			class B
 			{
@@ -2320,9 +2695,9 @@ namespace others
 				D d2(d);
 				return 0;
 			}
-		} // namespace Ex2
+		} // namespace Ex7
 
-	} // namespace Lec12
+	} // namespace Lec13
 
 	namespace Lec13_
 	{
@@ -2508,220 +2883,55 @@ namespace others
 }; // namespace past
 
 
-namespace Lec13
+namespace Lec14
 {
-	// Fraction Op overloading
+	// Ex1 - Multiple Inheritance
 	namespace Ex1
 	{
-		class Fraction
+		class Person
 		{
+		protected:
+			string name;
 		public:
-			Fraction(int num, int denom);
-			Fraction(int num);
-			Fraction(const Fraction& other);
-			Fraction& operator=(const Fraction& other);
-			Fraction& operator=(const int& other);
-			Fraction operator+(const Fraction& other) const;
-			Fraction operator+(const int& other) const;
-			friend Fraction operator+(const int& lhs, const Fraction& rhs);
-			friend ostream& operator<<(ostream& cout, const Fraction& rhs);
+			Person(const string& name) : name(name) {}
+			virtual ~Person() = default;
 
-			double convertToDecimal() const
-			{
-				return double(numerator) / denominator;
-			}
-
-			operator double() const { return (double)numerator / denominator; }
-
-		private:
-			int numerator = 0;
-			int denominator = 1;
+			void setName(const string& newName) { name = newName; }
+			string getName() const { return name; }
 		};
 
-		Fraction::Fraction(int num, int denom)
-			: numerator(num), denominator(denom) {}
-
-		Fraction::Fraction(int num) : Fraction(num, 1) {}
-
-		Fraction::Fraction(const Fraction& other)
+		class Employee
 		{
-			this->numerator = other.numerator;
-			this->denominator = other.denominator;
-		}
+		protected:
+			int id;
+		public:
+			Employee(int id) : id(id) {}
+			virtual ~Employee() = default;
 
-		Fraction& Fraction::operator=(const Fraction& other)
-		{
-			if (this != &other)
-			{
-				this->numerator = other.numerator;
-				this->denominator = other.denominator;
-			}
-			return *this;
-		}
+			void setId(int newId) { id = newId; }
+			int getId() const { return id; }
+		};
 
-		Fraction& Fraction::operator=(const int& other)
-		{
-			numerator = other;
-			denominator = 1;
-			return *this;
-		}
-
-		Fraction Fraction::operator+(const Fraction& other) const
-		{
-			int newNumerator = numerator * other.denominator
-				+ other.numerator * denominator;
-			int newDenominator = denominator * other.denominator;
-
-			return Fraction(newNumerator, newDenominator);
-		}
-
-		Fraction Fraction::operator+(const int& other) const
-		{
-			int newNumerator = numerator
-				+ other * denominator;
-			int newDenominator = denominator;
-
-			return Fraction(newNumerator, newDenominator);
-		}
-
-		Fraction operator+(const int& lhs, const Fraction& rhs)
-		{
-			int newNumerator = lhs * rhs.denominator
-				+ rhs.numerator;
-			int newDenominator = rhs.denominator;
-
-			return Fraction(newNumerator, newDenominator);
-		}
-
-		ostream& operator<<(ostream& cout, const Fraction& rhs)
-		{
-			cout << rhs.numerator << " / " << rhs.denominator;
-			return cout;
-		}
-
-		void displayFraction(const Fraction& f)
-		{
-			cout << f << endl;
-		}
-
-		int test()
-		{
-			Fraction f1(1, 2);
-			cout << f1 << endl;
-
-			Fraction f2(2, 3);
-			cout << f2 << endl;
-
-			Fraction f3(3, 4);
-			cout << f3 << endl;
-
-			f1 = f2 = f3;
-			cout << f1 << endl;
-
-			f1 = f2;
-			cout << f1 << endl;
-
-			f1 = 1;
-			cout << f1 << endl;
-
-			Fraction f4 = f2 + f3;
-			cout << f4 << endl;
-
-			Fraction f5 = f2 + 5;
-			cout << f5 << endl;
-
-			Fraction f6 = 10 + f2;
-			cout << (double)f6 << endl;
-			cout << f6 << endl;
-
-			double d = f6;
-			cout << d << endl;
-
-			displayFraction(f6);
-			displayFraction(2);
-
-			return 0;
-		}
-	} // namespace Ex1
-
-	// AudioBuffer with Op= overloading
-	namespace Ex2
-	{
-		class AudioBuffer
+		class Manager : public Person, public Employee
 		{
 		private:
-			float* samples = nullptr; // Array of samples
-			int size = 0;
+			string department;
 		public:
-			int CAPACITY;
-			AudioBuffer(int n = 0) : CAPACITY(n)
-			{
-				if (n <= 0) return;
-				samples = new float[n];
-				for (int i = 0; i < n; ++i) samples[i] = 0.0;
-			}
+			Manager(const string& name, int id, const string& dept)
+				: Person(name), Employee(id), department(dept) {}
 
-			AudioBuffer(const AudioBuffer& other) :
-				CAPACITY(other.CAPACITY), size(other.size)
-			{
-				if (other.CAPACITY <= 0) return;
-				samples = new float[other.CAPACITY];
-				for (int i = 0; i < CAPACITY; ++i) samples[i] = other.samples[i];
-			}
-
-			AudioBuffer& operator=(const AudioBuffer& other) // = Operator
-			{
-				if (other.CAPACITY <= 0 || this == &other) return *this; // Check for self-assignment
-				CAPACITY = other.CAPACITY;
-				size = other.size;
-
-				if (samples) delete[] samples; // Free old resources if needed
-				samples = new float[other.CAPACITY];
-				for (int i = 0; i < CAPACITY; ++i) samples[i] = other.samples[i];
-
-				return *this; // Return a reference to the current object
-			}
-
-			~AudioBuffer()
-			{
-				delete[] samples;
-				samples = nullptr;
-			}
-			bool addSample(float value)
-			{
-				if (!samples || size >= CAPACITY) return false;
-
-				samples[size++] = value;
-				return true;
-			}
+			void setDepartment(const string& newDept) { department = newDept; }
+			string getDepartment() const { return department; }
 		};
 
 		int main()
 		{
-			int NUM_SAMPLES = 50;
-			AudioBuffer buffer1(NUM_SAMPLES);
-			AudioBuffer buffer2 = buffer1;
-			buffer2 = buffer1;
-
-			// Open a file for reading
-			ifstream file("samples.txt");
-
-			float sample;
-
-			// Read sample values from the file
-			while (file >> sample &&
-				buffer1.addSample(sample))
-			{
-			}
-
-			file.close(); // Close the file
-
-			return 0; // Destructor is called
+			return 0;
 		}
-	} // namespace Ex2
+	} // namespace Ex1
 
 	// Casting
-	namespace Ex3
+	namespace Ex2
 	{
 		class GeometricObject
 		{
@@ -2792,6 +3002,23 @@ namespace Lec13
 
 		}
 
+		void test()
+		{
+			vector<GeometricObject*> geometricObjectVector =
+			{
+				new Rectangle(3,4),
+				new Rectangle(6,8),
+				new Circle(5),
+				new Circle(9)
+			};
+
+			for (GeometricObject* geometricObject : geometricObjectVector)
+			{
+				displayGeometricObject(geometricObject);
+				cout << string(20, '-') << endl;
+			}
+		}
+
 		int main()
 		{
 			GeometricObject* geometricObjectList[] =
@@ -2810,221 +3037,343 @@ namespace Lec13
 
 			return 0;
 		}
+	} // namespace Ex2
+
+	//Templates
+	namespace Ex3
+	{
+		// Find the maximum element in an integer array
+		int maxElement(int arr[], int size)
+		{
+			int max = arr[0];
+			for (int i = 1; i < size; ++i)
+				if (arr[i] > max)
+					max = arr[i];
+			return max;
+		}
+
+		// Find the maximum element in a double array
+		double maxElement(double arr[], int size)
+		{
+			double max = arr[0];
+			for (int i = 1; i < size; ++i)
+				if (arr[i] > max)
+					max = arr[i];
+			return max;
+		}
+
+		// Find the maximum element in a char array
+		char maxElement(char arr[], int size)
+		{
+			char max = arr[0];
+			for (int i = 1; i < size; ++i)
+				if (arr[i] > max)
+					max = arr[i];
+			return max;
+		}
+
+		template<typename AnyType>
+		AnyType maxElement(AnyType arr[], int size)
+		{
+			AnyType max = arr[0];
+			for (int i = 1; i < size; ++i)
+				if (arr[i] > max)
+					max = arr[i];
+			return max;
+		}
+
+		template<typename T>
+		T max(const T num1, const T num2)
+		{
+			if (num1 > num2) return num1; else return num2;
+		}
+
+		void test1()
+		{
+			cout << max(1, 3) << endl; // create max int int
+			cout << max(1.5, 0.3) << endl; // create max double double
+			cout << max(5, 2) << endl; // use max int int
+			cout << max('A', 'N') << endl; // create max char char
+			cout << Ex3::max(string("NBC"), string("ABC")) << endl; // create
+		}
+
+		void test()
+		{
+			int intArr[] = { 1, 2, 3, 4, 5 };
+			double doubleArr[] = { 1.1, 2.2, 3.3, 4.4 };
+			string stringArr[] = { "CIE 101", "ENV 101" };
+
+			cout << maxElement(intArr, 5) << endl;
+			cout << maxElement(doubleArr, 4) << endl;
+			cout << maxElement(stringArr, 2) << endl;
+		}
 	} // namespace Ex3
 
-	namespace Q1
-	{
-		class Test
-		{
-		public:
-			int* data = nullptr;
-			int size;
-			void test(const Test& rhs)
-			{
-				{
-					if (this == &rhs) return;
-					delete[] data;
-					size = rhs.size;
-					data = new int[size];
-					for (int i = 0; i < size; i++)
-						data[i] = rhs.data[i];
-				}
-
-				{
-					int* temp = new int[size];
-					for (int i = 0; i < size; i++)
-						temp[i] = rhs.data[i];
-					delete[] data;
-					data = temp;
-				}
-
-				{
-					if (this == &rhs) return;
-					int* temp = new int[size];
-					if (!temp) return;
-					for (int i = 0; i < size; i++)
-						temp[i] = rhs.data[i];
-					delete[] data;
-					data = temp;
-				}
-			}
-		};
-	} // namespace Q1
-
-	// Exception Handling
+	// Template creation example
 	namespace Ex4
 	{
-		class Dummy
+		void selectionSort(int arr[], int size)
 		{
-		public:
-			Dummy() { cout << "Dummy created" << endl; }
-			~Dummy() { cout << "Dummy destroyed" << endl; }
-		};
-
-		int* readDataFile(const string& flName, int size)
-		{
-			ifstream file(flName);
-			int* data = new int[size];
-
-			if (!file)
+			for (int i = 0; i < size - 1; ++i)
 			{
-				throw string("File not found: " + flName);
+				// Find the minimum element in the unsorted part
+				int minIndex = i;
+				for (int j = i + 1; j < size; ++j)
+					if (arr[j] < arr[minIndex])
+						minIndex = j;
+
+				// Swap the found minimum element with the first element
+				int temp = arr[minIndex];
+				arr[minIndex] = arr[i];
+				arr[i] = temp;
 			}
-
-			for (int i = 0; i < size; i++)
-				file >> data[i];
-
-			return data;
-		}
-
-		double calcAvg(const string& flName, int N)
-		{
-			int* data = readDataFile("counts.txt", N);
-			double sum = 0.0;
-			for (int i = 0; i < N; i++)
-				sum += data[i];
-			return sum / N;
-		}
-
-		int test()
-		{
-			try
-			{
-				int size = 10;
-				double average = calcAvg("counts.txt", size);
-				cout << "Average: " << average << endl;
-			}
-			catch (const string& errorMessage)
-			{
-				cout << "Error: " << errorMessage << endl;
-			}
-
-			return 0;
-		}
-
-		double calcAvg(const int* data, const int size)
-		{
-			double sum = 0.0;
-			for (int i = 0; i < size; i++)
-				sum += data[i];
-			return sum / size;
 		}
 
 		int test1()
 		{
-			try
+			int arr[] = { 64, 25, 12, 22, 11 };
+			int size = sizeof(arr) / sizeof(arr[0]);
+
+			cout << "Before sorting: ";
+			for (int i = 0; i < size; ++i)
 			{
-				int size = 10;
-				int* data = readDataFile("counts.txt", size);
-				double average = calcAvg(data, size);
-				cout << "Average: " << average << endl;
+				cout << arr[i] << " ";
 			}
-			catch (const string& errorMessage)
+			cout << endl;
+
+			selectionSort(arr, size);
+
+			cout << "After sorting: ";
+			for (int i = 0; i < size; ++i)
 			{
-				cout << "Error: " << errorMessage << endl;
+				cout << arr[i] << " ";
 			}
+			cout << endl;
 
 			return 0;
 		}
 
-	} // namespace Ex3
 
-	// Exception Handling
+		// Template function to sort an array using selection sort
+		template <typename T>
+		void selectionSort(T arr[], int size)
+		{
+			for (int i = 0; i < size - 1; ++i)
+			{
+				// Find the minimum element in the unsorted part
+				int minIndex = i;
+				for (int j = i + 1; j < size; ++j)
+					if (arr[j] < arr[minIndex])
+						minIndex = j;
+				// Swap the found minimum element with the first element
+				T temp = arr[minIndex];
+				arr[minIndex] = arr[i];
+				arr[i] = temp;
+			}
+		}
+
+		template <typename T>
+		void printArray(const T list[], int size)
+		{
+			for (int i = 0; i < size; i++)
+				cout << list[i] << " ";
+			cout << endl;
+		}
+
+		int test2()
+		{
+			int list1[] = { 3, 5, 1, 0, 2, 8, 7 };
+			selectionSort(list1, 7);
+			printArray(list1, 7);
+
+			double list2[] = { 3.5, 0.5, 1.4, 0.4, 2.5, 1.8, 4.7 };
+			selectionSort(list2, 7);
+			printArray(list2, 7);
+
+			string list3[] = { "Alexandria", "Cairo", "Luxor", "Aswan" };
+			selectionSort(list3, 4);
+			printArray(list3, 4);
+
+			return 0;
+		}
+	} // namespace Ex4
+
+	// Fraction Op overloading
 	namespace Ex5
 	{
-		int F1(), F2(), F3();
-
-		void test()
+		class Fraction
 		{
-			try
+		public:
+			Fraction(int num, int denom);
+			Fraction(int num);
+			Fraction(const Fraction& other);
+			Fraction& operator=(const Fraction& other);
+			Fraction& operator=(const int& other);
+			Fraction operator+(const Fraction& other) const;
+			//Fraction operator+(const int& other) const;
+			friend Fraction operator+(const int& lhs, const Fraction& rhs);
+			friend ostream& operator<<(ostream& cout, const Fraction& rhs);
+
+			double convertToDecimal() const
 			{
-				cout << F1() << endl;
+				return double(numerator) / denominator;
 			}
-			catch (int e)
-			{
-				cout << "Exception: " << e << endl;
-			}
-			catch (string e)
-			{
-				cout << "Exception: " << e << endl;
-			}
+
+			//operator double() const;
+
+		private:
+			int numerator = 0;
+			int denominator = 1;
+		};
+
+		//Fraction::operator double() const
+		//{
+		//	return (double)numerator / denominator;
+		//}
+
+		Fraction::Fraction(int num, int denom)
+			: numerator(num), denominator(denom) {}
+
+		Fraction::Fraction(int num) : Fraction(num, 1) {}
+
+		Fraction::Fraction(const Fraction& other)
+		{
+			this->numerator = other.numerator;
+			this->denominator = other.denominator;
 		}
 
-		int F1()
+		Fraction& Fraction::operator=(const Fraction& other)
 		{
-			F2();
-			return 1;
+			if (this != &other)
+			{
+				this->numerator = other.numerator;
+				this->denominator = other.denominator;
+			}
+			return *this;
 		}
 
-		int F2()
+		Fraction& Fraction::operator=(const int& other)
 		{
-			F3();
-			return 2;
+			numerator = other;
+			denominator = 1;
+			return *this;
 		}
 
-		int F3()
+		Fraction Fraction::operator+(const Fraction& other) const
 		{
-			throw string("Error in F3()");
-			return 3;
+			int newNumerator = numerator * other.denominator
+				+ other.numerator * denominator;
+			int newDenominator = denominator * other.denominator;
+
+			return Fraction(newNumerator, newDenominator);
+		}
+
+		//Fraction Fraction::operator+(const int& other) const
+		//{
+		//	int newNumerator = numerator
+		//		+ other * denominator;
+		//	int newDenominator = denominator;
+
+		//	return Fraction(newNumerator, newDenominator);
+		//}
+
+		Fraction operator+(const int& lhs, const Fraction& rhs)
+		{
+			int newNumerator = lhs * rhs.denominator
+				+ rhs.numerator;
+			int newDenominator = rhs.denominator;
+
+			return Fraction(newNumerator, newDenominator);
+		}
+
+		ostream& operator<<(ostream& cout, const Fraction& rhs)
+		{
+			cout << rhs.numerator << " / " << rhs.denominator;
+			return cout;
+		}
+
+		void displayFraction(const Fraction& f)
+		{
+			cout << f << endl;
+		}
+
+		int test()
+		{
+			Fraction f1(1, 2);
+			cout << f1 << endl;
+
+			Fraction f2(2, 3);
+			cout << f2 << endl;
+
+			Fraction f3(3, 4);
+			cout << f3 << endl;
+
+			f1 = f2 = f3;
+			cout << f1 << endl;
+
+			f1 = f2;
+			cout << f1 << endl;
+
+			f1 = 1;
+			cout << f1 << endl;
+
+			Fraction f4 = f2 + f3;
+			cout << f4 << endl;
+
+			Fraction f5 = f2 + 5;
+			cout << f5 << endl;
+
+			Fraction f6 = 10 + f2;
+			//cout << (double)f6 << endl;
+			cout << f6 << endl;
+
+			//double d = f6;
+			//cout << d << endl;
+
+			//displayFraction(f6);
+			//displayFraction(2);
+
+			return 0;
 		}
 	} // namespace Ex5
 
+	// Fraction Op overloading 2
 	namespace Ex6
 	{
-		int F1(), F2(), F3();
-		void test()
+		class Fraction
 		{
-			try
-			{
-				cout  << F1() << endl;
-			}
-			catch (int e)
-			{
-				cout  << "Exception: " << e  << endl;
-			}
-			catch (string e)
-			{
-				cout  << "Exception: " << e  << endl;
-			}
-		}
-		int F1()
+		public:
+			Fraction(int num, int denom);
+			Fraction(int num);
+			explicit operator double() const;
+
+		private:
+			int numerator = 0;
+			int denominator = 1;
+		};
+
+		Fraction::operator double() const
 		{
-			try
-			{
-				F2();
-			}
-			catch (string e)
-			{
-				cout  << "Exception: " << e  << endl;
-				throw string("Error in F1()");
-			}
-			return 1;
-		}
-		int F2()
-		{
-			try
-			{
-				F3();
-			}
-			catch (string e)
-			{
-				cout  << "Exception: " << e  << endl;
-				throw;
-			}
-			return 2;
+			return (double)numerator / denominator;
 		}
 
-		int F3()
+		Fraction::Fraction(int num, int denom)
+			: numerator(num), denominator(denom) {}
+
+		Fraction::Fraction(int num) : Fraction(num, 1) {}
+
+		int test()
 		{
-			throw string("Error in F3()");
-			return 3;
+			Fraction f1(1, 2);
+			cout << (double)f1 << endl;
+
+			return 0;
 		}
 	} // namespace Ex6
+} // namespace Lec14
 
-} // namespace Lec13
 
-
-using namespace Lec13::Ex5;
+using namespace Lec14::Ex6;
 
 int main()
 {
