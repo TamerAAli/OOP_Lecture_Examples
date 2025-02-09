@@ -7,6 +7,7 @@ using namespace std;
 
 namespace others
 {
+
 	namespace Lec1
 	{
 		namespace Ex1
@@ -48,247 +49,7 @@ namespace others
 			}
 		} // namespace Ex3
 
-		namespace Ex4
-		{
-			int main()
-			{
-				double score = 85;
-				if (score >= 95.0) cout << "Grade is A";
-				else
-				{
-					cout << "Grade is not A";
-					if (score >= 80.0) cout << "Grade is B";
-					else
-					{
-						cout << "Grade is not B";
-						if (score >= 65.0) cout << "Grade is C";
-						else
-						{
-							cout << "Grade is not C";
-							cout << "Grade is F";
-						}
-					}
-				}
-
-				return 0;
-			}
-		} // namespace Ex4
-
-		namespace Ex5
-		{
-			int main()
-			{
-				bool isEnrolled = true;
-				bool isGraduated = false;
-
-				cout << boolalpha; // Print bools as true/false instead of 1/0
-				cout << "Enrolled: " << isEnrolled << endl;
-				cout << "Graduated: " << isGraduated << endl;
-
-				return 0;
-			}
-		} // namespace Ex5
-
-		namespace Ex6
-		{
-			int main()
-			{
-				double TOEFLScore = 0;
-				cout << "Enter TOEFL score: ";
-				cin >> TOEFLScore;
-				bool hasGoodTOEFLScore = (TOEFLScore >= 79);
-
-				bool passedEnglishPlacementTest;
-				cout << "Did you pass the English Placement Test?: ";
-				cin >> passedEnglishPlacementTest;
-
-				bool isEligibleForAdmission = hasGoodTOEFLScore || passedEnglishPlacementTest;
-
-				bool needsRemedialEnglish = !isEligibleForAdmission;
-
-				if (isEligibleForAdmission)
-					cout << "Admit student";
-				else
-					cout << "Enroll in a remedial English course";
-
-				return 0;
-			}
-		} // namespace Ex6
-
-		namespace Ex7
-		{
-			int main()
-			{
-				cout << boolalpha << (1 < 4 > 3) << endl;
-				cout << boolalpha << (1 == 2 == 0) << endl;
-				return 0;
-			}
-		} // namespace Ex7
-		namespace Ex8
-		{
-			int main()
-			{
-				int x = 10;
-				float y = 5.5;
-
-				x += 10;
-				y += 10;
-				cout << x << " " << y;
-
-				//x += 10;
-				//y += 10.0;
-				//cin >> x >> " " >> y;
-				//
-				//x += 10;
-				//y += 10;
-				//print << x << " " << y;
-
-				return 0;
-			}
-		} // namespace Ex8
-
 	} // namespace Lec1
-
-	namespace Lec2
-	{
-		namespace Ex1
-		{
-			const int MAX_TV_CHANNEL = 100;
-			bool getTvStatus(const char* tvName)
-			{
-				return true;
-			}
-			int getTvCurrentChannel(const char* tvName)
-			{
-				return 0;
-			}
-			int main()
-			{
-				auto tv1 = "tv1";
-				bool isTvOpen = getTvStatus(tv1);
-				int currentChannel = getTvCurrentChannel(tv1);
-				if (isTvOpen)
-					if (currentChannel <= MAX_TV_CHANNEL)
-						currentChannel++;
-				if (isTvOpen && currentChannel <= MAX_TV_CHANNEL)
-					currentChannel++;
-				return 0;
-			}
-		} // namescpace Ex1
-
-		namespace Ex2
-		{
-			// Return max of two int values
-			//int max(int num1, int num2)
-			//{
-			//	if (num1 > num2) return num1;
-			//	else return num2;
-			//}
-
-			// Return max of two double values
-			double max(double num1, double num2)
-			{
-				if (num1 > num2) return num1;
-				else return num2;
-			}
-
-			// Return max of three double values
-			double max(double num1, double num2, double num3)
-			{
-				return max(max(num1, num2), num3);
-			}
-
-			int main()
-			{
-				// Invoke the max function with int parameters
-				cout << "The maximum of 3 and 4 is "
-					<< max(3, 4) << endl;
-
-				// Invoke the max function with the double parameters
-				cout << "The maximum of 3.0 and 5.4 is "
-					<< max(3.0, 5.4) << endl;
-
-				// Invoke the max function with three double parameters
-				cout << "The maximum of 3.0, 5.4, and 10.14 is "
-					<< max(3.0, 5.4, 10.14) << endl;
-
-				// Invoke the max function with an int and a double parameters
-				cout << "The maximum of 3.5 and 4 is "
-					<< max(3.5, 4) << endl;
-
-				return 0;
-			}
-		} // namespace Ex2
-
-		namespace Ex3
-		{
-
-			// Function to calculate the square of an integer
-			int square(int number)
-			{
-				return number * number;
-			}
-
-			// Function to double the value of an integer
-			int doubleValue(int number)
-			{
-				return 2 * number;
-			}
-
-			int main()
-			{
-				int value = 5;
-
-				// Call the square function
-				cout << "The square of " << value
-					<< " is " << square(value) << endl;
-
-				// Call the doubleValue function
-				cout << "Double the value of " << value
-					<< " is " << doubleValue(value) << endl;
-
-				return 0;
-			}
-		} // namespace Ex3
-
-		namespace Ex4
-		{
-			// Find the maximum of two double values
-			double max(double num1, double num2)
-			{
-				if (num1 > num2)
-					return num1;
-				else
-					return num2;
-			}
-
-			// Find the maximum of three double values
-			double max(double n1, double n2, double n3)
-			{
-				double max1 = max(n1, n2);
-				double max2 = max(n2, n3);
-				return max(max1, max2);
-			}
-
-			// Find max of array of double values
-			double max(double values[], int size)
-			{
-				double max = values[0];
-				for (int i = 1; i < size; i++)
-					if (values[i] > max)
-						max = values[i];
-				return max;
-			}
-
-			int main()
-			{
-				cout << max(1.0, 2) << endl;
-				cout << max(1, 2.0) << endl;
-				//cout << maxNumber(1, 2) << endl;
-				return 0;
-			}
-		} // namespace Ex4
-	} // namespace Lec2
 
 	namespace Lec3
 	{
@@ -483,38 +244,6 @@ namespace others
 				return 0;
 			}
 		} // namespace Ex3
-
-		namespace Ex4
-		{
-			enum Day { SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY };
-			int main()
-			{
-				Day day; // Declare
-				day = MONDAY; // Assign to one of the values
-				cout << day;
-				Day day2 = WEDNESDAY; // Declare and Assign 
-				//cin >> day2;
-				return 0;
-			}
-		} // namespace Ex4
-
-		namespace Ex5
-		{
-			struct Student
-			{
-				int studentID;
-				string name;
-				short intake;
-				double gpa;
-			};
-
-			int main()
-			{
-				Student stu1;
-				getline(cin, stu1.name);
-				return 0;
-			}
-		} // namespace Ex5
 
 	} // namespace Lec4
 
@@ -2880,9 +2609,6 @@ namespace others
 		}
 	} // namespace Le13
 
-}; // namespace past
-
-
 namespace Lec14
 {
 	// Ex1 - Multiple Inheritance
@@ -3373,10 +3099,278 @@ namespace Lec14
 } // namespace Lec14
 
 
-using namespace Lec14::Ex6;
+}; // namespace past
+
+	namespace Lec2
+	{
+		namespace Ex1
+		{
+			enum Day { SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY };
+			int main()
+			{
+				Day day; // Declare
+				day = MONDAY; // Assign to one of the values
+				cout << day;
+				Day day2 = WEDNESDAY; // Declare and Assign 
+				//cin >> day2;
+				return 0;
+			}
+		} // namespace Ex
+
+		namespace Ex2
+		{
+			struct Student
+			{
+				int studentID;
+				string name;
+				short intake;
+				double gpa;
+			};
+
+			int main()
+			{
+				Student stu1;
+				getline(cin, stu1.name);
+				Student esraa; esraa = { 1234, "Esraa" };
+				Student kareem = { 1235, "Kareem", 45, 3.5 };
+				return 0;
+			}
+		} // namespace Ex
+
+		namespace Ex3
+		{
+			int main()
+			{
+				double score = 85;
+				if (score >= 95.0) cout << "Grade is A";
+				else
+				{
+					cout << "Grade is not A";
+					if (score >= 80.0) cout << "Grade is B";
+					else
+					{
+						cout << "Grade is not B";
+						if (score >= 65.0) cout << "Grade is C";
+						else
+						{
+							cout << "Grade is not C";
+							cout << "Grade is F";
+						}
+					}
+				}
+
+				return 0;
+			}
+		} // namespace Ex
+
+		namespace Ex4
+		{
+			int main()
+			{
+				bool isEnrolled = true;
+				bool isGraduated = false;
+
+				cout << boolalpha; // Print bools as true/false instead of 1/0
+				cout << "Enrolled: " << isEnrolled << endl;
+				cout << "Graduated: " << isGraduated << endl;
+
+				return 0;
+			}
+		} // namespace Ex
+
+		namespace Ex5
+		{
+			int main()
+			{
+				double TOEFLScore = 0;
+				cout << "Enter TOEFL score: ";
+				cin >> TOEFLScore;
+				bool hasGoodTOEFLScore = (TOEFLScore >= 79);
+
+				bool passedEnglishPlacementTest;
+				cout << "Did you pass the English Placement Test?: ";
+				cin >> passedEnglishPlacementTest;
+
+				bool isEligibleForAdmission = hasGoodTOEFLScore || passedEnglishPlacementTest;
+
+				bool needsRemedialEnglish = !isEligibleForAdmission;
+
+				if (isEligibleForAdmission)
+					cout << "Admit student";
+				else
+					cout << "Enroll in a remedial English course";
+
+				return 0;
+			}
+		} // namespace Ex
+
+		namespace Ex6
+		{
+			int main()
+			{
+				cout << boolalpha << (1 < 4 > 3) << endl;
+				cout << boolalpha << (1 == 2 == 0) << endl;
+				return 0;
+			}
+		} // namespace Ex
+
+		namespace Ex7
+		{
+			const int MAX_TV_CHANNEL = 100;
+			bool getTvStatus(const char* tvName)
+			{
+				return true;
+			}
+			int getTvCurrentChannel(const char* tvName)
+			{
+				return 0;
+			}
+			int main()
+			{
+				auto tv1 = "tv1";
+				bool isTvOpen = getTvStatus(tv1);
+				int currentChannel = getTvCurrentChannel(tv1);
+				if (isTvOpen)
+					if (currentChannel <= MAX_TV_CHANNEL)
+						currentChannel++;
+				if (isTvOpen && currentChannel <= MAX_TV_CHANNEL)
+					currentChannel++;
+				return 0;
+			}
+		} // namescpace Ex
+
+		namespace Ex8
+		{
+			int main() {
+				double distance, fuel;
+
+				cout << "Enter distance traveled (km): ";
+				cin >> distance;
+
+				cout << "Enter fuel consumed (liters): ";
+				cin >> fuel;
+
+				if (fuel == 0 || (distance / fuel > 100))
+					cout << "Error: Invalid input. Fuel must be greater than zero and efficiency should be realistic." << endl;
+				else
+					cout << "Fuel efficiency: " << distance / fuel << " km/L" << endl;
+
+				return 0;
+			}
+		} // namespace Ex
+
+		namespace Ex8b
+		{
+			// Return max of two int values
+			//int max(int num1, int num2)
+			//{
+			//	if (num1 > num2) return num1;
+			//	else return num2;
+			//}
+
+			// Return max of two double values
+			double max(double num1, double num2)
+			{
+				if (num1 > num2) return num1;
+				else return num2;
+			}
+
+			// Return max of three double values
+			double max(double num1, double num2, double num3)
+			{
+				return max(max(num1, num2), num3);
+			}
+
+			int main()
+			{
+				// Invoke the max function with int parameters
+				cout << "The maximum of 3 and 4 is "
+					<< max(3, 4) << endl;
+
+				// Invoke the max function with the double parameters
+				cout << "The maximum of 3.0 and 5.4 is "
+					<< max(3.0, 5.4) << endl;
+
+				// Invoke the max function with three double parameters
+				cout << "The maximum of 3.0, 5.4, and 10.14 is "
+					<< max(3.0, 5.4, 10.14) << endl;
+
+				// Invoke the max function with an int and a double parameters
+				cout << "The maximum of 3.5 and 4 is "
+					<< max(3.5, 4) << endl;
+
+				return 0;
+			}
+		} // namespace Ex
+
+		namespace Ex9
+		{
+			const double M_PI = 3.14159265358979323846;
+
+			// Function to calculate the area of a circle
+			double calculateArea(double radius)
+			{
+				return M_PI * radius * radius;
+			}
+
+			// Function to calculate the area of a rectangle
+			double calculateArea(double length, double width)
+			{
+				return length * width;
+			}
+
+			int main()
+			{
+				// Example usage
+				cout << "Area of circle (radius 5): " << calculateArea(5.0) << endl;
+				cout << "Area of rectangle (4 x 6): " << calculateArea(4.0, 6.0) << endl;
+
+				return 0;
+			}
+		} // namespace Ex
+
+		namespace Ex10
+		{
+			// Find the maximum of two double values
+			double max(double num1, double num2)
+			{
+				if (num1 > num2)
+					return num1;
+				else
+					return num2;
+			}
+
+			// Find the maximum of three double values
+			double max(double n1, double n2, double n3)
+			{
+				double max1 = max(n1, n2);
+				double max2 = max(n2, n3);
+				return max(max1, max2);
+			}
+
+			// Find max of array of double values
+			double max(double values[], int size)
+			{
+				double max = values[0];
+				for (int i = 1; i < size; i++)
+					if (values[i] > max)
+						max = values[i];
+				return max;
+			}
+
+			int main()
+			{
+				cout << max(1.0, 2) << endl;
+				cout << max(1, 2.0) << endl;
+				//cout << maxNumber(1, 2) << endl;
+				return 0;
+			}
+		} // namespace Ex
+	} // namespace Lec2
+
 
 int main()
 {
-	test();
+	Lec2::Ex9::main();
 	return 0;
 }
