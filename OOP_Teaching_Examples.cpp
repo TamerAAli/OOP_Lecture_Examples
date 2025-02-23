@@ -279,9 +279,73 @@ namespace others
 
 		} // namespace Ex0
 
+		namespace comp_proc
+		{
+#include <iostream>
+			using namespace std;
+
+			// Bank account data
+			double balance = 0.0;
+
+			void deposit(double amount) {
+				balance += amount;
+				cout << "New Balance: $" << balance << endl;
+			}
+
+			void withdraw(double amount) {
+				if (amount > balance)
+					cout << "Insufficient funds!" << endl;
+				else {
+					balance -= amount;
+					cout << "New Balance: $" << balance << endl;
+				}
+			}
+
+			int main() {
+				deposit(100);
+				withdraw(30);
+				withdraw(80);
+			}
+
+		}
+
+		namespace comp_oop
+		{
+#include <iostream>
+			using namespace std;
+
+			class BankAccount {
+			private:
+				double balance;
+
+			public:
+				BankAccount(double initVal) { balance = initVal; }
+
+				void deposit(double amount) {
+					balance += amount;
+					cout << "New Balance: $" << balance << endl;
+				}
+
+				void withdraw(double amount) {
+					if (amount > balance)
+						cout << "Insufficient funds!" << endl;
+					else {
+						balance -= amount;
+						cout << "New Balance: $" << balance << endl;
+					}
+				}
+			};
+
+			int main() {
+				BankAccount myAccount(50);
+				myAccount.deposit(100);
+				myAccount.withdraw(30);
+				myAccount.withdraw(80);
+			}
+		}
+
 		namespace Ex1
 		{
-
 			class Circle1
 			{
 			private:
@@ -875,7 +939,8 @@ namespace others
 			private: string title, author;
 			public:
 				Book(string t = "title", string a = "author")
-					: title(t), author(a) {}
+					: title(t), author(a) {
+				}
 			};
 
 			class TwoBookPackage
@@ -883,7 +948,8 @@ namespace others
 			private: Book& book1, & book2;
 			public:
 				TwoBookPackage(Book& b1, Book& b2)
-					: book1(b1), book2(b2) {}
+					: book1(b1), book2(b2) {
+				}
 			};
 
 			void testAggregation()
@@ -1223,7 +1289,7 @@ namespace others
 			private:
 				double radius;
 			public:
-				Circle(double r) : radius(r) { }
+				Circle(double r) : radius(r) {}
 				void setRadius(double r) { radius = r; }
 				double getRadius() const { return radius; }
 				double getArea() const { return 3.14 * radius * radius; }
@@ -1467,13 +1533,13 @@ namespace others
 			{
 			private:
 				int privData;
-				void privMethod() { }
+				void privMethod() {}
 			protected:
 				int protData;
-				void protMethod() { }
+				void protMethod() {}
 			public:
 				int pubData;
-				void pubMethod() { }
+				void pubMethod() {}
 			};
 			class DerivedClass : public BaseClass
 			{
@@ -1542,13 +1608,13 @@ namespace others
 			{
 			private:
 				int bsPvDta;
-				void bsPvMthd() { }
+				void bsPvMthd() {}
 			protected:
 				int bsPtDta;
-				void bsPtMthd() { }
+				void bsPtMthd() {}
 			public:
 				int bsPbDta;
-				void bsPbMthd() { }
+				void bsPbMthd() {}
 			};
 			class Derived : public Base
 				//class Derived : protected Base
@@ -1583,7 +1649,7 @@ namespace others
 			public: void print() { cout << "P "; }
 			};
 
-			class Q :public P { };
+			class Q :public P {};
 
 			class R :public Q { public: void print() { cout << "R "; } };
 
@@ -1830,7 +1896,8 @@ namespace others
 			public:
 				long double extraData;
 				Derived(int i = 6, long double d = 7)
-					: Base(i), extraData(d) {}
+					: Base(i), extraData(d) {
+				}
 			};
 
 			void display(Base arr[], int size)
@@ -1951,7 +2018,8 @@ namespace others
 					return width * length;
 				}
 				Rectangle(double l = 1, double w = 1)
-					: width(w), length(l) {}
+					: width(w), length(l) {
+				}
 			};
 
 			void displayArea(GeometricObject* g[], int size)
@@ -2006,7 +2074,8 @@ namespace others
 			};
 
 			Fraction::Fraction(int num, int denom)
-				: numerator(num), denominator(denom) {}
+				: numerator(num), denominator(denom) {
+			}
 
 			Fraction::Fraction(int num) : Fraction(num, 1) {}
 
@@ -2481,7 +2550,8 @@ namespace others
 			public:
 				Fraction(int num, int denom)
 					: numerator(num), denominator(denom)
-				{}
+				{
+				}
 
 				Fraction& operator=(const Fraction& rhs)
 				{
@@ -2517,10 +2587,12 @@ namespace others
 			public:
 				Fraction(int num, int denom)
 					: numerator(num), denominator(denom)
-				{}
+				{
+				}
 
 				Fraction(int num) : Fraction(num, 1)
-				{}
+				{
+				}
 
 				Fraction& operator=(const Fraction& rhs)
 				{
@@ -2609,764 +2681,768 @@ namespace others
 		}
 	} // namespace Le13
 
-namespace Lec14
-{
-	// Ex1 - Multiple Inheritance
-	namespace Ex1
+	namespace Lec14
 	{
-		class Person
-		{
-		protected:
-			string name;
-		public:
-			Person(const string& name) : name(name) {}
-			virtual ~Person() = default;
-
-			void setName(const string& newName) { name = newName; }
-			string getName() const { return name; }
-		};
-
-		class Employee
-		{
-		protected:
-			int id;
-		public:
-			Employee(int id) : id(id) {}
-			virtual ~Employee() = default;
-
-			void setId(int newId) { id = newId; }
-			int getId() const { return id; }
-		};
-
-		class Manager : public Person, public Employee
-		{
-		private:
-			string department;
-		public:
-			Manager(const string& name, int id, const string& dept)
-				: Person(name), Employee(id), department(dept) {}
-
-			void setDepartment(const string& newDept) { department = newDept; }
-			string getDepartment() const { return department; }
-		};
-
-		int main()
-		{
-			return 0;
-		}
-	} // namespace Ex1
-
-	// Casting
-	namespace Ex2
-	{
-		class GeometricObject
-		{
-		public:
-			virtual double getArea() const = 0;
-			virtual double getPerimeter() const = 0;
-		};
-
-		class Circle : public GeometricObject
-		{
-		private:
-			double radius = 1;
-		public:
-			virtual double getArea() const override
-			{
-				return radius * radius * 3.14;
-			}
-			virtual double getPerimeter() const override
-			{
-				return 2 * 3.14 * radius;
-			}
-			Circle(double radius) : radius(radius) {}
-			double getRadius() const { return radius; }
-			double getDiameter() const { return 2 * radius; }
-		};
-
-		class Rectangle : public GeometricObject
-		{
-		private:
-			double length = 1;
-			double width = 1;
-		public:
-			virtual double getArea() const override
-			{
-				return width * length;
-			}
-			virtual double getPerimeter() const override
-			{
-				return 2 * (width + length);
-			}
-			Rectangle(double length, double width)
-				: width(width), length(length)
-			{}
-			double getLength() const { return length; }
-			double getWidth() const { return width; }
-		};
-
-		void displayGeometricObject(const GeometricObject* g)
-		{
-			const Circle* ptrC = dynamic_cast<const Circle*>(g);
-			const Rectangle* ptrR = dynamic_cast<const Rectangle*>(g);
-
-			if (ptrC)
-			{
-				cout << "The radius is " << ptrC->getRadius() << endl;
-				cout << "The diameter is " << ptrC->getDiameter() << endl;
-			}
-			if (ptrR != nullptr)
-			{
-				cout << "The width is " << ptrR->getLength() << endl;
-				cout << "The height is " << ptrR->getWidth() << endl;
-			}
-			if (g != NULL)
-			{
-				cout << "The area is " << g->getArea() << endl;
-				cout << "The perimeter is " << g->getPerimeter() << endl;
-			}
-
-		}
-
-		void test()
-		{
-			vector<GeometricObject*> geometricObjectVector =
-			{
-				new Rectangle(3,4),
-				new Rectangle(6,8),
-				new Circle(5),
-				new Circle(9)
-			};
-
-			for (GeometricObject* geometricObject : geometricObjectVector)
-			{
-				displayGeometricObject(geometricObject);
-				cout << string(20, '-') << endl;
-			}
-		}
-
-		int main()
-		{
-			GeometricObject* geometricObjectList[] =
-			{
-				new Rectangle(3,4),
-				new Rectangle(6,8),
-				new Circle(5),
-				new Circle(9)
-			};
-
-			for (int i = 0; i < 4; i++)
-			{
-				displayGeometricObject(geometricObjectList[i]);
-				cout << string(20, '-') << endl;
-			}
-
-			return 0;
-		}
-	} // namespace Ex2
-
-	//Templates
-	namespace Ex3
-	{
-		// Find the maximum element in an integer array
-		int maxElement(int arr[], int size)
-		{
-			int max = arr[0];
-			for (int i = 1; i < size; ++i)
-				if (arr[i] > max)
-					max = arr[i];
-			return max;
-		}
-
-		// Find the maximum element in a double array
-		double maxElement(double arr[], int size)
-		{
-			double max = arr[0];
-			for (int i = 1; i < size; ++i)
-				if (arr[i] > max)
-					max = arr[i];
-			return max;
-		}
-
-		// Find the maximum element in a char array
-		char maxElement(char arr[], int size)
-		{
-			char max = arr[0];
-			for (int i = 1; i < size; ++i)
-				if (arr[i] > max)
-					max = arr[i];
-			return max;
-		}
-
-		template<typename AnyType>
-		AnyType maxElement(AnyType arr[], int size)
-		{
-			AnyType max = arr[0];
-			for (int i = 1; i < size; ++i)
-				if (arr[i] > max)
-					max = arr[i];
-			return max;
-		}
-
-		template<typename T>
-		T max(const T num1, const T num2)
-		{
-			if (num1 > num2) return num1; else return num2;
-		}
-
-		void test1()
-		{
-			cout << max(1, 3) << endl; // create max int int
-			cout << max(1.5, 0.3) << endl; // create max double double
-			cout << max(5, 2) << endl; // use max int int
-			cout << max('A', 'N') << endl; // create max char char
-			cout << Ex3::max(string("NBC"), string("ABC")) << endl; // create
-		}
-
-		void test()
-		{
-			int intArr[] = { 1, 2, 3, 4, 5 };
-			double doubleArr[] = { 1.1, 2.2, 3.3, 4.4 };
-			string stringArr[] = { "CIE 101", "ENV 101" };
-
-			cout << maxElement(intArr, 5) << endl;
-			cout << maxElement(doubleArr, 4) << endl;
-			cout << maxElement(stringArr, 2) << endl;
-		}
-	} // namespace Ex3
-
-	// Template creation example
-	namespace Ex4
-	{
-		void selectionSort(int arr[], int size)
-		{
-			for (int i = 0; i < size - 1; ++i)
-			{
-				// Find the minimum element in the unsorted part
-				int minIndex = i;
-				for (int j = i + 1; j < size; ++j)
-					if (arr[j] < arr[minIndex])
-						minIndex = j;
-
-				// Swap the found minimum element with the first element
-				int temp = arr[minIndex];
-				arr[minIndex] = arr[i];
-				arr[i] = temp;
-			}
-		}
-
-		int test1()
-		{
-			int arr[] = { 64, 25, 12, 22, 11 };
-			int size = sizeof(arr) / sizeof(arr[0]);
-
-			cout << "Before sorting: ";
-			for (int i = 0; i < size; ++i)
-			{
-				cout << arr[i] << " ";
-			}
-			cout << endl;
-
-			selectionSort(arr, size);
-
-			cout << "After sorting: ";
-			for (int i = 0; i < size; ++i)
-			{
-				cout << arr[i] << " ";
-			}
-			cout << endl;
-
-			return 0;
-		}
-
-
-		// Template function to sort an array using selection sort
-		template <typename T>
-		void selectionSort(T arr[], int size)
-		{
-			for (int i = 0; i < size - 1; ++i)
-			{
-				// Find the minimum element in the unsorted part
-				int minIndex = i;
-				for (int j = i + 1; j < size; ++j)
-					if (arr[j] < arr[minIndex])
-						minIndex = j;
-				// Swap the found minimum element with the first element
-				T temp = arr[minIndex];
-				arr[minIndex] = arr[i];
-				arr[i] = temp;
-			}
-		}
-
-		template <typename T>
-		void printArray(const T list[], int size)
-		{
-			for (int i = 0; i < size; i++)
-				cout << list[i] << " ";
-			cout << endl;
-		}
-
-		int test2()
-		{
-			int list1[] = { 3, 5, 1, 0, 2, 8, 7 };
-			selectionSort(list1, 7);
-			printArray(list1, 7);
-
-			double list2[] = { 3.5, 0.5, 1.4, 0.4, 2.5, 1.8, 4.7 };
-			selectionSort(list2, 7);
-			printArray(list2, 7);
-
-			string list3[] = { "Alexandria", "Cairo", "Luxor", "Aswan" };
-			selectionSort(list3, 4);
-			printArray(list3, 4);
-
-			return 0;
-		}
-	} // namespace Ex4
-
-	// Fraction Op overloading
-	namespace Ex5
-	{
-		class Fraction
-		{
-		public:
-			Fraction(int num, int denom);
-			Fraction(int num);
-			Fraction(const Fraction& other);
-			Fraction& operator=(const Fraction& other);
-			Fraction& operator=(const int& other);
-			Fraction operator+(const Fraction& other) const;
-			//Fraction operator+(const int& other) const;
-			friend Fraction operator+(const int& lhs, const Fraction& rhs);
-			friend ostream& operator<<(ostream& cout, const Fraction& rhs);
-
-			double convertToDecimal() const
-			{
-				return double(numerator) / denominator;
-			}
-
-			//operator double() const;
-
-		private:
-			int numerator = 0;
-			int denominator = 1;
-		};
-
-		//Fraction::operator double() const
-		//{
-		//	return (double)numerator / denominator;
-		//}
-
-		Fraction::Fraction(int num, int denom)
-			: numerator(num), denominator(denom) {}
-
-		Fraction::Fraction(int num) : Fraction(num, 1) {}
-
-		Fraction::Fraction(const Fraction& other)
-		{
-			this->numerator = other.numerator;
-			this->denominator = other.denominator;
-		}
-
-		Fraction& Fraction::operator=(const Fraction& other)
-		{
-			if (this != &other)
-			{
-				this->numerator = other.numerator;
-				this->denominator = other.denominator;
-			}
-			return *this;
-		}
-
-		Fraction& Fraction::operator=(const int& other)
-		{
-			numerator = other;
-			denominator = 1;
-			return *this;
-		}
-
-		Fraction Fraction::operator+(const Fraction& other) const
-		{
-			int newNumerator = numerator * other.denominator
-				+ other.numerator * denominator;
-			int newDenominator = denominator * other.denominator;
-
-			return Fraction(newNumerator, newDenominator);
-		}
-
-		//Fraction Fraction::operator+(const int& other) const
-		//{
-		//	int newNumerator = numerator
-		//		+ other * denominator;
-		//	int newDenominator = denominator;
-
-		//	return Fraction(newNumerator, newDenominator);
-		//}
-
-		Fraction operator+(const int& lhs, const Fraction& rhs)
-		{
-			int newNumerator = lhs * rhs.denominator
-				+ rhs.numerator;
-			int newDenominator = rhs.denominator;
-
-			return Fraction(newNumerator, newDenominator);
-		}
-
-		ostream& operator<<(ostream& cout, const Fraction& rhs)
-		{
-			cout << rhs.numerator << " / " << rhs.denominator;
-			return cout;
-		}
-
-		void displayFraction(const Fraction& f)
-		{
-			cout << f << endl;
-		}
-
-		int test()
-		{
-			Fraction f1(1, 2);
-			cout << f1 << endl;
-
-			Fraction f2(2, 3);
-			cout << f2 << endl;
-
-			Fraction f3(3, 4);
-			cout << f3 << endl;
-
-			f1 = f2 = f3;
-			cout << f1 << endl;
-
-			f1 = f2;
-			cout << f1 << endl;
-
-			f1 = 1;
-			cout << f1 << endl;
-
-			Fraction f4 = f2 + f3;
-			cout << f4 << endl;
-
-			Fraction f5 = f2 + 5;
-			cout << f5 << endl;
-
-			Fraction f6 = 10 + f2;
-			//cout << (double)f6 << endl;
-			cout << f6 << endl;
-
-			//double d = f6;
-			//cout << d << endl;
-
-			//displayFraction(f6);
-			//displayFraction(2);
-
-			return 0;
-		}
-	} // namespace Ex5
-
-	// Fraction Op overloading 2
-	namespace Ex6
-	{
-		class Fraction
-		{
-		public:
-			Fraction(int num, int denom);
-			Fraction(int num);
-			explicit operator double() const;
-
-		private:
-			int numerator = 0;
-			int denominator = 1;
-		};
-
-		Fraction::operator double() const
-		{
-			return (double)numerator / denominator;
-		}
-
-		Fraction::Fraction(int num, int denom)
-			: numerator(num), denominator(denom) {}
-
-		Fraction::Fraction(int num) : Fraction(num, 1) {}
-
-		int test()
-		{
-			Fraction f1(1, 2);
-			cout << (double)f1 << endl;
-
-			return 0;
-		}
-	} // namespace Ex6
-} // namespace Lec14
-
-
-}; // namespace past
-
-	namespace Lec2
-	{
+		// Ex1 - Multiple Inheritance
 		namespace Ex1
 		{
-			enum Day { SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY };
-			int main()
+			class Person
 			{
-				Day day; // Declare
-				day = MONDAY; // Assign to one of the values
-				cout << day;
-				Day day2 = WEDNESDAY; // Declare and Assign 
-				//cin >> day2;
-				return 0;
-			}
-		} // namespace Ex
-
-		namespace Ex2
-		{
-			struct Student
-			{
-				int studentID;
+			protected:
 				string name;
-				short intake;
-				double gpa;
+			public:
+				Person(const string& name) : name(name) {}
+				virtual ~Person() = default;
+
+				void setName(const string& newName) { name = newName; }
+				string getName() const { return name; }
+			};
+
+			class Employee
+			{
+			protected:
+				int id;
+			public:
+				Employee(int id) : id(id) {}
+				virtual ~Employee() = default;
+
+				void setId(int newId) { id = newId; }
+				int getId() const { return id; }
+			};
+
+			class Manager : public Person, public Employee
+			{
+			private:
+				string department;
+			public:
+				Manager(const string& name, int id, const string& dept)
+					: Person(name), Employee(id), department(dept) {
+				}
+
+				void setDepartment(const string& newDept) { department = newDept; }
+				string getDepartment() const { return department; }
 			};
 
 			int main()
 			{
-				Student stu1;
-				getline(cin, stu1.name);
-				Student esraa; esraa = { 1234, "Esraa" };
-				Student kareem = { 1235, "Kareem", 45, 3.5 };
 				return 0;
 			}
-		} // namespace Ex
+		} // namespace Ex1
 
-		namespace Ex3
+		// Casting
+		namespace Ex2
 		{
+			class GeometricObject
+			{
+			public:
+				virtual double getArea() const = 0;
+				virtual double getPerimeter() const = 0;
+			};
+
+			class Circle : public GeometricObject
+			{
+			private:
+				double radius = 1;
+			public:
+				virtual double getArea() const override
+				{
+					return radius * radius * 3.14;
+				}
+				virtual double getPerimeter() const override
+				{
+					return 2 * 3.14 * radius;
+				}
+				Circle(double radius) : radius(radius) {}
+				double getRadius() const { return radius; }
+				double getDiameter() const { return 2 * radius; }
+			};
+
+			class Rectangle : public GeometricObject
+			{
+			private:
+				double length = 1;
+				double width = 1;
+			public:
+				virtual double getArea() const override
+				{
+					return width * length;
+				}
+				virtual double getPerimeter() const override
+				{
+					return 2 * (width + length);
+				}
+				Rectangle(double length, double width)
+					: width(width), length(length)
+				{
+				}
+				double getLength() const { return length; }
+				double getWidth() const { return width; }
+			};
+
+			void displayGeometricObject(const GeometricObject* g)
+			{
+				const Circle* ptrC = dynamic_cast<const Circle*>(g);
+				const Rectangle* ptrR = dynamic_cast<const Rectangle*>(g);
+
+				if (ptrC)
+				{
+					cout << "The radius is " << ptrC->getRadius() << endl;
+					cout << "The diameter is " << ptrC->getDiameter() << endl;
+				}
+				if (ptrR != nullptr)
+				{
+					cout << "The width is " << ptrR->getLength() << endl;
+					cout << "The height is " << ptrR->getWidth() << endl;
+				}
+				if (g != NULL)
+				{
+					cout << "The area is " << g->getArea() << endl;
+					cout << "The perimeter is " << g->getPerimeter() << endl;
+				}
+
+			}
+
+			void test()
+			{
+				vector<GeometricObject*> geometricObjectVector =
+				{
+					new Rectangle(3,4),
+					new Rectangle(6,8),
+					new Circle(5),
+					new Circle(9)
+				};
+
+				for (GeometricObject* geometricObject : geometricObjectVector)
+				{
+					displayGeometricObject(geometricObject);
+					cout << string(20, '-') << endl;
+				}
+			}
+
 			int main()
 			{
-				double score = 85;
-				if (score >= 95.0) cout << "Grade is A";
-				else
+				GeometricObject* geometricObjectList[] =
 				{
-					cout << "Grade is not A";
-					if (score >= 80.0) cout << "Grade is B";
-					else
-					{
-						cout << "Grade is not B";
-						if (score >= 65.0) cout << "Grade is C";
-						else
-						{
-							cout << "Grade is not C";
-							cout << "Grade is F";
-						}
-					}
+					new Rectangle(3,4),
+					new Rectangle(6,8),
+					new Circle(5),
+					new Circle(9)
+				};
+
+				for (int i = 0; i < 4; i++)
+				{
+					displayGeometricObject(geometricObjectList[i]);
+					cout << string(20, '-') << endl;
 				}
 
 				return 0;
 			}
-		} // namespace Ex
+		} // namespace Ex2
 
-		namespace Ex4
+		//Templates
+		namespace Ex3
 		{
-			int main()
+			// Find the maximum element in an integer array
+			int maxElement(int arr[], int size)
 			{
-				bool isEnrolled = true;
-				bool isGraduated = false;
-
-				cout << boolalpha; // Print bools as true/false instead of 1/0
-				cout << "Enrolled: " << isEnrolled << endl;
-				cout << "Graduated: " << isGraduated << endl;
-
-				return 0;
-			}
-		} // namespace Ex
-
-		namespace Ex5
-		{
-			int main()
-			{
-				double TOEFLScore = 0;
-				cout << "Enter TOEFL score: ";
-				cin >> TOEFLScore;
-				bool hasGoodTOEFLScore = (TOEFLScore >= 79);
-
-				bool passedEnglishPlacementTest;
-				cout << "Did you pass the English Placement Test?: ";
-				cin >> passedEnglishPlacementTest;
-
-				bool isEligibleForAdmission = hasGoodTOEFLScore || passedEnglishPlacementTest;
-
-				bool needsRemedialEnglish = !isEligibleForAdmission;
-
-				if (isEligibleForAdmission)
-					cout << "Admit student";
-				else
-					cout << "Enroll in a remedial English course";
-
-				return 0;
-			}
-		} // namespace Ex
-
-		namespace Ex6
-		{
-			int main()
-			{
-				cout << boolalpha << (1 < 4 > 3) << endl;
-				cout << boolalpha << (1 == 2 == 0) << endl;
-				return 0;
-			}
-		} // namespace Ex
-
-		namespace Ex7
-		{
-			const int MAX_TV_CHANNEL = 100;
-			bool getTvStatus(const char* tvName)
-			{
-				return true;
-			}
-			int getTvCurrentChannel(const char* tvName)
-			{
-				return 0;
-			}
-			int main()
-			{
-				auto tv1 = "tv1";
-				bool isTvOpen = getTvStatus(tv1);
-				int currentChannel = getTvCurrentChannel(tv1);
-				if (isTvOpen)
-					if (currentChannel <= MAX_TV_CHANNEL)
-						currentChannel++;
-				if (isTvOpen && currentChannel <= MAX_TV_CHANNEL)
-					currentChannel++;
-				return 0;
-			}
-		} // namescpace Ex
-
-		namespace Ex8
-		{
-			int main() {
-				double distance, fuel;
-
-				cout << "Enter distance traveled (km): ";
-				cin >> distance;
-
-				cout << "Enter fuel consumed (liters): ";
-				cin >> fuel;
-
-				if (fuel == 0 || (distance / fuel > 100))
-					cout << "Error: Invalid input. Fuel must be greater than zero and efficiency should be realistic." << endl;
-				else
-					cout << "Fuel efficiency: " << distance / fuel << " km/L" << endl;
-
-				return 0;
-			}
-		} // namespace Ex
-
-		namespace Ex8b
-		{
-			// Return max of two int values
-			//int max(int num1, int num2)
-			//{
-			//	if (num1 > num2) return num1;
-			//	else return num2;
-			//}
-
-			// Return max of two double values
-			double max(double num1, double num2)
-			{
-				if (num1 > num2) return num1;
-				else return num2;
-			}
-
-			// Return max of three double values
-			double max(double num1, double num2, double num3)
-			{
-				return max(max(num1, num2), num3);
-			}
-
-			int main()
-			{
-				// Invoke the max function with int parameters
-				cout << "The maximum of 3 and 4 is "
-					<< max(3, 4) << endl;
-
-				// Invoke the max function with the double parameters
-				cout << "The maximum of 3.0 and 5.4 is "
-					<< max(3.0, 5.4) << endl;
-
-				// Invoke the max function with three double parameters
-				cout << "The maximum of 3.0, 5.4, and 10.14 is "
-					<< max(3.0, 5.4, 10.14) << endl;
-
-				// Invoke the max function with an int and a double parameters
-				cout << "The maximum of 3.5 and 4 is "
-					<< max(3.5, 4) << endl;
-
-				return 0;
-			}
-		} // namespace Ex
-
-		namespace Ex9
-		{
-			const double M_PI = 3.14159265358979323846;
-
-			// Function to calculate the area of a circle
-			double calculateArea(double radius)
-			{
-				return M_PI * radius * radius;
-			}
-
-			// Function to calculate the area of a rectangle
-			double calculateArea(double length, double width)
-			{
-				return length * width;
-			}
-
-			int main()
-			{
-				// Example usage
-				cout << "Area of circle (radius 5): " << calculateArea(5.0) << endl;
-				cout << "Area of rectangle (4 x 6): " << calculateArea(4.0, 6.0) << endl;
-
-				return 0;
-			}
-		} // namespace Ex
-
-		namespace Ex10
-		{
-			// Find the maximum of two double values
-			double max(double num1, double num2)
-			{
-				if (num1 > num2)
-					return num1;
-				else
-					return num2;
-			}
-
-			// Find the maximum of three double values
-			double max(double n1, double n2, double n3)
-			{
-				double max1 = max(n1, n2);
-				double max2 = max(n2, n3);
-				return max(max1, max2);
-			}
-
-			// Find max of array of double values
-			double max(double values[], int size)
-			{
-				double max = values[0];
-				for (int i = 1; i < size; i++)
-					if (values[i] > max)
-						max = values[i];
+				int max = arr[0];
+				for (int i = 1; i < size; ++i)
+					if (arr[i] > max)
+						max = arr[i];
 				return max;
 			}
 
-			int main()
+			// Find the maximum element in a double array
+			double maxElement(double arr[], int size)
 			{
-				cout << max(1.0, 2) << endl;
-				cout << max(1, 2.0) << endl;
-				//cout << maxNumber(1, 2) << endl;
+				double max = arr[0];
+				for (int i = 1; i < size; ++i)
+					if (arr[i] > max)
+						max = arr[i];
+				return max;
+			}
+
+			// Find the maximum element in a char array
+			char maxElement(char arr[], int size)
+			{
+				char max = arr[0];
+				for (int i = 1; i < size; ++i)
+					if (arr[i] > max)
+						max = arr[i];
+				return max;
+			}
+
+			template<typename AnyType>
+			AnyType maxElement(AnyType arr[], int size)
+			{
+				AnyType max = arr[0];
+				for (int i = 1; i < size; ++i)
+					if (arr[i] > max)
+						max = arr[i];
+				return max;
+			}
+
+			template<typename T>
+			T max(const T num1, const T num2)
+			{
+				if (num1 > num2) return num1; else return num2;
+			}
+
+			void test1()
+			{
+				cout << max(1, 3) << endl; // create max int int
+				cout << max(1.5, 0.3) << endl; // create max double double
+				cout << max(5, 2) << endl; // use max int int
+				cout << max('A', 'N') << endl; // create max char char
+				cout << Ex3::max(string("NBC"), string("ABC")) << endl; // create
+			}
+
+			void test()
+			{
+				int intArr[] = { 1, 2, 3, 4, 5 };
+				double doubleArr[] = { 1.1, 2.2, 3.3, 4.4 };
+				string stringArr[] = { "CIE 101", "ENV 101" };
+
+				cout << maxElement(intArr, 5) << endl;
+				cout << maxElement(doubleArr, 4) << endl;
+				cout << maxElement(stringArr, 2) << endl;
+			}
+		} // namespace Ex3
+
+		// Template creation example
+		namespace Ex4
+		{
+			void selectionSort(int arr[], int size)
+			{
+				for (int i = 0; i < size - 1; ++i)
+				{
+					// Find the minimum element in the unsorted part
+					int minIndex = i;
+					for (int j = i + 1; j < size; ++j)
+						if (arr[j] < arr[minIndex])
+							minIndex = j;
+
+					// Swap the found minimum element with the first element
+					int temp = arr[minIndex];
+					arr[minIndex] = arr[i];
+					arr[i] = temp;
+				}
+			}
+
+			int test1()
+			{
+				int arr[] = { 64, 25, 12, 22, 11 };
+				int size = sizeof(arr) / sizeof(arr[0]);
+
+				cout << "Before sorting: ";
+				for (int i = 0; i < size; ++i)
+				{
+					cout << arr[i] << " ";
+				}
+				cout << endl;
+
+				selectionSort(arr, size);
+
+				cout << "After sorting: ";
+				for (int i = 0; i < size; ++i)
+				{
+					cout << arr[i] << " ";
+				}
+				cout << endl;
+
 				return 0;
 			}
-		} // namespace Ex
-	} // namespace Lec2
+
+
+			// Template function to sort an array using selection sort
+			template <typename T>
+			void selectionSort(T arr[], int size)
+			{
+				for (int i = 0; i < size - 1; ++i)
+				{
+					// Find the minimum element in the unsorted part
+					int minIndex = i;
+					for (int j = i + 1; j < size; ++j)
+						if (arr[j] < arr[minIndex])
+							minIndex = j;
+					// Swap the found minimum element with the first element
+					T temp = arr[minIndex];
+					arr[minIndex] = arr[i];
+					arr[i] = temp;
+				}
+			}
+
+			template <typename T>
+			void printArray(const T list[], int size)
+			{
+				for (int i = 0; i < size; i++)
+					cout << list[i] << " ";
+				cout << endl;
+			}
+
+			int test2()
+			{
+				int list1[] = { 3, 5, 1, 0, 2, 8, 7 };
+				selectionSort(list1, 7);
+				printArray(list1, 7);
+
+				double list2[] = { 3.5, 0.5, 1.4, 0.4, 2.5, 1.8, 4.7 };
+				selectionSort(list2, 7);
+				printArray(list2, 7);
+
+				string list3[] = { "Alexandria", "Cairo", "Luxor", "Aswan" };
+				selectionSort(list3, 4);
+				printArray(list3, 4);
+
+				return 0;
+			}
+		} // namespace Ex4
+
+		// Fraction Op overloading
+		namespace Ex5
+		{
+			class Fraction
+			{
+			public:
+				Fraction(int num, int denom);
+				Fraction(int num);
+				Fraction(const Fraction& other);
+				Fraction& operator=(const Fraction& other);
+				Fraction& operator=(const int& other);
+				Fraction operator+(const Fraction& other) const;
+				//Fraction operator+(const int& other) const;
+				friend Fraction operator+(const int& lhs, const Fraction& rhs);
+				friend ostream& operator<<(ostream& cout, const Fraction& rhs);
+
+				double convertToDecimal() const
+				{
+					return double(numerator) / denominator;
+				}
+
+				//operator double() const;
+
+			private:
+				int numerator = 0;
+				int denominator = 1;
+			};
+
+			//Fraction::operator double() const
+			//{
+			//	return (double)numerator / denominator;
+			//}
+
+			Fraction::Fraction(int num, int denom)
+				: numerator(num), denominator(denom) {
+			}
+
+			Fraction::Fraction(int num) : Fraction(num, 1) {}
+
+			Fraction::Fraction(const Fraction& other)
+			{
+				this->numerator = other.numerator;
+				this->denominator = other.denominator;
+			}
+
+			Fraction& Fraction::operator=(const Fraction& other)
+			{
+				if (this != &other)
+				{
+					this->numerator = other.numerator;
+					this->denominator = other.denominator;
+				}
+				return *this;
+			}
+
+			Fraction& Fraction::operator=(const int& other)
+			{
+				numerator = other;
+				denominator = 1;
+				return *this;
+			}
+
+			Fraction Fraction::operator+(const Fraction& other) const
+			{
+				int newNumerator = numerator * other.denominator
+					+ other.numerator * denominator;
+				int newDenominator = denominator * other.denominator;
+
+				return Fraction(newNumerator, newDenominator);
+			}
+
+			//Fraction Fraction::operator+(const int& other) const
+			//{
+			//	int newNumerator = numerator
+			//		+ other * denominator;
+			//	int newDenominator = denominator;
+
+			//	return Fraction(newNumerator, newDenominator);
+			//}
+
+			Fraction operator+(const int& lhs, const Fraction& rhs)
+			{
+				int newNumerator = lhs * rhs.denominator
+					+ rhs.numerator;
+				int newDenominator = rhs.denominator;
+
+				return Fraction(newNumerator, newDenominator);
+			}
+
+			ostream& operator<<(ostream& cout, const Fraction& rhs)
+			{
+				cout << rhs.numerator << " / " << rhs.denominator;
+				return cout;
+			}
+
+			void displayFraction(const Fraction& f)
+			{
+				cout << f << endl;
+			}
+
+			int test()
+			{
+				Fraction f1(1, 2);
+				cout << f1 << endl;
+
+				Fraction f2(2, 3);
+				cout << f2 << endl;
+
+				Fraction f3(3, 4);
+				cout << f3 << endl;
+
+				f1 = f2 = f3;
+				cout << f1 << endl;
+
+				f1 = f2;
+				cout << f1 << endl;
+
+				f1 = 1;
+				cout << f1 << endl;
+
+				Fraction f4 = f2 + f3;
+				cout << f4 << endl;
+
+				Fraction f5 = f2 + 5;
+				cout << f5 << endl;
+
+				Fraction f6 = 10 + f2;
+				//cout << (double)f6 << endl;
+				cout << f6 << endl;
+
+				//double d = f6;
+				//cout << d << endl;
+
+				//displayFraction(f6);
+				//displayFraction(2);
+
+				return 0;
+			}
+		} // namespace Ex5
+
+		// Fraction Op overloading 2
+		namespace Ex6
+		{
+			class Fraction
+			{
+			public:
+				Fraction(int num, int denom);
+				Fraction(int num);
+				explicit operator double() const;
+
+			private:
+				int numerator = 0;
+				int denominator = 1;
+			};
+
+			Fraction::operator double() const
+			{
+				return (double)numerator / denominator;
+			}
+
+			Fraction::Fraction(int num, int denom)
+				: numerator(num), denominator(denom) {
+			}
+
+			Fraction::Fraction(int num) : Fraction(num, 1) {}
+
+			int test()
+			{
+				Fraction f1(1, 2);
+				cout << (double)f1 << endl;
+
+				return 0;
+			}
+		} // namespace Ex6
+	} // namespace Lec14
+
+
+}; // namespace past
+
+namespace Lec2
+{
+	namespace Ex1
+	{
+		enum Day { SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY };
+		int main()
+		{
+			Day day; // Declare
+			day = MONDAY; // Assign to one of the values
+			cout << day;
+			Day day2 = WEDNESDAY; // Declare and Assign 
+			//cin >> day2;
+			return 0;
+		}
+	} // namespace Ex
+
+	namespace Ex2
+	{
+		struct Student
+		{
+			int studentID;
+			string name;
+			short intake;
+			double gpa;
+		};
+
+		int main()
+		{
+			Student stu1;
+			getline(cin, stu1.name);
+			Student esraa; esraa = { 1234, "Esraa" };
+			Student kareem = { 1235, "Kareem", 45, 3.5 };
+			return 0;
+		}
+	} // namespace Ex
+
+	namespace Ex3
+	{
+		int main()
+		{
+			double score = 85;
+			if (score >= 95.0) cout << "Grade is A";
+			else
+			{
+				cout << "Grade is not A";
+				if (score >= 80.0) cout << "Grade is B";
+				else
+				{
+					cout << "Grade is not B";
+					if (score >= 65.0) cout << "Grade is C";
+					else
+					{
+						cout << "Grade is not C";
+						cout << "Grade is F";
+					}
+				}
+			}
+
+			return 0;
+		}
+	} // namespace Ex
+
+	namespace Ex4
+	{
+		int main()
+		{
+			bool isEnrolled = true;
+			bool isGraduated = false;
+
+			cout << boolalpha; // Print bools as true/false instead of 1/0
+			cout << "Enrolled: " << isEnrolled << endl;
+			cout << "Graduated: " << isGraduated << endl;
+
+			return 0;
+		}
+	} // namespace Ex
+
+	namespace Ex5
+	{
+		int main()
+		{
+			double TOEFLScore = 0;
+			cout << "Enter TOEFL score: ";
+			cin >> TOEFLScore;
+			bool hasGoodTOEFLScore = (TOEFLScore >= 79);
+
+			bool passedEnglishPlacementTest;
+			cout << "Did you pass the English Placement Test?: ";
+			cin >> passedEnglishPlacementTest;
+
+			bool isEligibleForAdmission = hasGoodTOEFLScore || passedEnglishPlacementTest;
+
+			bool needsRemedialEnglish = !isEligibleForAdmission;
+
+			if (isEligibleForAdmission)
+				cout << "Admit student";
+			else
+				cout << "Enroll in a remedial English course";
+
+			return 0;
+		}
+	} // namespace Ex
+
+	namespace Ex6
+	{
+		int main()
+		{
+			cout << boolalpha << (1 < 4 > 3) << endl;
+			cout << boolalpha << (1 == 2 == 0) << endl;
+			return 0;
+		}
+	} // namespace Ex
+
+	namespace Ex7
+	{
+		const int MAX_TV_CHANNEL = 100;
+		bool getTvStatus(const char* tvName)
+		{
+			return true;
+		}
+		int getTvCurrentChannel(const char* tvName)
+		{
+			return 0;
+		}
+		int main()
+		{
+			auto tv1 = "tv1";
+			bool isTvOpen = getTvStatus(tv1);
+			int currentChannel = getTvCurrentChannel(tv1);
+			if (isTvOpen)
+				if (currentChannel <= MAX_TV_CHANNEL)
+					currentChannel++;
+			if (isTvOpen && currentChannel <= MAX_TV_CHANNEL)
+				currentChannel++;
+			return 0;
+		}
+	} // namescpace Ex
+
+	namespace Ex8
+	{
+		int main() {
+			double distance, fuel;
+
+			cout << "Enter distance traveled (km): ";
+			cin >> distance;
+
+			cout << "Enter fuel consumed (liters): ";
+			cin >> fuel;
+
+			if (fuel == 0 || (distance / fuel > 100))
+				cout << "Error: Invalid input. Fuel must be greater than zero and efficiency should be realistic." << endl;
+			else
+				cout << "Fuel efficiency: " << distance / fuel << " km/L" << endl;
+
+			return 0;
+		}
+	} // namespace Ex
+
+	namespace Ex8b
+	{
+		// Return max of two int values
+		//int max(int num1, int num2)
+		//{
+		//	if (num1 > num2) return num1;
+		//	else return num2;
+		//}
+
+		// Return max of two double values
+		double max(double num1, double num2)
+		{
+			if (num1 > num2) return num1;
+			else return num2;
+		}
+
+		// Return max of three double values
+		double max(double num1, double num2, double num3)
+		{
+			return max(max(num1, num2), num3);
+		}
+
+		int main()
+		{
+			// Invoke the max function with int parameters
+			cout << "The maximum of 3 and 4 is "
+				<< max(3, 4) << endl;
+
+			// Invoke the max function with the double parameters
+			cout << "The maximum of 3.0 and 5.4 is "
+				<< max(3.0, 5.4) << endl;
+
+			// Invoke the max function with three double parameters
+			cout << "The maximum of 3.0, 5.4, and 10.14 is "
+				<< max(3.0, 5.4, 10.14) << endl;
+
+			// Invoke the max function with an int and a double parameters
+			cout << "The maximum of 3.5 and 4 is "
+				<< max(3.5, 4) << endl;
+
+			return 0;
+		}
+	} // namespace Ex
+
+	namespace Ex9
+	{
+		const double M_PI = 3.14159265358979323846;
+
+		// Function to calculate the area of a circle
+		double calculateArea(double radius)
+		{
+			return M_PI * radius * radius;
+		}
+
+		// Function to calculate the area of a rectangle
+		double calculateArea(double length, double width)
+		{
+			return length * width;
+		}
+
+		int main()
+		{
+			// Example usage
+			cout << "Area of circle (radius 5): " << calculateArea(5.0) << endl;
+			cout << "Area of rectangle (4 x 6): " << calculateArea(4.0, 6.0) << endl;
+
+			return 0;
+		}
+	} // namespace Ex
+
+	namespace Ex10
+	{
+		// Find the maximum of two double values
+		double max(double num1, double num2)
+		{
+			if (num1 > num2)
+				return num1;
+			else
+				return num2;
+		}
+
+		// Find the maximum of three double values
+		double max(double n1, double n2, double n3)
+		{
+			double max1 = max(n1, n2);
+			double max2 = max(n2, n3);
+			return max(max1, max2);
+		}
+
+		// Find max of array of double values
+		double max(double values[], int size)
+		{
+			double max = values[0];
+			for (int i = 1; i < size; i++)
+				if (values[i] > max)
+					max = values[i];
+			return max;
+		}
+
+		int main()
+		{
+			cout << max(1.0, 2) << endl;
+			cout << max(1, 2.0) << endl;
+			//cout << maxNumber(1, 2) << endl;
+			return 0;
+		}
+	} // namespace Ex
+} // namespace Lec2
 
 
 int main()
