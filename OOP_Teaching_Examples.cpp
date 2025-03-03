@@ -960,7 +960,8 @@ namespace others
 			private: string title, author;
 			public:
 				Book(string t = "title", string a = "author")
-					: title(t), author(a) {}
+					: title(t), author(a) {
+				}
 			};
 
 			class TwoBookPackage
@@ -968,7 +969,8 @@ namespace others
 			private: Book& book1, & book2;
 			public:
 				TwoBookPackage(Book& b1, Book& b2)
-					: book1(b1), book2(b2) {}
+					: book1(b1), book2(b2) {
+				}
 			};
 
 			void testAggregation()
@@ -1308,7 +1310,7 @@ namespace others
 			private:
 				double radius;
 			public:
-				Circle(double r) : radius(r) { }
+				Circle(double r) : radius(r) {}
 				void setRadius(double r) { radius = r; }
 				double getRadius() const { return radius; }
 				double getArea() const { return 3.14 * radius * radius; }
@@ -1552,13 +1554,13 @@ namespace others
 			{
 			private:
 				int privData;
-				void privMethod() { }
+				void privMethod() {}
 			protected:
 				int protData;
-				void protMethod() { }
+				void protMethod() {}
 			public:
 				int pubData;
-				void pubMethod() { }
+				void pubMethod() {}
 			};
 			class DerivedClass : public BaseClass
 			{
@@ -1627,13 +1629,13 @@ namespace others
 			{
 			private:
 				int bsPvDta;
-				void bsPvMthd() { }
+				void bsPvMthd() {}
 			protected:
 				int bsPtDta;
-				void bsPtMthd() { }
+				void bsPtMthd() {}
 			public:
 				int bsPbDta;
-				void bsPbMthd() { }
+				void bsPbMthd() {}
 			};
 			class Derived : public Base
 				//class Derived : protected Base
@@ -1668,7 +1670,7 @@ namespace others
 			public: void print() { cout << "P "; }
 			};
 
-			class Q :public P { };
+			class Q :public P {};
 
 			class R :public Q { public: void print() { cout << "R "; } };
 
@@ -1915,7 +1917,8 @@ namespace others
 			public:
 				long double extraData;
 				Derived(int i = 6, long double d = 7)
-					: Base(i), extraData(d) {}
+					: Base(i), extraData(d) {
+				}
 			};
 
 			void display(Base arr[], int size)
@@ -2036,7 +2039,8 @@ namespace others
 					return width * length;
 				}
 				Rectangle(double l = 1, double w = 1)
-					: width(w), length(l) {}
+					: width(w), length(l) {
+				}
 			};
 
 			void displayArea(GeometricObject* g[], int size)
@@ -2091,7 +2095,8 @@ namespace others
 			};
 
 			Fraction::Fraction(int num, int denom)
-				: numerator(num), denominator(denom) {}
+				: numerator(num), denominator(denom) {
+			}
 
 			Fraction::Fraction(int num) : Fraction(num, 1) {}
 
@@ -2566,7 +2571,8 @@ namespace others
 			public:
 				Fraction(int num, int denom)
 					: numerator(num), denominator(denom)
-				{}
+				{
+				}
 
 				Fraction& operator=(const Fraction& rhs)
 				{
@@ -2602,10 +2608,12 @@ namespace others
 			public:
 				Fraction(int num, int denom)
 					: numerator(num), denominator(denom)
-				{}
+				{
+				}
 
 				Fraction(int num) : Fraction(num, 1)
-				{}
+				{
+				}
 
 				Fraction& operator=(const Fraction& rhs)
 				{
