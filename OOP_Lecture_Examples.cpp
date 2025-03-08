@@ -540,7 +540,7 @@ namespace Unit01
 // Basics of OOP
 namespace Unit02
 {
-	namespace CircleClass
+	namespace StaleData
 	{
 		class Circle1
 		{
@@ -600,7 +600,7 @@ namespace Unit02
 		int main()
 		{
 			string s1 = "CIE 101", s2 = "CIE 101\n";
-			 
+
 			cout << boolalpha;
 			cout << "Are the strings equal? " << (s1 == s2) << endl;
 
@@ -617,6 +617,50 @@ namespace Unit02
 			file.close();
 
 			return 0;
+		}
+	}
+
+	namespace ConstMemberFunction
+	{
+		class Circle1
+		{
+		private:
+			double radius = 1;
+		public:
+			void setRadius(double r) { radius = r; }
+			double getRadius() { return radius; }
+			double getArea() { return radius * radius * 3.14; }
+		};
+
+		class Circle2
+		{
+		private:
+			double radius = 1;
+		public:
+			void setRadius(double r) { radius = r; }
+			double getRadius() const { return radius; }
+			double getArea() const { return radius * radius * 3.14; }
+		};
+
+		void someFunction(const Circle2& c)
+		{
+		}
+
+		int main()
+		{
+			Circle1 c1;
+			const Circle1 _c1;
+			c1.setRadius(10);
+			//_c1.
+
+			Circle2 c2;
+			const Circle2 _c2;
+			c2.setRadius(10);
+			_c2.getArea(); 
+			cout << "Area: " << c2.getArea() << endl;
+
+			return 0;
+
 		}
 	}
 
@@ -680,13 +724,15 @@ namespace Unit02
 				s[i].setGrade(10 * i + 1);
 
 			for (int i = 0; i < 10; i++)
-				cout << i << ": " << s[i].getPF() << endl;
+				cout << s[i].getGrade() << ": "
+				     << s[i].getPF() << endl;
 
 			cout << string(4, '-') << endl;
 
 			Grade::setMinGrade(20);
 			for (int i = 0; i < 10; i++)
-				cout << i << ": " << s[i].getPF() << endl;
+				cout << s[i].getGrade() << ": "
+				     << s[i].getPF() << endl;
 
 			return 0;
 		}
@@ -1583,6 +1629,6 @@ namespace Unit06
 // Test main function
 int main()
 {
-	Unit02::AbstractionFileExample::main();
+	Unit02::GradeClass::main();
 	return 0;
 }
