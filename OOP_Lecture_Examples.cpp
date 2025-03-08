@@ -595,12 +595,24 @@ namespace Unit02
 		}
 	}
 
-	namespace AbstractionExample
+	namespace AbstractionStringExample
 	{
 		int main()
 		{
 			string s1 = "CIE202", s2 = "CIE 202";
 			bool check = s1 == s2;
+			return 0;
+		}
+	}
+
+	namespace AbstractionFileExample
+	{
+		int main()
+		{
+			ofstream file("undeniableFacts.txt");
+			file << "CIE 101 is the best course ever!" << endl;
+			file.close();
+
 			return 0;
 		}
 	}
@@ -625,18 +637,6 @@ namespace Unit02
 			void TurnOn() { on = true; }
 			void TurnOff() { on = false; }
 		};
-	}
-
-	namespace AbstractionFileExample
-	{
-		int main()
-		{
-			ofstream file("undeniableFacts.txt");
-			file << "CIE 101 is the best course ever!" << endl;
-			file.close();
-
-			return 0;
-		}
 	}
 
 	namespace GradeClass
@@ -1580,6 +1580,6 @@ namespace Unit06
 // Test main function
 int main()
 {
-	Unit02::AbstractionFileExample::main();
+	Unit02::AbstractionStringExample::main();
 	return 0;
 }
