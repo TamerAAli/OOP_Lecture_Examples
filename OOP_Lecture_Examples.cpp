@@ -599,8 +599,11 @@ namespace Unit02
 	{
 		int main()
 		{
-			string s1 = "CIE202", s2 = "CIE 202";
-			bool check = s1 == s2;
+			string s1 = "CIE 101", s2 = "CIE 101\n";
+			 
+			cout << boolalpha;
+			cout << "Are the strings equal? " << (s1 == s2) << endl;
+
 			return 0;
 		}
 	}
@@ -609,7 +612,7 @@ namespace Unit02
 	{
 		int main()
 		{
-			ofstream file("undeniableFacts.txt");
+			ofstream file("facts.txt");
 			file << "CIE 101 is the best course ever!" << endl;
 			file.close();
 
@@ -1580,6 +1583,6 @@ namespace Unit06
 // Test main function
 int main()
 {
-	Unit02::AbstractionStringExample::main();
+	Unit02::AbstractionFileExample::main();
 	return 0;
 }
