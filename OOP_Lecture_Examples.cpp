@@ -599,10 +599,13 @@ namespace Unit02
 	{
 		int main()
 		{
-			string s1 = "CIE 101", s2 = "CIE 101\n";
+			string s1, s2;
+			cin >> s1 >> s2;
 
-			cout << boolalpha;
-			cout << "Are the strings equal? " << (s1 == s2) << endl;
+			if (s1 == s2)
+				cout << "The two strings are equal" << endl;
+			else
+				cout << "The two strings are not equal" << endl;
 
 			return 0;
 		}
