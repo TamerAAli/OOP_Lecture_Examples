@@ -599,10 +599,13 @@ namespace Unit02
 	{
 		int main()
 		{
-			string s1 = "CIE 101", s2 = "CIE 101\n";
+			string s1, s2;
+			cin >> s1 >> s2;
 
-			cout << boolalpha;
-			cout << "Are the strings equal? " << (s1 == s2) << endl;
+			if (s1 == s2)
+				cout << "The two strings are equal" << endl;
+			else
+				cout << "The two strings are not equal" << endl;
 
 			return 0;
 		}
@@ -686,6 +689,28 @@ namespace Unit02
 		};
 	}
 
+	namespace SimpleGradeClass
+	{
+		class Grade
+		{
+		public:
+			int static minGrade;
+			int grade = 10;
+		};
+
+		int Grade::minGrade = 60;
+
+		int main()
+		{
+			cout << Grade::minGrade;
+
+			Grade g;
+			cout << g.grade;
+
+			return 0;
+		}
+	}
+
 	namespace GradeClass
 	{
 		class Grade
@@ -697,7 +722,8 @@ namespace Unit02
 		public:
 			void setGrade(int v);
 			double getGrade() const;
-			static void setMinGrade(int v);
+			void static setMinGrade(int v);
+			static int getMinGrade();
 			bool isPassing() const;
 			string getPF() const;
 		};
@@ -708,13 +734,15 @@ namespace Unit02
 		double Grade::getGrade() const { return grade; }
 
 		void Grade::setMinGrade(int v) { minGrade = v; }
+		int Grade::getMinGrade() { return minGrade; }
 
 		bool Grade::isPassing() const { return grade >= minGrade; }
 
 		string Grade::getPF() const
 		{
-			if (isPassing()) return "P";
-			else return "F";
+			//if (isPassing()) return "P";
+			//else return "F";
+			return (isPassing() ? "P" : "F");
 		}
 
 		int main()
@@ -727,7 +755,7 @@ namespace Unit02
 				cout << s[i].getGrade() << ": "
 				     << s[i].getPF() << endl;
 
-			cout << string(4, '-') << endl;
+			cout << string(5, '-') << endl;
 
 			Grade::setMinGrade(20);
 			for (int i = 0; i < 10; i++)
