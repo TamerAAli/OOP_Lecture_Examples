@@ -659,7 +659,7 @@ namespace Unit02
 			Circle2 c2;
 			const Circle2 _c2;
 			c2.setRadius(10);
-			_c2.getArea(); 
+			_c2.getArea();
 			cout << "Area: " << c2.getArea() << endl;
 
 			return 0;
@@ -753,14 +753,14 @@ namespace Unit02
 
 			for (int i = 0; i < 10; i++)
 				cout << s[i].getGrade() << ": "
-				     << s[i].getPF() << endl;
+				<< s[i].getPF() << endl;
 
 			cout << string(5, '-') << endl;
 
 			Grade::setMinGrade(20);
 			for (int i = 0; i < 10; i++)
 				cout << s[i].getGrade() << ": "
-				     << s[i].getPF() << endl;
+				<< s[i].getPF() << endl;
 
 			return 0;
 		}
@@ -880,6 +880,53 @@ namespace Unit02
 			cout << "A. This is a demo\n";
 			cout << "B. for constructor / destructor.\n";
 			return 0;
+		}
+	}
+
+	namespace ObjectArray
+	{
+		class Inventory
+		{
+		public:
+			Inventory(string newName, double newSize) : name(newName), size(newSize)
+			{
+				cout << "You are using: Inventory(string, double)" << endl;
+			}
+			Inventory(string newName) : Inventory(newName, 0.0)
+			{
+				cout << "You are using: Inventory(string)" << endl;
+			}
+			Inventory(double newSize) : Inventory("Tool", newSize)
+			{
+				cout << "You are using: Inventory(double)" << endl;
+			}
+			Inventory() : Inventory("Tool", 0.0)
+			{
+				cout << "You are using: Inventory()" << endl;
+			}
+		private:
+			string name;
+			double size;
+		};
+
+		int main()
+		{
+			Inventory myInventoryAr1[5];
+			Inventory myInventoryAr2[] = { 1,3,5 };
+			Inventory myInventoryAr3[] =
+			{
+			  string("Hammer"),
+			  string("Wrench")
+			};
+			Inventory myInventoryAr4[] =
+			{
+			  1,
+			  Inventory(),
+			  Inventory("Hammer",5),
+			  string("Wrench")
+			};
+
+
 		}
 	}
 
@@ -1174,9 +1221,8 @@ namespace Unit03
 
 		public:
 			TwoRoomApartment(string n1, string n2)
+				: room1(n1), room2(n2)
 			{
-				room1 = Room(n1);
-				room2 = Room(n2);
 			}
 		};
 
