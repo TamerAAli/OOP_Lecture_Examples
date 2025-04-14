@@ -925,7 +925,7 @@ namespace Unit02
 			  Inventory("Hammer",5),
 			  string("Wrench")
 			};
-
+			return 0;
 
 		}
 	}
@@ -1319,7 +1319,8 @@ namespace Unit03
 				for (int i = 0; i < n; ++i) samples[i] = 0.0;
 			}
 
-			AudioBuffer(const AudioBuffer& other) : CAPACITY(other.CAPACITY), size(other.size)
+			AudioBuffer(const AudioBuffer& other) //: AudioBuffer(other.CAPACITY)
+				: CAPACITY(other.CAPACITY), size(other.size)
 			{
 				if (other.CAPACITY <= 0) return;
 				samples = new float[other.CAPACITY];
@@ -1693,6 +1694,141 @@ namespace Unit05
 			return 0;
 		}
 	}
+
+	namespace TryCatch0
+	{
+		int* readDataFile(const string& filelName, int size)
+		{
+			ifstream file(filelName);
+			int* data  = new int[size];
+
+			if (!file)
+			{
+				throw string("File not found: " + filelName);
+			}
+
+			for (int i  = 0; i  < size; i++)
+				file  >> data[i];
+
+			return data;
+		}
+		double calcAvg(const string& fileName, int N)
+		{
+			int* data  = readDataFile(fileName, N);
+			double sum  = 0.0;
+			for (int i  = 0; i  < N; i++)
+				sum  += data[i];
+			return sum  / N;
+		}
+		int main()
+		{
+			try
+			{
+				int size  = 10;
+				double average  = calcAvg("counts.txt", size);
+				cout  << "Average: " << average  << endl;
+			}
+			catch (const string & errorMessage)
+			{
+				cout  << "Error: " << errorMessage  << endl;
+			}
+			return 0;
+		}
+
+	}
+	namespace TryCatch1
+	{
+		int F1(), F2(), F3();
+
+		int main()
+		{
+			try
+			{
+				cout  << F1() << endl;
+			}
+			catch (int e)
+			{
+				cout  << "Exception1: " << e  << endl;
+			}
+			catch (string e)
+			{
+				cout  << "Exception2: " << e  << endl;
+			}
+
+			return 0;
+		}
+		int F1()
+		{
+			F2();
+			return 1;
+		}
+
+		int F2()
+		{
+			F3();
+			return 2;
+		}
+
+		int F3()
+		{
+			throw string("Error in F3()");
+			return 3;
+		}
+	}
+	namespace TryCatch2
+	{
+		int F1(), F2(), F3();
+		int main()
+		{
+			try
+			{
+				cout  << F1() << endl;
+			}
+			catch (int e)
+			{
+				cout  << "Exception: " << e  << endl;
+			}
+			catch (string e)
+			{
+				cout  << "Exception: " << e  << endl;
+			}
+
+			return 0;
+		}
+		int F1()
+		{
+			try
+			{
+				F2();
+			}
+			catch (string e)
+			{
+				cout  << "Exception: " << e  << endl;
+				throw string("Error in F1()");
+			}
+			return 1;
+		}
+		int F2()
+		{
+			try
+			{
+				F3();
+			}
+			catch (string e)
+			{
+				cout  << "Exception: " << e  << endl;
+				throw;
+			}
+			return 2;
+		}
+
+		int F3()
+		{
+			throw string("Error in F3()");
+			return 3;
+		}
+	}
+
 }
 
 // Overview of Modern C++ Features
@@ -1703,6 +1839,8 @@ namespace Unit06
 // Test main function
 int main()
 {
-	Unit02::GradeClass::main();
+	Unit05::TryCatch0::main();
+	Unit05::TryCatch1::main();
+	Unit05::TryCatch2::main();
 	return 0;
 }
