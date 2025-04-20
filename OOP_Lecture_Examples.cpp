@@ -1352,6 +1352,154 @@ namespace Unit03
 		}
 	}
 
+	namespace NoExceptionHandling
+	{
+
+		class BankAccount
+		{
+		private:
+			int accountID;
+			double balance = 0;
+
+		public:
+			BankAccount(int id)
+			{
+				this->accountID = id;
+			}
+
+			int getAccountID() const { return accountID; }
+			double getBalance() const { return balance; }
+
+			void deposit(double amount)
+			{
+				if (amount <= 0) return;
+				balance += amount;
+			}
+
+			void withdraw(double amount)
+			{
+				if (amount <= 0) return;
+				if (amount > balance) return;
+				balance -= amount;
+			}
+		};
+
+		double findAccountBalance(BankAccount* account, int searchID)
+		{
+			if (account == nullptr) return -1.0;
+			if (searchID <= 0 || searchID > 10000) return -1.0;
+
+			if (account->getAccountID() == searchID)
+				return account->getBalance();
+
+			return -1.0;
+		}
+
+		BankAccount* prepareTestData()
+		{
+			BankAccount* myAccount = new BankAccount(123);
+			myAccount->deposit(5000.0);
+			myAccount->withdraw(2000.0);
+
+			return myAccount;
+		}
+
+		int main()
+		{
+			BankAccount* myAccount = prepareTestData();
+
+			int id;
+			cout << "Enter account ID to find balance: ";
+			cin >> id;
+
+			double balance;
+
+			balance = findAccountBalance(myAccount, id);
+
+			if (balance == -1.0)
+				cout << "Failed to find valid balance.\n";
+			else
+				cout << "Account Balance: $" << balance << endl;
+
+			return 0;
+		}
+	}
+
+	namespace WithExceptionHandling
+	{
+
+		class BankAccount
+		{
+		private:
+			int accountID;
+			double balance = 0;
+
+		public:
+			BankAccount(int id)
+			{
+				this->accountID = id;
+			}
+
+			int getAccountID() const { return accountID; }
+			double getBalance() const { return balance; }
+
+			void deposit(double amount)
+			{
+				if (amount <= 0) return;
+				balance += amount;
+			}
+
+			void withdraw(double amount)
+			{
+				if (amount <= 0) return;
+				if (amount > balance) return;
+				balance -= amount;
+			}
+		};
+
+		double findAccountBalance(BankAccount* account, int searchID)
+		{
+			if (account == nullptr) throw string("database connection error");
+			if (searchID <= 0 || searchID > 10000) throw string("searchID is invalid");
+
+			if (account->getAccountID() == searchID)
+				return account->getBalance();
+
+			throw string("ID not found");
+		}
+
+		BankAccount* prepareTestData()
+		{
+			BankAccount* myAccount = new BankAccount(123);
+			myAccount->deposit(5000.0);
+			myAccount->withdraw(2000.0);
+
+			return myAccount;
+		}
+
+		int main()
+		{
+			BankAccount* myAccount = prepareTestData();
+
+			int id;
+			cout << "Enter account ID to find balance: ";
+			cin >> id;
+
+			double balance;
+
+			try
+			{
+				balance = findAccountBalance(myAccount, id);
+				cout << "Account Balance: $" << balance << endl;
+			}
+			catch (string e)
+			{
+				cout << "Error: " << e;
+			}
+
+			return 0;
+		}
+	}
 }
 
 // Inheritance and polymorphism
@@ -1700,37 +1848,37 @@ namespace Unit05
 		int* readDataFile(const string& filelName, int size)
 		{
 			ifstream file(filelName);
-			int* data  = new int[size];
+			int* data = new int[size];
 
 			if (!file)
 			{
 				throw string("File not found: " + filelName);
 			}
 
-			for (int i  = 0; i  < size; i++)
-				file  >> data[i];
+			for (int i = 0; i < size; i++)
+				file >> data[i];
 
 			return data;
 		}
 		double calcAvg(const string& fileName, int N)
 		{
-			int* data  = readDataFile(fileName, N);
-			double sum  = 0.0;
-			for (int i  = 0; i  < N; i++)
-				sum  += data[i];
-			return sum  / N;
+			int* data = readDataFile(fileName, N);
+			double sum = 0.0;
+			for (int i = 0; i < N; i++)
+				sum += data[i];
+			return sum / N;
 		}
 		int main()
 		{
 			try
 			{
-				int size  = 10;
-				double average  = calcAvg("counts.txt", size);
-				cout  << "Average: " << average  << endl;
+				int size = 10;
+				double average = calcAvg("counts.txt", size);
+				cout << "Average: " << average << endl;
 			}
-			catch (const string & errorMessage)
+			catch (const string& errorMessage)
 			{
-				cout  << "Error: " << errorMessage  << endl;
+				cout << "Error: " << errorMessage << endl;
 			}
 			return 0;
 		}
@@ -1744,15 +1892,15 @@ namespace Unit05
 		{
 			try
 			{
-				cout  << F1() << endl;
+				cout << F1() << endl;
 			}
 			catch (int e)
 			{
-				cout  << "Exception1: " << e  << endl;
+				cout << "Exception1: " << e << endl;
 			}
 			catch (string e)
 			{
-				cout  << "Exception2: " << e  << endl;
+				cout << "Exception2: " << e << endl;
 			}
 
 			return 0;
@@ -1782,15 +1930,15 @@ namespace Unit05
 		{
 			try
 			{
-				cout  << F1() << endl;
+				cout << F1() << endl;
 			}
 			catch (int e)
 			{
-				cout  << "Exception: " << e  << endl;
+				cout << "Exception: " << e << endl;
 			}
 			catch (string e)
 			{
-				cout  << "Exception: " << e  << endl;
+				cout << "Exception: " << e << endl;
 			}
 
 			return 0;
@@ -1803,7 +1951,7 @@ namespace Unit05
 			}
 			catch (string e)
 			{
-				cout  << "Exception: " << e  << endl;
+				cout << "Exception: " << e << endl;
 				throw string("Error in F1()");
 			}
 			return 1;
@@ -1816,7 +1964,7 @@ namespace Unit05
 			}
 			catch (string e)
 			{
-				cout  << "Exception: " << e  << endl;
+				cout << "Exception: " << e << endl;
 				throw;
 			}
 			return 2;
@@ -1828,19 +1976,15 @@ namespace Unit05
 			return 3;
 		}
 	}
-
-}
-
-// Overview of Modern C++ Features
-namespace Unit06
-{
 }
 
 // Test main function
 int main()
 {
-	Unit05::TryCatch0::main();
-	Unit05::TryCatch1::main();
-	Unit05::TryCatch2::main();
+	Unit03::NoExceptionHandling::main();
+	//Unit03::WithExceptionHandling::main();
+	//Unit05::TryCatch0::main();
+	//Unit05::TryCatch1::main();
+	//Unit05::TryCatch2::main();
 	return 0;
 }
