@@ -1530,6 +1530,95 @@ namespace Unit04
 		}
 	}
 
+	namespace BaseMemberAcess
+	{
+		class Base
+		{
+		private:
+			int bsPvDta;
+			void bsPvMthd() { }
+
+		protected:
+			int bsPtDta;
+			void bsPtMthd() { }
+
+		public:
+			int bsPbDta;
+			void bsPbMthd() { }
+		};
+
+		class Derived : protected Base
+		{
+		public: void drvPbMthd() { this->bsPtDta = 5; }
+		};
+
+		class DerivedDerived : protected Derived
+		{
+		public: void drvDrvPbMthd() { this->bsPtDta = 5; }
+		};
+
+		int	main()
+		{
+			Base bs; bs.bsPbDta = 10;
+
+			Derived drv; drv.drvPbMthd();
+
+			DerivedDerived drvDrv; drvDrv.drvDrvPbMthd();
+
+			return 0;
+		}
+
+
+	}
+
+	namespace GenericPrograming
+	{
+		class GeomObject
+		{
+		private: string color;
+		public:
+			GeomObject(string c = "red") : color(c) {}
+			string getColor() const { return color; }
+			string getString() const { return "Geometric Object"; }
+		};
+
+		class Circle : public GeomObject
+		{
+		private: double radius;
+		public:
+			Circle(double r = 1, string c = "red") : GeomObject(c), radius(r) {}
+			string getString() const { return "Circle"; }
+		};
+
+		class Rectangle : public GeomObject
+		{
+		private: double length, width;
+		public:
+			Rectangle(double l = 1, double w = 1, string c = "red") : GeomObject(c), length(l), width(w) { }
+			string getString() const { return "Rectangle"; }
+		};
+
+		void diaplayGeomData(const GeomObject& shape)
+		{
+			cout << "Shape: " << shape.getString() << endl;
+			cout << "Color: " << shape.getColor() << endl;
+		}
+
+		int main()
+		{
+			GeomObject shape("red");
+			Circle circle(8, "blue");
+			Rectangle rectangle(3, 4, "green");
+
+			diaplayGeomData(shape);
+			diaplayGeomData(circle);
+			diaplayGeomData(rectangle);
+
+			return 0;
+		}
+
+	}
+
 	namespace PolymorphismExample
 	{
 		class Animal
@@ -1593,6 +1682,63 @@ namespace Unit04
 			for (int i = 0; i < 3; i++)
 				animals[i]->Speak();
 		}
+	}
+
+	namespace PolymorphismExample2
+	{
+		class PaymentMethod
+		{
+		public:
+			virtual void pay(double amount) const
+			{
+				cout << "Paying " << amount << " EGP using a payment method." << endl;
+			}
+		};
+
+		class Cash : public PaymentMethod
+		{
+		public:
+			void pay(double amount) const override
+			{
+				cout << "Paying " << amount << " EGP in cash." << endl;
+			}
+		};
+
+		class CreditCard : public PaymentMethod
+		{
+		public:
+			void pay(double amount) const override
+			{
+				cout << "Paying " << amount << " EGP with a credit card." << endl;
+			}
+		};
+
+		class VodafoneCash : public PaymentMethod
+		{
+		public:
+			void pay(double amount) const override
+			{
+				cout << "Paying " << amount << " EGP through Vodafone Cash app." << endl;
+			}
+		};
+
+		int main()
+		{
+			PaymentMethod* method1 = new Cash();
+			PaymentMethod* method2 = new CreditCard();
+			PaymentMethod* method3 = new VodafoneCash();
+
+			method1->pay(100);
+			method2->pay(250.5);
+			method3->pay(75);
+
+			delete method1;
+			delete method2;
+			delete method3;
+
+			return 0;
+		}
+
 	}
 
 	namespace FractionOverloading
@@ -1981,10 +2127,6 @@ namespace Unit05
 // Test main function
 int main()
 {
-	Unit03::NoExceptionHandling::main();
-	//Unit03::WithExceptionHandling::main();
-	//Unit05::TryCatch0::main();
-	//Unit05::TryCatch1::main();
-	//Unit05::TryCatch2::main();
+	Unit04::PolymorphismExample2::main();
 	return 0;
 }
