@@ -2061,6 +2061,101 @@ namespace Unit05
 		}
 	}
 
+	namespace ClassTemplate
+	{
+		template <typename T> class Grade
+		{
+		private:
+			T score;
+		public:
+			Grade();
+			void setScore(const T&);
+			T getScore() const;
+		};
+
+		template <typename T>
+		Grade<T>::Grade()
+		{
+			this->score = 0;
+		}
+
+		template <typename T2>
+		void Grade<T2>::setScore(const T2& score)
+		{
+			this->score = score;
+		}
+
+		template <typename T>
+		T Grade<T>::getScore() const
+		{
+			return this->score;
+		}
+	}
+
+	namespace Casting
+	{
+		class GeomObject
+		{
+		public:
+			GeomObject() {}
+			virtual double getArea() const { return 0; }
+			virtual double getPerimeter() const { return 0; }
+		};
+		class Circle : public GeomObject
+		{
+		public:
+			Circle(double r) {}
+			double getRadius() const { return 0; }
+			double getDiameter() const { return 0; }
+		};
+		class Rectangle : public GeomObject
+		{
+		public:
+			Rectangle(double x, double y) {}
+			double getWidth() const { return 0; }
+			double getHeight() const { return 0; }
+		};
+
+		void displayGeomObject(const GeomObject* g)
+		{
+			if (g == nullptr) return;
+
+			const Circle* ptrC = dynamic_cast<const Circle*>(g);
+			const Rectangle* ptrR = dynamic_cast<const Rectangle*>(g);
+
+			if (ptrC != nullptr)
+			{
+				cout << "The radius is " << ptrC->getRadius() << endl;
+				cout << "The diameter is " << ptrC->getDiameter() << endl;
+			}
+			if (ptrR != nullptr)
+			{
+				cout << "The width is " << ptrR->getWidth() << endl;
+				cout << "The height is " << ptrR->getHeight() << endl;
+			}
+
+			cout << "The area is " << g->getArea() << endl;
+			cout << "The perimeter is " << g->getPerimeter() << endl;
+		}
+
+		int main()
+		{
+			vector<GeomObject*> geomObjectVector = {
+				new Rectangle(3,4),
+				new Rectangle(6,8),
+				new Circle(5),
+				new Circle(9)
+			};
+
+			for (GeomObject* geomObject : geomObjectVector) {
+				displayGeomObject(geomObject);
+				cout << string(20, '-') << endl;
+			}
+
+			return 0;
+		}
+	}
+
 	namespace TryCatch0
 	{
 		int* readDataFile(const string& filelName, int size)
@@ -2200,5 +2295,8 @@ namespace Unit05
 int main()
 {
 	Unit04::AbstractClass::main();
+	int x = 1, y = 2;
+	cout << max(x, y);
+	Unit05::Casting::main();
 	return 0;
 }
