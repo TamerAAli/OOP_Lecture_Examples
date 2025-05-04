@@ -1327,6 +1327,19 @@ namespace Unit03
 				for (int i = 0; i < CAPACITY; ++i) samples[i] = other.samples[i];
 			}
 
+			//AudioBuffer& operator=(const AudioBuffer& other)
+			//{
+			//	CAPACITY = other.CAPACITY, size = other.size;
+			//	if (other.CAPACITY <= 0) return *this;
+			//
+			//	if (samples) delete[] samples;
+			//	samples = new float[other.CAPACITY];
+			//	for (int i = 0; i < CAPACITY; ++i) samples[i] = other.samples[i];
+			//
+			//	return *this;
+			//}
+			AudioBuffer& operator=(const AudioBuffer& other) = delete;
+
 			~AudioBuffer() { delete[] samples; samples = nullptr; }
 
 			bool addSample(float value)
@@ -1673,6 +1686,7 @@ namespace Unit04
 
 			for (Animal* animal : animals)
 				delete animal;
+			animals.clear();
 		}
 
 		void test2()
@@ -1739,6 +1753,64 @@ namespace Unit04
 			return 0;
 		}
 
+	}
+
+	namespace AbstractClass
+	{
+		class PaymentMethod
+		{
+		public: virtual void pay(double amount) const = 0;
+		};
+
+		class Cash : public PaymentMethod
+		{
+		public:
+			void pay(double amount) const override
+			{
+				cout << "Paying " << amount << " EGP in cash." << endl;
+			}
+		};
+
+		class CreditCard : public PaymentMethod
+		{
+		public:
+			void pay(double amount) const override
+			{
+				cout << "Paying " << amount << " EGP with a credit card." << endl;
+			}
+		};
+
+		class VodafoneCash : public PaymentMethod
+		{
+		public:
+			void pay(double amount) const override
+			{
+				cout << "Paying " << amount << " EGP through Vodafone Cash app." << endl;
+			}
+		};
+
+		void processPayment(PaymentMethod* method, double amount)
+		{
+			method->pay(amount);
+		}
+
+		int main()
+		{
+			PaymentMethod* methods[] = {
+				new Cash(),
+				new CreditCard(),
+				new VodafoneCash() };
+
+			for (int i = 0; i < 3; i++)
+				processPayment(methods[i], 100.0);
+
+			for (int i = 0; i < 3; i++)
+				delete methods[i];
+
+			//delete[] methods;
+
+			return 0;
+		}
 	}
 
 	namespace FractionOverloading
@@ -2127,6 +2199,21 @@ namespace Unit05
 // Test main function
 int main()
 {
-	Unit04::PolymorphismExample2::main();
+	Unit04::AbstractClass::main();
 	return 0;
+}
+
+void selectionSort(int arr[], int size)
+{
+	for (int i = 0; i < size - 1; ++i)
+	{
+		int minIndex = i;
+		for (int j = i + 1; j < size; ++j)
+		{
+			if (arr[j] < arr[minIndex])
+				minIndex = j;
+		}
+
+		swap(arr[i], arr[minIndex]);
+	}
 }
