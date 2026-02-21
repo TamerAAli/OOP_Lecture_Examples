@@ -215,6 +215,32 @@ namespace Unit01
 		}
 	}
 
+	namespace sumSeries
+	{
+		int sumSeries(int i1, int i2)
+		{
+			int sum = 0;
+			for (int i = i1; i <= i2; i++)
+				sum += i;
+			return sum;
+		}
+
+		int sumSeries2(int i1, int i2)
+		{
+			int N = i2 - i1 + 1;
+			return N * (i1 + i2) / 2;
+		}
+		
+		int main()
+		{
+			cout << "Sum from 1 to 10 is " << sumSeries(1, 10) << endl;
+			cout << "Sum from 20 to 37 is " << sumSeries(20, 37) << endl;
+			cout << "Sum from 35 to 49 is " << sumSeries(35, 49) << endl;
+			cout << "Sum from 1 to 100 is " << sumSeries(1, 100) << endl;
+			return 0;
+		}
+	}
+
 	namespace MaxFunction
 	{
 		double max(double num1, double num2)
@@ -227,6 +253,17 @@ namespace Unit01
 		{
 			return max(max(num1, num2), num3);
 		}
+
+		double max(double values[], int arrayLength)
+		{
+			double max  = values[0];
+			for (int i  = 1; i  < arrayLength; i++)
+				if (values[i] > max)
+				max  = values[i];
+
+			return max;
+		}
+
 
 		int main()
 		{
@@ -2294,9 +2331,6 @@ namespace Unit05
 // Test main function
 int main()
 {
-	Unit04::AbstractClass::main();
-	int x = 1, y = 2;
-	cout << max(x, y);
-	Unit05::Casting::main();
+	Unit01::sumSeries::main();
 	return 0;
 }
