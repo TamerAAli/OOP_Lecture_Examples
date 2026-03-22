@@ -397,6 +397,22 @@ namespace Unit01
 		}
 	}
 
+	namespace refExample
+	{
+		int main()
+		{
+			int count = 1;
+			int& r = count;
+
+			r++;
+
+			count = 10;
+
+			cout << r;
+			return 0;
+		}
+	}
+
 	namespace StaticVariable
 	{
 		void t1();
@@ -662,17 +678,7 @@ namespace Unit02
 
 	namespace ConstMemberFunction
 	{
-		class Circle1
-		{
-		private:
-			double radius = 1;
-		public:
-			void setRadius(double r) { radius = r; }
-			double getRadius() { return radius; }
-			double getArea() { return radius * radius * 3.14; }
-		};
-
-		class Circle2
+		class Circle
 		{
 		private:
 			double radius = 1;
@@ -682,22 +688,20 @@ namespace Unit02
 			double getArea() const { return radius * radius * 3.14; }
 		};
 
-		void someFunction(const Circle2& c)
+		void someFunction(const Circle& c)
 		{
+			//c.
 		}
 
 		int main()
 		{
-			Circle1 c1;
-			const Circle1 _c1;
-			c1.setRadius(10);
-			//_c1.
+			Circle c;
+			const Circle _c;
 
-			Circle2 c2;
-			const Circle2 _c2;
-			c2.setRadius(10);
-			_c2.getArea();
-			cout << "Area: " << c2.getArea() << endl;
+			c.setRadius(9);
+			cout << c.getArea();
+
+			//_c.setRadius(9);
 
 			return 0;
 
@@ -920,6 +924,63 @@ namespace Unit02
 		}
 	}
 
+	namespace LimitedIntExample
+	{
+		class LimitedInt
+		{
+		private:
+			const int MIN;
+			const int MAX;
+			int value;
+		public:
+			LimitedInt(int min, int max, int val) : MIN(min), MAX(max), value(val)
+			{
+				if (value < MIN || value > MAX)
+					value = MIN;
+			}
+			LimitedInt(int min, int max) : LimitedInt(min, max, min)
+			{
+			}
+			LimitedInt(int val) : LimitedInt(INT_MIN, INT_MAX, val)
+			{
+			}
+			LimitedInt() : LimitedInt(INT_MIN, INT_MAX, 0)
+			{
+			}
+			int getValue() const
+			{
+				return value;
+			}
+			void setValue(int val)
+			{
+				if (val < MIN)
+					value = MIN;
+				else if (val > MAX)
+					value = MAX;
+				else
+					value = val;
+			}
+			operator int() const
+			{
+				return value;
+			}
+
+			void operator= (int val)
+			{
+				setValue(val);
+			}
+		};
+
+		int main()
+		{
+			LimitedInt a, b, c;
+			a = 1;
+			b = 90;
+			c = a + b;
+
+			return 0;
+		}
+	}
 	namespace ObjectArray
 	{
 		class Inventory
@@ -2331,6 +2392,6 @@ namespace Unit05
 // Test main function
 int main()
 {
-	Unit01::sumSeries::main();
+	Unit01::refExample::main();
 	return 0;
 }
