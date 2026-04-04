@@ -1991,6 +1991,7 @@ namespace Unit05
 // Test main function
 int main()
 {
-	Unit03::UsingPointers::main();
+	using namespace Unit03;
+	UsingPointers::main();
 	return 0;
 }
