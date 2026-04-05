@@ -12,17 +12,9 @@ namespace Unit03
 	{
 		int main()
 		{
-			int    a = 3;
-			char   s = 'z';
-			double d = 1.03;
-
-			int* pa = &a;
-			char* ps = &s;
-			double* pd = &d;
-
-			cout << sizeof(pa) << " " << sizeof(*pa) << " " << sizeof(&pa) << endl;
-			cout << sizeof(ps) << " " << sizeof(*ps) << " " << sizeof(&ps) << endl;
-			cout << sizeof(pd) << " " << sizeof(*pd) << " " << sizeof(&pd) << endl;
+			cout << sizeof(int*) << " ";
+			cout << sizeof(char*) << " ";
+			cout << sizeof(double*) << " ";
 
 			return 0;
 		}
@@ -68,6 +60,59 @@ namespace Unit03
 
 			return 0;
 		}
+	}
+
+	namespace testCompositionAssociation
+	{
+		class PersonalInfo
+		{
+		public: string name = "Default Name";
+		};
+
+		class Instructor
+		{
+		public:
+			string getName() const { return info.name; }
+			void setName(const string& n) { info.name = n; }
+		private:
+			PersonalInfo info;
+		};
+
+		class Student
+		{
+		public:
+			string getName() const { return info.name; }
+			void setName(const string& n) { info.name = n; }
+
+			Instructor* getAcademicAdvisor() const { return academicAdvisor; }
+			void setAcademicAdvisor(Instructor* instructorPtr) { academicAdvisor = instructorPtr; }
+		private:
+			PersonalInfo info;
+			Instructor* academicAdvisor = nullptr;
+		};
+
+		int main()
+		{
+			Instructor instr;
+			cout << "Instr: " << instr.getName() << endl;
+			cout << string(24, '-') << endl;
+
+			Student st[5];
+			for (int i = 0; i < 5; i++) st[i].setAcademicAdvisor(&instr);
+			for (int i = 0; i < 5; i++)
+				cout << "St [" << i + 1 << "] Ac Adv: " << st[i].getAcademicAdvisor()->getName() << endl;
+			cout << string(24, '-') << endl;
+
+			instr.setName("new name");
+			cout << "Updated Instr: " << instr.getName() << endl;
+			cout << string(24, '-') << endl;
+
+			for (int i = 0; i < 5; i++)
+				cout << "St [" << i + 1 << "] Ac Adv: " << st[i].getAcademicAdvisor()->getName() << endl;
+
+			return 0;
+		}
+
 	}
 
 	namespace CirclePassByReference

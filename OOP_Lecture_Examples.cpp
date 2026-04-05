@@ -1,10 +1,10 @@
 #include "03_Pointers.h"
 using namespace std;
+using namespace Unit03;
 
 int main()
 {
-	using namespace Unit03;
 	UsingPointers::main();
-
+	//testCompositionAssociation::main();
 	return 0;
 }
