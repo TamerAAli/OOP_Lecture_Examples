@@ -27,6 +27,48 @@ namespace Unit03
 		}
 	}
 
+	namespace ZombieExample
+	{
+		class Zombie
+		{
+		private:
+			static int ID;
+			int myID;
+		public:
+			Zombie() { myID = ++ID; }
+			int getID() const { return myID; }
+		};
+		int Zombie::ID = 0;
+
+		class GameLevel
+		{
+		private:
+			int currentLevel = 1;
+		public:
+			Zombie* spawnZombies()
+			{
+				Zombie z[100];
+				for (int i = 0; i < 100; i++)
+				{
+					cout << z[i].getID() << " ";
+				}
+				return z;
+			}
+		};
+
+		int main()
+		{
+			GameLevel level;
+			Zombie* z = level.spawnZombies();
+			for (int i = 0; i < 100; i++)
+			{
+				cout << z[i].getID() << " ";
+			}
+
+			return 0;
+		}
+	}
+
 	namespace CirclePassByReference
 	{
 		class Circle
