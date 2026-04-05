@@ -130,7 +130,11 @@
     <ClCompile Include="OOP_Lecture_Examples.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="01_BasicsProceduralPrograming.h" />
+    <ClInclude Include="02_BasicsOOP.h" />
     <ClInclude Include="03_Pointers.h" />
+    <ClInclude Include="04_InheritancePolymorphism.h" />
+    <ClInclude Include="05_ExtendingYourCode.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>

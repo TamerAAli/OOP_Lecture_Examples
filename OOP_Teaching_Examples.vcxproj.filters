@@ -26,6 +26,18 @@
     <ClInclude Include="03_Pointers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="01_BasicsProceduralPrograming.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="02_BasicsOOP.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="04_InheritancePolymorphism.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="05_ExtendingYourCode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OOP_Teaching_Examples.rc">
