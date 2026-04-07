@@ -4,7 +4,7 @@ using namespace Unit03;
 
 int main()
 {
-	UsingPointers::main();
-	//testCompositionAssociation::main();
+	//UsingPointers::main();
+	testCompositionAssociation::main();
 	return 0;
 }
