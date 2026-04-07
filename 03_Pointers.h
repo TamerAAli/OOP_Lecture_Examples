@@ -434,6 +434,9 @@ namespace Unit03
 			else
 				cout << "Account Balance: $" << balance << endl;
 
+			delete myAccount;
+			myAccount = nullptr;
+
 			return 0;
 		}
 	}
@@ -509,6 +512,9 @@ namespace Unit03
 			{
 				cout << "Error: " << e;
 			}
+
+			delete myAccount;
+			myAccount = nullptr;
 
 			return 0;
 		}
