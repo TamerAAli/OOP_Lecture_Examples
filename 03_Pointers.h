@@ -319,7 +319,7 @@ namespace Unit03
 				for (int i = 0; i < n; ++i) samples[i] = 0.0;
 			}
 
-			AudioBuffer(const AudioBuffer& other) //: AudioBuffer(other.CAPACITY)
+			AudioBuffer(const AudioBuffer& other)
 				: CAPACITY(other.CAPACITY), size(other.size)
 			{
 				if (other.CAPACITY <= 0) return;
@@ -338,7 +338,7 @@ namespace Unit03
 			//
 			//	return *this;
 			//}
-			AudioBuffer& operator=(const AudioBuffer& other) = delete;
+			//AudioBuffer& operator=(const AudioBuffer& other) = delete;
 
 			~AudioBuffer() { delete[] samples; samples = nullptr; }
 
@@ -350,7 +350,7 @@ namespace Unit03
 			}
 		};
 
-		int main()
+		void processSamples()
 		{
 			int NUM_SAMPLES = 50;
 			AudioBuffer buffer(NUM_SAMPLES);
@@ -361,6 +361,13 @@ namespace Unit03
 			while (file >> sample && buffer.addSample(sample)) {}
 
 			file.close();
+
+			//Destructor will automatically be called.
+		}
+
+		int main()
+		{
+			processSamples();
 			return 0;
 		}
 	}
