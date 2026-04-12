@@ -2,7 +2,7 @@
 using namespace std;
 using namespace Unit03;
 
-int* reverse(int list[], int size)
+void reverse(int list[], int size)
 {
 	int* left = list;
 	int* right = list + size - 1;
@@ -12,7 +12,6 @@ int* reverse(int list[], int size)
 		*left = *right;
 		*right = temp;
 	}
-	return list;
 }
 
 void printArray(int list[], int size)
@@ -24,6 +23,9 @@ void printArray(int list[], int size)
 
 int main()
 {
-	Unit03::AudioBufferExample::processSamples();
+	int list[] = { 10, 20, 30, 40, 50 };
+	printArray(list, 5);
+	reverse(list, 5);
+	printArray(list, 5);
 	return 0;
 }
