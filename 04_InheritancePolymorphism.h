@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -79,25 +80,56 @@ namespace Unit04
 		{
 		private: string color;
 		public:
-			GeomObject(string c = "red") : color(c) {}
-			string getColor() const { return color; }
-			string getString() const { return "Geometric Object"; }
+			GeomObject() : color("red")
+			{
+			}
+			GeomObject(string c) : color(c)
+			{
+			}
+			string getColor() const
+			{
+				return color;
+			}
+			string getString() const
+			{
+				return "Geometric Object";
+			}
 		};
 
 		class Circle : public GeomObject
 		{
 		private: double radius;
 		public:
-			Circle(double r = 1, string c = "red") : GeomObject(c), radius(r) {}
-			string getString() const { return "Circle"; }
+			Circle()
+			{
+				radius = 1;
+			}
+			Circle(double r)
+			{
+				radius = r;
+			}
+			//Circle(double r, string c)
+			//	: GeomObject(c), radius(r)
+			//{
+			//}
+			string getString() const
+			{
+				return "Circle";
+			}
 		};
 
 		class Rectangle : public GeomObject
 		{
 		private: double length, width;
 		public:
-			Rectangle(double l = 1, double w = 1, string c = "red") : GeomObject(c), length(l), width(w) {}
-			string getString() const { return "Rectangle"; }
+			Rectangle(double l = 1, double w = 1, string c = "red")
+				: GeomObject(c), length(l), width(w)
+			{
+			}
+			string getString() const
+			{
+				return "Rectangle";
+			}
 		};
 
 		void diaplayGeomData(const GeomObject& shape)
@@ -109,7 +141,7 @@ namespace Unit04
 		int main()
 		{
 			GeomObject shape("red");
-			Circle circle(8, "blue");
+			Circle circle(8);
 			Rectangle rectangle(3, 4, "green");
 
 			diaplayGeomData(shape);
