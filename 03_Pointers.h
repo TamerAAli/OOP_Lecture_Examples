@@ -340,7 +340,14 @@ namespace Unit03
 			//}
 			//AudioBuffer& operator=(const AudioBuffer& other) = delete;
 
-			~AudioBuffer() { delete[] samples; samples = nullptr; }
+			~AudioBuffer()
+			{
+				if (samples)
+				{
+					delete[] samples;
+					samples = nullptr;
+				}
+			}
 
 			bool addSample(float value)
 			{
