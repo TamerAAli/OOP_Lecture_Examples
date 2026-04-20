@@ -80,15 +80,19 @@ namespace Unit04
 		{
 		private: string color;
 		public:
-			GeomObject() : color("red")
-			{
-			}
+			//GeomObject() : color("white")
+			//{
+			//}
 			GeomObject(string c) : color(c)
 			{
 			}
 			string getColor() const
 			{
 				return color;
+			}
+			void setColor(string c)
+			{
+				color = c;
 			}
 			string getString() const
 			{
@@ -100,18 +104,19 @@ namespace Unit04
 		{
 		private: double radius;
 		public:
-			Circle()
+			Circle() : GeomObject("blue")
 			{
 				radius = 1;
 			}
-			Circle(double r)
+			Circle(double r) : GeomObject("blue")
 			{
 				radius = r;
 			}
-			//Circle(double r, string c)
-			//	: GeomObject(c), radius(r)
-			//{
-			//}
+			Circle(double r, string c) : GeomObject(c)
+			{
+				radius = r;
+			}
+
 			string getString() const
 			{
 				return "Circle";
@@ -140,13 +145,15 @@ namespace Unit04
 
 		int main()
 		{
-			GeomObject shape("red");
+			Circle c1(5, "red");
+
+			/*GeomObject shape("red");
 			Circle circle(8);
 			Rectangle rectangle(3, 4, "green");
 
 			diaplayGeomData(shape);
 			diaplayGeomData(circle);
-			diaplayGeomData(rectangle);
+			diaplayGeomData(rectangle);*/
 
 			return 0;
 		}
