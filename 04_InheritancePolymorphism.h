@@ -80,9 +80,9 @@ namespace Unit04
 		{
 		private: string color;
 		public:
-			//GeomObject() : color("white")
-			//{
-			//}
+			GeomObject() : color("white")
+			{
+			}
 			GeomObject(string c) : color(c)
 			{
 			}
