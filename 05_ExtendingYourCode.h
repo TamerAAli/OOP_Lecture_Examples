@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <vector>
+#include <fstream>
 
 using namespace std;
 
@@ -191,11 +193,11 @@ namespace Unit05
 		{
 			ifstream file(filelName);
 			int* data = new int[size];
-
-			if (!file)
-			{
-				throw string("File not found: " + filelName);
-			}
+			//
+			//if (!file)
+			//{
+			//	throw string("File not found: " + filelName);
+			//}
 
 			for (int i = 0; i < size; i++)
 				file >> data[i];
@@ -212,16 +214,18 @@ namespace Unit05
 		}
 		int main()
 		{
-			try
-			{
+			//
+			//try
+			//{
 				int size = 10;
 				double average = calcAvg("counts.txt", size);
 				cout << "Average: " << average << endl;
-			}
-			catch (const string& errorMessage)
-			{
-				cout << "Error: " << errorMessage << endl;
-			}
+			//}
+			//
+			//catch (const string& errorMessage)
+			//{
+			//	cout << "Error: " << errorMessage << endl;
+			//}
 			return 0;
 		}
 
