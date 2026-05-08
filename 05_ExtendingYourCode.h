@@ -217,9 +217,9 @@ namespace Unit05
 			//
 			//try
 			//{
-				int size = 10;
-				double average = calcAvg("counts.txt", size);
-				cout << "Average: " << average << endl;
+			int size = 10;
+			double average = calcAvg("counts.txt", size);
+			cout << "Average: " << average << endl;
 			//}
 			//
 			//catch (const string& errorMessage)
@@ -286,6 +286,10 @@ namespace Unit05
 			{
 				cout << "Exception: " << e << endl;
 			}
+			catch (...)
+			{
+				cout << "Unknown exception" << endl;
+			}
 
 			return 0;
 		}
@@ -320,6 +324,134 @@ namespace Unit05
 		{
 			throw string("Error in F3()");
 			return 3;
+		}
+	}
+	namespace TryCatch3
+	{
+		// Simulates a system check
+		bool fetchBankStatus()
+		{
+			return false; // Change to false to trigger the 'E' exception
+		}
+
+		string getStudentName(int id)
+		{
+			if (id < 201300000) throw string("Invalid Student ID"); // Compact one-liner
+			return "Adam";
+		}
+
+		double calculateTotal(double payment)
+		{
+			if (payment > 5000.0) throw 5000.0f;
+			return payment + 15.50;
+		}
+
+		long generateReceipt(bool serverUp)
+		{
+			if (!serverUp) throw 'E';
+			return 987654321L;
+		}
+
+		int main()
+		{
+			int id = 202900123;
+			double payment = 4500.0;
+
+			try
+			{
+				// 1. Fetch Name
+				string name = getStudentName(id);
+				cout << "Welcome, " << name << "!" << endl;
+
+				// 2. Process Calculation
+				double finalAmount = calculateTotal(payment);
+				cout << "Total with fees: EGP " << finalAmount << endl;
+
+				// 3. Finalize Transaction with fetched status
+				long receipt = generateReceipt(fetchBankStatus());
+				cout << "SUCCESS! Confirmation: #" << receipt << endl;
+			}
+			catch (string msg) { cout << "DATA ERROR: " << msg << endl; }
+			catch (float limit) { cout << "FINANCE ERROR: Limit is EGP " << limit << endl; }
+			catch (char code) { cout << "SERVER ERROR: Code " << code << endl; }
+			catch (...) { cout << "An unexpected error occurred." << endl; }
+
+			return 0;
+		}
+	}
+	namespace TryCatch4
+	{
+		// --- Deepest Level: Returns a value OR throws ---
+		string databaseLookup(int bookId)
+		{
+			if (bookId == 0)
+			{
+				throw string("Database Connection Failed!");
+			}
+			if (bookId < 0)
+			{
+				throw bookId;
+			}
+
+			if (bookId == 101) return "C++ Programming 101";
+			if (bookId == 102) return "Data Structures & Algorithms";
+
+			return "Unknown Book";
+		}
+
+		// --- Middle Level: Logic and "Rethrowing" ---
+		void processLoan(int bookId, bool isMember)
+		{
+			try
+			{
+				string title = databaseLookup(bookId);
+
+				if (!isMember)
+				{
+					throw 40.0f; // Guest fine
+				}
+
+				cout << "SUCCESS: You have borrowed '" << title << "'" << endl;
+			}
+			catch (int errId)
+			{
+				// Local fix for an invalid ID
+				cout << "[Library Level] Handling error: ID " << errId << " is invalid. Re-directing to help desk." << endl;
+			}
+		}
+
+		// --- Top Level: Dynamic User Input ---
+		int main()
+		{
+			int userBookId;
+			bool userIsMember;
+
+			cout << "--- Digital Library Portal ---" << endl;
+			cout << "Enter Book ID (Try 101, 0, or -1): ";
+			cin >> userBookId;
+
+			cout << "Are you a member? (1 for Yes, 0 for No): ";
+			cin >> userIsMember;
+
+			try
+			{
+				processLoan(userBookId, userIsMember);
+			}
+			catch (string sysError)
+			{
+				cout << "[Main Level] CRITICAL SYSTEM ALERT: " << sysError << endl;
+			}
+			catch (float fine)
+			{
+				cout << "[Main Level] PAYMENT REQUIRED: Please pay $" << fine << " to borrow as guest." << endl;
+			}
+			catch (...)
+			{
+				cout << "[Main Level] An unexpected error occurred." << endl;
+			}
+
+			cout << "--- Session Ended ---" << endl;
+			return 0;
 		}
 	}
 }
