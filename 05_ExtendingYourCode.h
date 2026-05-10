@@ -376,6 +376,7 @@ namespace Unit05
 			catch (char code) { cout << "SERVER ERROR: Code " << code << endl; }
 			catch (...) { cout << "An unexpected error occurred." << endl; }
 
+			cout << "Goodbuy!" << endl;
 			return 0;
 		}
 	}
